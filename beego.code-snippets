@@ -191,33 +191,19 @@
 			"sessionongcmaxlifetime=10"
 		]
 	},
+	"修改视图目录": {
+		"scope": "go,html",
+		"prefix": ":conf",
+		"body": [
+			"//方法一app.conf\n viewspath = view\n //方法二func main\n // beego.SetViewsPath(\"view\")\n"
+		]
+	},
 	//-----------------------{{beego}}-----------------------------
 	"定义变量": {
 		"scope": "go,html",
 		"prefix": "{{beego}}",
 		"body": [
 			"{{$names := .name}} {{$names}}"
-		]
-	},
-	"循环遍历切片": {
-		"scope": "go,html",
-		"prefix": "{{beego}}",
-		"body": [
-			"//控制器\n this.Data[\"sliceList\"] = []string{\"php\", \"java\", \"golang\"}\n //html\n {{range $key,$val :=.sliceList}}\n <p>{{$key}}----{{$val}}</p>\n {{end}}\n"
-		]
-	},
-	"循环遍历map": {
-		"scope": "go,html",
-		"prefix": "{{beego}}",
-		"body": [
-			"//控制器\n userinfo := make(map[string]interface{})\n userinfo[\"userinfo\"] = \"张三\"\n userinfo[\"age\"] = 20\n userinfo[\"sex\"] = \"男\"\n this.Data[\"userinfo\"] = userinfo\n //html\n {{range $keys,$vals := .userinfo}}\n <p>{{$keys}}----{{$vals}}</p>\n {{end}}\n"
-		]
-	},
-	"循环遍历结构体类型的切片+": {
-		"scope": "go,html",
-		"prefix": "{{beego}}",
-		"body": [
-			"//控制器\n type Article struct {\n Title   string\n Content string\n }\n \n //结构体类型的切片\n this.Data[\"articleList\"] = []Article{\n {\n Title:   \"新闻111\",\n Content: \"新闻内容111\",\n },\n {\n Title:   \"新闻222\",\n Content: \"新闻内容222\",\n },\n {\n Title:   \"新闻333\",\n Content: \"新闻内容333\",\n },\n {\n Title:   \"新闻444\",\n Content: \"新闻内容444\",\n },\n }\n //html\n //结构体类型的切片（用的非常多）\n <p></p>\n {{range $keys,$vals := .userinfo}}\n <p>{{$keys}}----{{$vals}}</p>\n {{end}} {{range $key,$val := .articleList}}\n <p>{{$key}}----{{$val.Title}}---{{$val.Content}}</p>\n {{end}}\n"
 		]
 	},
 	"if else if else": {
@@ -297,10 +283,61 @@
 			"--------------------------models/tools.go \n package models\n \n import \"time\"\n \n func UnixToDate(timestamp int) string {\n \n t := time.Unix(int64(timestamp), 0)\n \n return t.Format(\"2006-01-02 15:04:05\")\n \n }\n --------------------------main.go\n package main\n \n import (\n \"beegodemo03/models\"\n _ \"beegodemo03/routers\"\n \n \"github.com/astaxie/beego\"\n )\n \n func main() {\n beego.AddFuncMap(\"hi\", models.Hello)\n beego.AddFuncMap(\"unixToDate\", models.UnixToDate)\n beego.Run()\n }\n----------------------------控制器\n this.Data[\"time\"] = 1626697782\n -----------------------------html\n <div>\n {{.time}}\n </div>\n <div>\n {{.time | unixToDate}}\n </div>\n"
 		]
 	},
+	"获取结构体数据+": {
+		"scope": "go,html",
+		"prefix": "{{beego}}",
+		"body": [
+			"//控制器\n type User struct {\n Id   int\n Name string\n Age  int\n }\n \n var user User\n user.Id = 1\n user.Name = \"hallen\"\n user.Age = 18\n \n this.Data[\"user\"] = user\n \n //html\n {{.user.Id}} {{.user.Name}} {{.user.Age}}\n"
+		]
+	},
 
 
 
 
+
+	//-----------------------{{beego循环}}-----------------------------
+	"循环遍历切片": {
+		"scope": "go,html",
+		"prefix": "{{for beego}}",
+		"body": [
+			"//控制器\n this.Data[\"sliceList\"] = []string{\"php\", \"java\", \"golang\"}\n //html\n {{range $key,$val :=.sliceList}}\n <p>{{$key}}----{{$val}}</p>\n {{end}}\n"
+		]
+	},
+	"循环遍历map": {
+		"scope": "go,html",
+		"prefix": "{{for beego}}",
+		"body": [
+			"//控制器\n userinfo := make(map[string]interface{})\n userinfo[\"userinfo\"] = \"张三\"\n userinfo[\"age\"] = 20\n userinfo[\"sex\"] = \"男\"\n this.Data[\"userinfo\"] = userinfo\n //html\n {{range $$keys,$$vals := .userinfo}}\n <p>{{$$keys}}----{{$$vals}}</p>\n {{end}}\n"
+		]
+	},
+	"循环遍历数组+": {
+		"scope": "go,html",
+		"prefix": "{{for beego}}",
+		"body": [
+			"//控制器\n arrs := [5]int{1, 2, 3, 4, 5}\n \n this.Data[\"arrs\"] = arrs\n \n //html\n {{range $$k,$$v := .arrs}}\n <p>{{$$k}}----{{$$v}}</p>\n {{end}}\n <p></p>\n \n {{range .arrs}}\n <p>{{.}}</p>\n {{end}}\n"
+		]
+	},
+	"循环遍历结构体数组+": {
+		"scope": "go,html",
+		"prefix": "{{for beego}}",
+		"body": [
+			"//控制器\n type User struct {\n Id   int\n Name string\n }\n \n users := [3]User{\n {\n Id:   1,\n Name:\"a\",\n },\n {\n Id:   2,\n Name: \"b\",\n },\n {\n Id:   3,\n Name: \"c\",\n },\n }\n this.Data[\"users\"] = users\n \n //html\n {{range .users}}\n <p>{{.Id}} {{.Name}}</p>\n {{end}}\n"
+		]
+	},
+	"循环遍历map+结构体+": {
+		"scope": "go,html",
+		"prefix": "{{for beego}}",
+		"body": [
+			"//控制器\n type User struct {\n Id   int\n Name string\n }\n map_struct := map[string]User{\n \"user1\": {\n Id:   1,\n Name: \"a\",\n },\n \"user2\": {\n Id:   2,\n Name: \"b\",\n },\n \"user3\": {\n Id:   3,\n Name: \"c\",\n },\n }\n this.Data[\"map_struct\"] = map_struct\n \n //html\n {{range .map_struct}} {{.}} {{end}}\n <p></p>\n {{.map_struct.user1}} {{.map_struct.user2.Name}}\n"
+		]
+	},
+	"循环遍历结构体类型的切片+": {
+		"scope": "go,html",
+		"prefix": "{{for beego}}",
+		"body": [
+			"//控制器\n type Article struct {\n Title   string\n Content string\n }\n \n //结构体类型的切片\n this.Data[\"articleList\"] = []Article{\n {\n Title:   \"新闻111\",\n Content: \"新闻内容111\",\n },\n {\n Title:   \"新闻222\",\n Content: \"新闻内容222\",\n },\n {\n Title:   \"新闻333\",\n Content: \"新闻内容333\",\n },\n {\n Title:   \"新闻444\",\n Content: \"新闻内容444\",\n },\n }\n //html\n //结构体类型的切片（用的非常多）\n <p></p>\n {{range $keys,$vals := .userinfo}}\n <p>{{$keys}}----{{$vals}}</p>\n {{end}} {{range $key,$val := .articleList}}\n <p>{{$key}}----{{$val.Title}}---{{$val.Content}}</p>\n {{end}}\n"
+		]
+	},
 
 
 
@@ -317,4 +354,12 @@
 			"//定义结构体类型的切片--------1---------\n \n type Article struct {\n Title   string\n Content string\n }\n \n this.Data[\"articleList\"] = []Article{\n {\n Title:   \"新闻111\",\n Content: \"新闻内容111\",\n },\n {\n Title:   \"新闻222\",\n Content: \"新闻内容222\",\n },\n {\n Title:   \"新闻333\",\n Content: \"新闻内容333\",\n },\n {\n Title:   \"新闻444\",\n Content: \"新闻内容444\",\n },\n }\n \n //定义结构体类型的切片--------2---------\n jgt := []struct {\n Title string\n }{\n {\n Title: \"新闻111\",\n },\n {\n Title: \"新闻111\",\n },\n }\n fmt.Println(jgt)\n"
 		]
 	},
+		//-----------------------定义-----------------------------
+		"初始化结构体*2": {
+			"scope": "go,html",
+			"prefix": "#dy",
+			"body": [
+				"//方式一\n // var user User\n // user.Id = 1\n // user.Name = \"hallen\"\n // user.Age = 18\n //方式二\n user := User{\n Id:   1,\n Name: \"hallen\",\n Age:  18,\n }\n"
+			]
+		},
 }

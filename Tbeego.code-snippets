@@ -115,7 +115,13 @@
 			"//字符串的截取\n var str = \"你好这是文章列表\"\n slice := []rune(str)\n aaa := string(slice[1:5])\n fmt.Println(aaa)\n"
 		]
 	},
-
+	"session^": {
+		"scope": "go",
+		"prefix": "*1_substr",
+		"body": [
+			"//设置session,首先开启session\n this.SetSession(\"username\", \"张三\")\n \n //获取session\n //username := this.GetSession(\"username\")\n \n //另一种获取session的方法\n username := this.Ctx.Input.Session(\"username\")\n \n fmt.Println(username)\n"
+		]
+	},
 	//---------------------块函数---------------------------
 	"接收get string传参": {
 		"scope": "go",
@@ -145,6 +151,30 @@
 			"type Product struct {", "\tTitle   string `form:\"title\" xml:\"title\"`", "\tContent string `form:\"content\" xml:\"content\"`", "}", "//路由", "beego.Router(\"/goods/xml\", &controllers.GoodsController{}, \"post:Xml\")", "", "//postman", "//使用postman 选择post->Body->raw粘贴xml数据", "//xml数据样本", "/*", "<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<article>", "    <content type=\"string\">我是张三</content>", "    <title type=\"string\">张三</title>", "</article>", "*/", "//控制器", "//接收Post传过来的XML数据", "//注意：需要在conf/app.conf添加一行copyrequestbody = true 然后必须重启bee run", "func (this *GoodsController) Xml() {", "\t// beego.Info(string(this.Ctx.Input.RequestBody))", "\t// str := string(this.Ctx.Input.RequestBody)", "\t// this.Ctx.WriteString(str)", "\tp := Product{}", "\tvar err error", "\tif e := xml.Unmarshal(this.Ctx.Input.RequestBody, &p); e != nil {", "\t\tthis.Data[\"json\"] = err.Error()", "\t\tthis.ServeJSON()", "\t} else {", "\t\t//返回一个json数据", "\t\tthis.Data[\"json\"] = p", "\t\tthis.ServeJSON()", "\t\t//返回结果", "\t\t// {", "\t\t// \"Title\": \"张三\",", "\t\t// \"Content\": \"我是张三\"", "\t\t//  }", "", "\t}", "}", ""
 		]
 	},
+
+	"设置英文cookie^": {
+		"scope": "go",
+		"prefix": "*1_cookie",
+		"body": [
+			"//100 100秒有效期\n // /login 限制路由\n // .baidu.com  二级域名共享cookie\n //1.设置英文cookie\n this.Ctx.SetCookie(\"username\", \"zhangsan\", 100, \"/login\")\n \n //获取cookie\n username := this.Ctx.GetCookie(\"username\")\n fmt.Println(username)\n"
+		]
+	},
+	"设置中文cookie+": {
+		"scope": "go",
+		"prefix": "*1_cookie",
+		"body": [
+			"//设置中文cookie\n this.Ctx.SetSecureCookie(\"666\", \"username\", \"张三\")\n // 1000 有效期1000秒\n username, _ := this.Ctx.GetSecureCookie(\"666\", \"username\", 1000)\n \n fmt.Println(username)\n"
+		]
+	},
+
+	"删除cookie": {
+		"scope": "go",
+		"prefix": "*1_cookie",
+		"body": [
+			"//删除cookie 也就是重新设置cookie\n this.Ctx.SetSecureCookies(\"666\", \"username\", \"\", 0)\n"
+		]
+	},
+
 	"获取conf配置信息": {
 		"scope": "go",
 		"prefix": "*1_conf",
