@@ -1,0 +1,472 @@
+{
+    // Place your snippets for javascript here. Each snippet is defined under a snippet name and has a prefix, body and 
+    // description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+    // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
+    // same ids are connected.
+    // Example:
+    //-------------------------------------调试--------------------------------------------------------------
+    "console打印": {
+        "prefix": "!console.log",
+        "body": [
+            "console.log($1);"
+        ],
+        "description": ""
+    },
+    "alert打印": {
+        "prefix": "!alert",
+        "body": [
+            "alert($1);"
+        ],
+        "description": ""
+    },
+    "/**/块注释": {
+        "prefix": "!*",
+        "body": [
+            "/*   $1     */"
+        ],
+        "description": ""
+    },
+    //-------------------------------------函数-------------------------------------
+    "将字符串js代码输出": {
+        "prefix": "*_eval",
+        "body": [
+            "/*   输出在页面中     */ console.log(eval('x=10;y=20;document.write(x*y)'));"
+        ]
+    },
+    "字符串查找": {
+        "prefix": "*_match",
+        "body": [
+            "var str = `jiang chen hua`; var res = str.match('chen'); console.log(res);"
+        ]
+    },
+    "取整": {
+        "prefix": "*_parseInt",
+        "body": [
+            "parseInt($1);console.log();"
+        ]
+    },
+    "入栈": {
+        "prefix": "*_push",
+        "body": [
+            "var arr = ['George']; arr.push('James'); //[ 'George', 'James']"
+        ]
+    },
+    "字符串分割成数组": {
+        "prefix": "*_split",
+        "body": [
+            "var str = '1.2.3'; /*字符串分割成数组*/ console.log(str.split('.'));"
+        ]
+    },
+    "字符串替换": {
+        "prefix": "*_replace",
+        "body": [
+            "var str = 'hello word'$1; console.log(str.replace('word', '世界'));"
+        ],
+        "description": "Print to console"
+    },
+    "创建数组": {
+        "prefix": "*_Array",
+        "body": [
+            "var arr = new Array();"
+        ]
+    },
+    "isNaN是否是数字": {
+        "prefix": "*_isNaN",
+        "body": [
+            "isNaN($1); /* 是数字则false  不是则true */"
+        ]
+    },
+
+
+
+
+
+
+
+
+    //-------------------------------------循环-------------------------------------
+    "for in 循环": {
+        "prefix": "xh",
+        "body": [
+            "for (var x in [1, 2, 3]$1) { console.log(x); /* 打印结果 0 1 2 */ }"
+        ],
+        "description": "Print to console"
+    },
+    "for 循环": {
+        "prefix": "xh",
+        "body": [
+            "for (var i = 1$1; i <= 5; i++) { console.log(i); }"
+        ],
+        "description": "Print to console"
+    },
+    "each遍历": {
+        "prefix": "xh",
+        "body": [
+            "    /*       <div class='test'> <p>1</p> <p>2</p> <p>3</p> <p>4</p> <p>5</p> </div>     */ $(document).ready(function() { $('.test p').each(function() { console.log($(this).text()); }); });"
+        ],
+        "description": "Print to console"
+    },
+    "foreach循环": {
+        "prefix": "xh",
+        "body": [
+            "var arr = [1, 2]; { arr.forEach(element => { console.log(element); }); }"
+        ],
+        "description": "Print to console"
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    "快捷function": {
+        "prefix": "ff_2",
+        "body": [
+            "function $1()",
+            "{",
+            "console.log();",
+            "}"
+        ],
+        "description": "Print to console"
+    },
+    "获取PHP渲染变量": {
+        "prefix": "php_3",
+        "body": [
+            "/*<?php $$id=1; ?>*/ $1$(function() { var id = '<?php echo $id; ?>'; console.log(id); }) "
+        ],
+        "description": "Print to console"
+    },
+    "$(function(){})": {
+        "prefix": "$_4",
+        "body": [
+            "$(function(){ \n $1 \n })"
+        ],
+        "description": "Print to console"
+    },
+    "on click事件": {
+        "prefix": "$on_5",
+        "body": [
+            "/*    <button type='button' class='layui-btn on-click'>默认按钮</button>     */ $(function() { $('.on-click').on('click', function() { alert('单机事件被触发了') }) })"
+        ],
+        "description": "Print to console"
+    },
+    "input值被修改触发": {
+        "prefix": "$on_6",
+        "body": [
+            "$(function() { \n /*    <input type='text' value='' id='change'>     */ $('#change').on('change', function() { alert('value值被修改了'); }); })"
+        ],
+        "description": "Print to console"
+    },
+    "on 移入移出事件": {
+        "prefix": "$on_7",
+        "body": [
+            "/* <style> #box { width: 300px; height: 300px; border: 1px solid red; background: chartreuse; margin: auto; margin-top: 30px; } </style><div id='box'> <p></p> </div>  */ $(function() { $('#box').mouseover(function() { $('#box p').html('鼠标移入了'); }); $('#box').mouseout(function() { $('#box p').html('鼠标移出了'); }) })"
+        ],
+        "description": "Print to console"
+    },
+    "ajax POST请求": {
+        "prefix": "$ajax_POST_8",
+        "body": [
+            "$('.on-click').on('click', function() { $.ajax({ url: '{:url(\"MyIndex/haltPost\")}', data: { id: 1 },cache: false,type: 'POST', dataType: \"JSON\", success: function(res) { if (res.code == 200) { } else { } }, error: function() {} }); })"
+        ],
+        "description": "Print to console"
+    },
+    "ajax GET请求": {
+        "prefix": "$ajax_GET_9",
+        "body": [
+            "$.ajax({ url: '{:url(\"MyIndex/haltGet\")}', data: { id: 1 }, type: 'GET', cache: false,dataType: \"JSON\", success: function(res) { if (res.code == 200) {} else {} }, error: function() {} });"
+        ],
+        "description": "Print to console"
+    },
+    "$.get请求": {
+        "prefix": "$get_10",
+        "body": [
+            " /* <button type='button' class='layui-btn on-click' onclick=''>$.get</button>  */ $('.on-click').on('click', function() { $.get(\"{:url('MyIndex/json')}\", { id: 1 }, function(res) { if (res.code == 200) { alert(res.msg) } else { alert(res.msg) } }); })"
+        ],
+        "description": "Print to console"
+    },
+    "$.post请求": {
+        "prefix": "$post_11",
+        "body": [
+            " /* <button type='button' class='layui-btn on-click' onclick=''>$.post</button>  */ $('.on-click').on('click', function() { $.post(\"{:url('MyIndex/json')}\", { id: 1 }, function(res) { if (res.code == 200) { alert(res.msg) } else { alert(res.msg) } }); })"
+        ],
+        "description": "Print to console"
+    },
+    "追加html.append": {
+        "prefix": "$.html_12",
+        "body": [
+            "$('#add_append').append('$1'); /*<div id='add_append'>帅哥</div> <button type='button' class='layui-btn on-click' onclick=''>追加内容或html</button>  javascript $('.on-click').on('click', function() { $('#add_append').append('<span>美女</span>'); }) */"
+        ],
+        "description": "Print to console"
+    },
+    "追加class.attr": {
+        "prefix": "$.attr_13",
+        "body": [
+            "/*添加*/ $('#test').attr('value', 'fdfdfd'); /*获取*/ $('#test').attr('value');"
+        ],
+        "description": "Print to console"
+    },
+    "追加css.css": {
+        "prefix": "$.css_14",
+        "body": [
+            "$('#add-css').css({ color: '$1', 'background-color': '#fff' });"
+        ],
+        "description": "Print to console"
+    },
+    "同级标签下一个": {
+        "prefix": "$.next_15",
+        "body": [
+            "$('.class').next().css('color', 'red');"
+        ],
+        "description": "Print to console"
+    },
+    "同级标签上一个": {
+        "prefix": "$.prev_16",
+        "body": [
+            "$('.class$1').prev().css('color', 'red');"
+        ],
+        "description": "Print to console"
+    },
+    "同级标签不包括自己": {
+        "prefix": "$.siblings_17",
+        "body": [
+            "$('.class$1').siblings().css('color', 'red');"
+        ],
+        "description": "Print to console"
+    },
+    "查找元素input[name='sex']": {
+        "prefix": "$.find_18",
+        "body": [
+            "$('#form').find(\"input[name='sex']:radio:checked\").val();"
+        ],
+        "description": "Print to console"
+    },
+    "删除元素": {
+        "prefix": "$.rem_19",
+        "body": [
+            "$('#id').remove();"
+        ],
+        "description": "Print to console"
+    },
+    "添加单多class": {
+        "prefix": "$.addClass_20",
+        "body": [
+            "$('#id$1').addClass('1 2');"
+        ],
+        "description": "Print to console"
+    },
+    "删除class": {
+        "prefix": "$.addClass_21",
+        "body": [
+            "$('#$1').removeClass('box');"
+        ],
+        "description": "Print to console"
+    },
+    "找到父元素": {
+        "prefix": "$.parent_22",
+        "body": [
+            "$('#$1').parent().css({color: 'red'});"
+        ],
+        "description": "Print to console"
+    },
+    "查找指定元素": {
+        "prefix": "$on_23",
+        "body": [
+            "/*下标从0开始*/ $('body').find('.box').eq(2).css('background-color', 'blue');"
+        ],
+        "description": "Print to console"
+    },
+    "替换html.html": {
+        "prefix": "$.html_24",
+        "body": [
+            "$(\"#id\").html('<p>#id被替换了</p>');"
+        ],
+        "description": "Print to console"
+    },
+    "获取div内容": {
+        "prefix": "$.text_25",
+        "body": [
+            "$('#$1').text();"
+        ],
+        "description": "Print to console"
+    },
+    "获取input值": {
+        "prefix": "$.val_26",
+        "body": [
+            "$('#$1').val();"
+        ],
+        "description": "Print to console"
+    },
+    "移除style样式": {
+        "prefix": "$.removeAttr_27",
+        "body": [
+            "$('.$1').removeAttr('style');"
+        ],
+        "description": "Print to console"
+    },
+    "length长度": {
+        "prefix": "$.length_28",
+        "body": [
+            "/*#id下的p标签的长度*/ $('#id$1').children('p').length;"
+        ],
+        "description": "Print to console"
+    },
+    "length长度": {
+        "prefix": "$.before_29",
+        "body": [
+            "/*#id下的p标签的长度*/ $('#id$1').children('p').length;"
+        ],
+        "description": "Print to console"
+    },
+    "自动调用方法": {
+        "prefix": "$on",
+        "body": [
+            "<div onload='myFunction(1)'></div> <script> /*onload 在$(function(){})之后 */ function myFunction(id) { console.log(id); } </script>"
+        ],
+        "description": "Print to console"
+    },
+
+
+    "layui弹框": {
+        "prefix": "tk",
+        "body": [
+            "layer.msg('提示:$1', {icon: 2,time: 3000},function(){});"
+        ],
+        "description": "Print to console"
+    },
+    "if else": {
+        "prefix": "elif",
+        "body": [
+            "if($1){",
+            "",
+            "} else if (2) {",
+            "",
+            "} else {",
+            "",
+            "}"
+        ],
+        "description": "Print to console"
+    },
+    "$('#id')": {
+        "prefix": "$#",
+        "body": [
+            "$(\"#$1\")."
+        ],
+        "description": "Print to console"
+    },
+
+
+    "定时器": {
+        "prefix": "dsq",
+        "body": [
+            "/*6秒弹框*/ setTimeout(function() { alert('Hello'); }, 6000);"
+        ],
+        "description": "Print to console"
+    },
+    "url跳转携带参数": {
+        "prefix": "tz",
+        "body": [
+            " var url = \"{:url('MyIndex/haltGet',['goods_id'=>2])}\";window.location.href = url;"
+        ],
+        "description": "Print to console"
+    },
+    "刷新页面": {
+        "prefix": "sx",
+        "body": [
+            "/*刷新当前页面*/ window.location.reload();"
+        ],
+        "description": "Print to console"
+    },
+
+
+    "$.getJSON 自动转换json格式": {
+        "prefix": "qq",
+        "body": [
+            "$(function() { $.getJSON('/index.php/admin/MyIndex/json', { id: 1 }, function(result) { console.log(result); }); })"
+        ],
+        "description": "Print to console"
+    },
+    "hover移入移出事件": {
+        "prefix": "$.hover",
+        "body": [
+            "/*   <p class='p'>我是p标签：鼠标放上</p>     */ $(document).ready(function() { $('.p').hover(function() { $('.p').css('background-color', 'yellow'); }, function() { $('.p').css('background-color', 'pink'); }); });"
+        ],
+        "description": "Print to console"
+    },
+
+
+    "元素隐藏": {
+        "prefix": "$.none",
+        "body": [
+            "/*   隐藏     */$('.$1').hide();"
+        ],
+        "description": "Print to console"
+    },
+    "元素显示": {
+        "prefix": "$.show",
+        "body": [
+            "/*   显示     */$('.$1').show();"
+        ],
+        "description": "Print to console"
+    },
+    "删除前后空格": {
+        "prefix": "$.trim",
+        "body": [
+            "/*   删除前后空格     */ $.trim(str$1);"
+        ],
+        "description": "Print to console"
+    },
+    "将数组合并成字符串": {
+        "prefix": "$.join",
+        "body": [
+            "/*   将数组合并成字符串     */ ['jiang', 'chen']$1.join(); //jiang,chen"
+        ],
+        "description": "Print to console"
+    },
+    "打开一个新窗口": {
+        "prefix": "xck",
+        "body": [
+            "/*   打开一个新窗口     */ window.open('http://localhost/index.php/admin/myindex/haltGet?id=1');"
+        ],
+        "description": "Print to console"
+    },
+
+    "判断父类是否是div": {
+        "prefix": "$.is",
+        "body": [
+            "/*   判断父类标签是否是div     */ $('.$1').parent().is('div');"
+        ],
+        "description": "Print to console"
+    },
+    "inArray查找是否存在数组中": {
+        "prefix": "$.inArray",
+        "body": [
+            "/*   查找是否存在数组中，存在返回下标   不存在返回-1  */ $.inArray('$1', arr);"
+        ],
+        "description": "Print to console"
+    },
+    "给元素绑定click事件": {
+        "prefix": "$.click",
+        "body": [
+            "$('#test').click(function() { alert('绑定成功');$1 })"
+        ],
+        "description": "Print to console"
+    },
+    "获取div宽高": {
+        "prefix": "$.outerWidth_outerHeight",
+        "body": [
+            "alert('div宽度是' + $('div').outerWidth()); alert('div高度是' + $('div').outerHeight());"
+        ],
+        "description": "Print to console"
+    },
+
+}

@@ -1,0 +1,204 @@
+{
+    //----------------------------------弹框-----------------------------------------
+    "吸附框": {
+        "scope": "html",
+        "prefix": ":tk",
+        "body": [
+            "<button class=\"layui-btn\" id=\"btn-tips\">吸附弹框</button>\n <script>\n $(\"#btn-tips\").click(() => {\n layer.tips('可以吸附到任何元素上', $('#btn-tips'))\n })\n </script>\n"
+        ]
+    },
+    "图片弹框": {
+        "scope": "html",
+        "prefix": ":tk",
+        "body": [
+            "<img src=\"/static/images/tp.png\" class=\"tong\" onclick=\"imgTk('tong')\">\n <script>\n function imgTk(cla) {\n layer.open({\n type: 1,\n title: false,\n closeBtn: 0,\n area: ['auto'],\n skin: 'layui-layer-nobg',\n shadeClose: true,\n content: $('.' + cla)\n });\n }\n </script>\n"
+        ]
+    },
+    //-------------------------------小组件---------------------------------------------
+    "123456序号": {
+        "scope": "html",
+        "prefix": ":xzj",
+        "body": [
+            "<style> P::before {\n counter-increment: count 1;\n content: counter(count)\".\";\n font-size: 25px;\n }\n \n .box {\n counter-reset: count;\n }\n </style>\n <div class=\"box\">\n <p>GO</p>\n <p>PHP</p>\n </div>\n"
+        ]
+    },
+    "隔行变色": {
+        "scope": "html",
+        "prefix": ":xzj",
+        "body": [
+            "<style>\n p {\n background: #C078DD;\n }\n \n p:nth-child(odd) {\n background: #98C379;\n }\n </style>\n <p>GO</p>\n <p>PHP</p>\n <p>JAVA</p>\n"
+        ]
+    },
+    "新窗口当前页": {
+        "scope": "html",
+        "prefix": ":xzj",
+        "body": [
+            "onclick='window.open(\"/index.php/${TM_FILENAME_BASE}/${TM_FILENAME}\")'"
+        ]
+    },
+    "单显示隐藏": {
+        "scope": "html",
+        "prefix": ":xzj",
+        "body": [
+            "<button type='button' onclick='displauy(\"hot1\")'>显示隐藏</button>\n <div id='hot1' style='display: none;'>test</div>\n <script>\n function displauy(id) {\n var id = $('#' + id);\n var str = id.attr('style');\n if (str.match('none')) {\n id.attr('style', 'display: show')\n } else {\n id.attr('style', 'display: none')\n }\n }\n </script>\n"
+        ]
+    },
+    "多显示隐藏": {
+        "scope": "html",
+        "prefix": ":xzj",
+        "body": [
+            "<button type='button' class='layui-btn' onclick='displauy(\"hot1\")'>1</button>\n <button type='button' class='layui-btn' onclick='displauy(\"hot2\")'>2</button>\n <button type='button' class='layui-btn' onclick='displauy(\"hot3\")'>3</button>\n <div style='display:show' id=\"hot1\">1</div>\n <div style='display:none' id=\"hot2\">2</div>\n <div style='display:none' id=\"hot3\">3</div>\n <script>\n function displauy(name) {\n var arr = [\"hot1\", \"hot2\", \"hot3\"];\n arr.forEach(element => {\n if (element == name) {\n var str = $('#' + name).attr('style');\n if (str.match('none')) {\n $('#' + name).attr('style', 'display: show')\n }\n } else {\n $('#' + element).attr('style', 'display: none')\n }\n });\n }\n </script>\n"
+        ]
+    },
+    "图片边框": {
+        "scope": "html",
+        "prefix": ":xzj",
+        "body": [
+            "<style>\n img {\n border: 3px solid #333333;\n }\n </style>\n <img src=\"/static/images/notes/vscode.png\">\n"
+        ]
+    },
+    "图片上下左右间距": {
+        "scope": "html",
+        "prefix": ":xzj",
+        "body": [
+            "<span style=\"position:relative;top:13.5px;\"><img style=\"vertical-align:top;\" src=\"/static/images/tp.png\" width=\"22px\" height=\"17px;\" /></span>"
+        ]
+    },
+    //-------------------------------{php}---------------------------------------------
+    "重复输出字符串": {
+        "scope": "html",
+        "prefix": ":php",
+        "body": [
+            "{php} echo str_repeat(\"&nbsp;\", 5); {/php}\n"
+        ]
+    },    
+    "引入html文件": {
+        "scope": "html",
+        "prefix": ":php",
+        "body": [
+            "{include file=\"common/header$1\"/}"
+        ]
+    },    
+    //-------------------------------{php}---------------------------------------------
+    "重复空格": {
+        "scope": "html",
+        "prefix": ":widget",
+        "body": [
+            "{php} echo str_repeat(\"&nbsp;\", 5); {/php}\n"
+        ]
+    },   
+    //-------------------------------{:widget()}--------------------------------------------- 
+    "重复空格": {
+        "scope": "html",
+        "prefix": ":widget",
+        "body": [
+            "{:widget('nbsp',50)}"
+        ]
+    }, 
+    //-------------------------------标签---------------------------------------
+    "加载html文件": {
+        "scope": "html",
+        "prefix": "iframe",
+        "body": [
+            "<iframe src=\"$1\" width=\"\" frameborder=\"no\" border=\"0\"></iframe>"
+        ]
+    }, 
+    "新窗口打开": {
+        "scope": "html",
+        "prefix": "a",
+        "body": [
+            "<a href='' target='_blank'>新窗口打开$1</a>"
+        ]
+    }, 
+    //-------------------------------包组件---------------------------------------------   
+    "Copy复制": {
+        "scope": "html",
+        "prefix": "&copy",
+        "body": [
+            "<script src=\"/static/tools/clipboard.js-master/dist/clipboard.min.js\"></script>\n <textarea id=\"foo\">\n 哈哈\n </textarea>\n <button class=\"btn\" data-clipboard-target=\"#foo\">Copy</button>\n <script>\n var clipboard = new ClipboardJS('.btn');\n clipboard.on('success', function(e) {\n console.log(e);\n });\n clipboard.on('error', function(e) {\n console.log(e);\n });\n </script>\n"
+        ]
+    }, 
+    //-------------------------------CSS---------------------------------------------   
+    "背景图片": {
+        "scope": "css",
+        "prefix": ":css",
+        "body": [
+            "background-image: url(/static/images/2.jpg);\n /* background-size: 100% 100%; */\n background-repeat: no-repeat;\n"
+        ]
+    },
+    "屏幕100%高": {
+        "scope": "css",
+        "prefix": ":css",
+        "body": [
+            "height: calc(100vh);"
+        ]
+    },
+    "隐藏下拉": {
+        "scope": "css",
+        "prefix": ":css",
+        "body": [
+            "overflow-x: hidden; overflow-y: hidden;"
+        ]
+    },
+    "!最高优先级": {
+        "scope": "css",
+        "prefix": ":css",
+        "body": [
+            "!important;"
+        ]
+    },
+    "内定位": {
+        "scope": "css",
+        "prefix": ":css",
+        "body": [
+            "position:relative;top:3.5px;"
+        ]
+    },
+    "外定位": {
+        "scope": "css",
+        "prefix": ":css",
+        "body": [
+            "position:absolute;top:10px;"
+        ]
+    },
+    "外固定定位": {
+        "scope": "css",
+        "prefix": ":css",
+        "body": [
+            "position:fixed;top:10px;"
+        ]
+    },
+    //-------------------------------JavaScript-------------------------------------
+    //-------------------------------调试-------------------------------------------  
+    "console打印": {
+        "scope": "javascript",
+        "prefix": "!console",
+        "body": [
+            "console.log($1)"
+        ]
+    },
+    "alert打印": {
+        "scope": "javascript",
+        "prefix": "!alert",
+        "body": [
+            "alert($1)"
+        ]
+    },
+    //-----------------------------函数-------------------------------------------- 
+    "查找字符串": {
+        "scope": "javascript",
+        "prefix": "*_match",
+        "body": [
+            "var str = `jiang chen hua`;$1 var res = str.match('chen'); console.log(res);"
+        ]
+    },
+    //-----------------------------小组件------------------------------------------- 
+    "定时器": {
+        "scope": "javascript",
+        "prefix": ":xzj",
+        "body": [
+            "setTimeout(function() {$1},6000);"
+        ]
+    },
+}
+

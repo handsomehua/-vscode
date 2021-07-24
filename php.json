@@ -1,0 +1,1098 @@
+{
+
+    "insert插入数据": {
+        "prefix": ":db_insert",
+        "body": [
+            "$$result=Db::name('test$1')->data(['name'=>''])->insert();\nvar_dump($$result);die;"
+        ],
+        "description": "Print to console"
+    },
+    "select查询数据": {
+        "prefix": ":db_select",
+        "body": [
+            "$$where = [['id','>=',1]];\n $$result=Db::name('test$1')->where($$where)->field('*')->order('id desc')->select()->toArray();\n var_dump($$result);die;"
+        ],
+        "description": "Print to console"
+    },
+    "update更新数据": {
+        "prefix": ":db_update",
+        "body": [
+            "$$where = [['id','=',1]]; $$data = ['name'=>'test']; $$result=Db::name('test$1')->where($$where)->update($$data); var_dump($$result); die;"
+        ],
+        "description": "Print to console"
+    },
+    "find查询一条数据": {
+        "prefix": ":db_find",
+        "body": [
+            "$$where = [['id','=',1]]; $$res=Db::name('test$1')->where($$where)->field('*')->find(); var_dump($$res); die;"
+        ],
+        "description": "Print to console"
+    },
+    "value查询字段值": {
+        "prefix": ":db_value",
+        "body": [
+            "$$where = [['id','=',1]]; $$res=Db::name('test$1')->where($$where)->value('name'); var_dump($$res); die;"
+        ],
+        "description": "Print to console"
+    },
+    "delete删除数据": {
+        "prefix": ":db_delete",
+        "body": [
+            "/**软删除 */ $res=Db::name('test')->where('id', $id)->update(['is_delete'=>1]); var_dump($res); die;"
+        ],
+        "description": "Print to console"
+    },
+    "count计算多少条记录": {
+        "prefix": ":db_count",
+        "body": [
+            "$$where = [['type','=',2]]; $$res=Db::name('test$1')->where($$where)->count(); var_dump($$res); die;"
+        ],
+        "description": "Print to console"
+    },
+    "column查询一列数据": {
+        "prefix": ":db_column",
+        "body": [
+            "$$where = [['id','>=',1]]; $$res=Db::name('test$1')->where($$where)->column('name', 'id');/** name值  id索引 */\n var_dump($$res); die;"
+        ],
+        "description": "Print to console"
+    },
+    "chunk分批查询数据": {
+        "prefix": ":db_chunk",
+        "body": [
+            "$$total = 0; /** 总查询条数 */\n $$where = [['id','>=',1]]; \n/**分批查询 */\n $$res=Db::name('test$1')->where($$where)->chunk(100, function ($$data) use (&$$total) { foreach ($$data as $$k => $$v) { $$total++; } }); var_dump($$total); die;"
+        ],
+        "description": "Print to console"
+    },
+    "save新增或更新数据": {
+        "prefix": ":db_save",
+        "body": [
+            "$$data = []; $$res=Db::name('test$1')->save($$data); var_dump($$res); die;"
+        ],
+        "description": "Print to console"
+    },
+    "insertGetId插入返回id": {
+        "prefix": ":db_insertGetId",
+        "body": [
+            "$$data = ['name'=>'']; $$res=Db::name('test$1')->insertGetId($$data); var_dump($$res); die;"
+        ],
+        "description": "Print to console"
+    },
+    "insertAll插入多条数据": {
+        "prefix": ":db_insertAll",
+        "body": [
+            "$$data = [ ['name'=>'1'], ['name'=>'2'] ]; $$res=Db::name('test$1')->insertAll($$data); var_dump($$res); die;"
+        ],
+        "description": "Print to console"
+    },
+    "inc/setInc自增": {
+        "prefix": ":db_inc/setInc",
+        "body": [
+            "$$where=['id'=>1]; $$res=Db::name('test') ->where($$where)->inc('number', 5)->update(); /**tp6 自增 */\n /**$$res=Db::name('test') ->where($$where)->setInc('number', 5)->update(); tp5 自增 $1*/ \nvar_dump($$res); die;"
+        ],
+        "description": "Print to console"
+    },
+    "dec/setDec自减": {
+        "prefix": ":db_dec/setDec",
+        "body": [
+            "$$where=['id'=>1]; $$res=Db::name('test') ->where($$where)->dec('number', 5)->update(); /**tp6 自减 */ \n/**$$res=Db::name('test') ->where($$where)->setDec('number', 5)->update(); tp5 自减$1 */\n var_dump($$res); die;"
+        ],
+        "description": "Print to console"
+    },
+    "join链表查询": {
+        "prefix": ":db_join",
+        "body": [
+            "$$res=Db::name('test$1')->alias('t1')->join(['lm_test2$2'=>'t2'], 't1.id=t2.tid', 'right')->field('t1.*,t2.name as t2name')->select()->toArray(); var_dump($$res); die;"
+        ],
+        "description": "Print to console"
+    },
+    "sum求和": {
+        "prefix": ":db_sum",
+        "body": [
+            "$$where = [['type','=',2]]; $$res=Db::name('test$1')->where($$where)->sum('number'); var_dump($$res); die;"
+        ],
+        "description": "Print to console"
+    },
+    "order按序查询": {
+        "prefix": ":db_order",
+        "body": [
+            "$$in = '1,2,3'; $$sort = '3,2,1'; $$table = 'lm_test$1'; $$res=Db::query(\"SELECT `*` FROM `$$table` WHERE  `id` IN (\".$$in.\") ORDER BY field(id,\".$$sort.\")\");  var_dump($$res);die;"
+        ],
+        "description": "Print to console"
+    },
+    "group分组查询": {
+        "prefix": ":db_group",
+        "body": [
+            "/**group分组 即相同为一组 */\n $$res=Db::name('test$1')->field(\"type,count(type) as count\")->group(\"type\")->select()->toArray(); var_dump($$res); die;"
+        ],
+        "description": "Print to console"
+    },
+    "query原生SQL语句查询": {
+        "prefix": ":db_query",
+        "body": [
+            "$res=Db::query(\"SELECT * FROM `lm_test`\"); var_dump($res); die;"
+        ],
+        "description": "Print to console"
+    },
+    "field聚合查询": {
+        "prefix": ":db_field",
+        "body": [
+            "/** \n*      时间戳转时间     field('FROM_UNIXTIME(create_time,\"%Y-%m-%d %H:%i:%s\") as create_time') \n* \n*           id合并     field('GROUP_CONCAT(id SEPARATOR \"|\") gid') \n* \n*            求和     field(\"SUM(number) sum_number\") \n* \n*     计算(不去重)    field(\"COUNT(number) count_number\") \n* \n*      计算(去重)    field(\"COUNT(DISTINCT number) count_number\") \n* \n*         最大值    field(\"MAX(number) max_number\") \n* \n*        最小值    field(\"MIN(number) min_number\") \n* \n*       平均值    field(\"AVG(number) avg_number\") \n* \n*      if判断    field(\"IF(`number`!= 0,`number`,null) as `if_number`\") \n*\n*    加减乘除    field('number-5 as number')\n*\n*   更多写法   column('count(name)', 'sum(id)')\n**/"
+        ],
+        "description": "Print to console"
+    },
+    "where条件": {
+        "prefix": ":db_where",
+        "body": [
+            "/**\n*       比较    等于= 大于> 小于< 不等于<> 大于等于>= 小于等于<= \n* \n*    模糊查询    [['name','like','小%']] 或 whereLike('name', \"%{$$name}%\")\n* \n*    之间查询    [['id','between','3,5']]  或  [['create_time','between',['1511554114','1511654124']]] \n* \n*     in查询    [['id','in','1,3,5']] \n* \n* not in查询    [['id','not in','1,3,5']] \n* \n*   并且查询    where(\"id=:id and type=:type\", ['id' => 1, 'type' => 1]) \n* \n*     或查询    where(\"type|number\", \"=\", 1) \n* \n*              today今天 yesterday昨天 week本周 last week上周 month本月 last month上月 year今年 last year去年 \n*   时间查询    whereTime('create_time','today') \n*\n*月初开始时间    echo date(\"Y-m-d H:i:s\", mktime(0, 0, 0, date('m'), 1, date('Y'))).'</br>'; \n* \n*月尾结束时间    echo date(\"Y-m-d H:i:s\", mktime(23, 59, 59, date('m'), date('t'), date('Y'))).'</br>'; \n* \n*当天开始时间    echo date(\"Y-m-d H:i:s\", mktime(0, 0, 0, date('m'), date('d'), date('Y'))).'</br>'; \n* \n*当天结束时间    echo date(\"Y-m-d H:i:s\", mktime(23, 59, 59, date('m'), date('d'), date('Y'))).'</br>';\n* */"
+        ],
+        "description": "Print to console"
+    },
+
+    // ------------------------------------******************M SQL***********************************------------------------------
+    "M insert插入数据": {
+        "prefix": ":M_insert",
+        "body": [
+            "$$data=Model${TM_FILENAME_BASE}::insert();\nvar_dump($$data);die;"
+        ],
+        "description": ""
+    },
+    "M select查询数据": {
+        "prefix": ":M_select",
+        "body": [
+            "$$where = [['id','>=',1]];\n $$result=Model${TM_FILENAME_BASE}::where($$where)->field('*')->order('id desc')->select()->toArray();\n var_dump($$result);die;"
+        ],
+        "description": ""
+    },
+    "M update更新数据": {
+        "prefix": ":M_update",
+        "body": [
+            "$$where = [['id','=',1]]; $$data = ['name'=>'test']; $$data=Model${TM_FILENAME_BASE}::where($$where)->update($$data); var_dump($$data); die;"
+        ],
+        "description": ""
+    },
+    "M find查询一条数据": {
+        "prefix": ":M_find",
+        "body": [
+            "$$where = [['id','=',1]]; $$data=Model${TM_FILENAME_BASE}::where($$where)->field('*')->find(); var_dump($$data); die;"
+        ],
+        "description": ""
+    },
+    "M value查询字段值": {
+        "prefix": ":M_value",
+        "body": [
+            "$$where = [['id','=',1]]; $$data=Model${TM_FILENAME_BASE}::where($$where)->value('name'); var_dump($$data); die;"
+        ],
+        "description": "Print to console"
+    },
+    "M delete删除数据": {
+        "prefix": ":M_delete",
+        "body": [
+            "/**软删除 */$$data=Model${TM_FILENAME_BASE}::where('id', $$id)->update(['is_delete'=>1]); var_dump($$data); die;"
+        ],
+        "description": "Print to console"
+    },
+    "M count计算多少条记录": {
+        "prefix": ":M_count",
+        "body": [
+            "$$where = [['type','=',2]]; $$count=Model${TM_FILENAME_BASE}::where($$where)->count(); var_dump($$count); die;"
+        ],
+        "description": "Print to console"
+    },
+    "M column查询一列数据": {
+        "prefix": ":M_column",
+        "body": [
+            "$$where = [['id','>=',1]]; $$data=Model${TM_FILENAME_BASE}::where($$where)->column('name', 'id');/** name值  id索引 */\n var_dump($$data); die;"
+        ],
+        "description": "Print to console"
+    },
+    "M chunk分批查询数据": {
+        "prefix": ":M_chunk",
+        "body": [
+            "$$total = 0; /** 总查询条数 */\n $$where = [['id','>=',1]]; \n/**分批查询 */\n $$data=Model${TM_FILENAME_BASE}::where($$where)->chunk(100, function ($$data) use (&$$total) { foreach ($$data as $$k => $$v) { $$total++; } }); var_dump($$total); die;"
+        ],
+        "description": "Print to console"
+    },
+    "M save新增或更新数据": {
+        "prefix": ":M_save",
+        "body": [
+            "$$data = []; $$data=Model${TM_FILENAME_BASE}::save($$data); var_dump($$data); die;"
+        ],
+        "description": "Print to console"
+    },
+    "M insertGetId插入返回id": {
+        "prefix": ":M_insertGetId",
+        "body": [
+            "$$data = ['name'=>'']; $$data=Model${TM_FILENAME_BASE}::insertGetId($$data); var_dump($$data); die;"
+        ],
+        "description": "Print to console"
+    },
+    "M insertAll插入多条数据": {
+        "prefix": ":M_insertAll",
+        "body": [
+            "$$data = [ ['name'=>'1'], ['name'=>'2'] ]; $$data=Model${TM_FILENAME_BASE}::insertAll($$data); var_dump($$data); die;"
+        ],
+        "description": "Print to console"
+    },
+    "M inc/setInc自增": {
+        "prefix": ":M_inc/setInc",
+        "body": [
+            "$$where=['id'=>1]; $$data=Model${TM_FILENAME_BASE}::where($$where)->inc('number', 5)->update(); /**tp6 自增 */\n /**$$res=Db::name('test') ->where($$where)->setInc('number', 5)->update(); tp5 自增 $1*/ \nvar_dump($$data); die;"
+        ],
+        "description": "Print to console"
+    },
+    "M dec/setDec自减": {
+        "prefix": ":M_dec/setDec",
+        "body": [
+            "$$where=['id'=>1]; $$data=Model${TM_FILENAME_BASE}::where($$where)->dec('number', 5)->update(); /**tp6 自减 */ \n/**$$res=Db::name('test') ->where($$where)->setDec('number', 5)->update(); tp5 自减$1 */\n var_dump($$data); die;"
+        ],
+        "description": "Print to console"
+    },
+    "M join链表查询": {
+        "prefix": ":M_join",
+        "body": [
+            "$$data=Model${TM_FILENAME_BASE}::alias('t1')->join(['lm_test2$2'=>'t2'], 't1.id=t2.tid', 'right')->field('t1.*,t2.name as t2name')->select()->toArray(); var_dump($$data); die;"
+        ],
+        "description": "Print to console"
+    },
+    "M sum求和": {
+        "prefix": ":M_sum",
+        "body": [
+            "$$where = [['type','=',2]]; $$data=Model${TM_FILENAME_BASE}::where($$where)->sum('number'); var_dump($$data); die;"
+        ],
+        "description": "Print to console"
+    },
+    "M order按序查询": {
+        "prefix": ":M_order",
+        "body": [
+            "$$in = '1,2,3'; $$sort = '3,2,1'; $$table = 'lm_test$1'; $$data=Db::query(\"SELECT `*` FROM `$$table` WHERE  `id` IN (\".$$in.\") ORDER BY field(id,\".$$sort.\")\");  var_dump($$data);die;"
+        ],
+        "description": "Print to console"
+    },
+    "M group分组查询": {
+        "prefix": ":M_group",
+        "body": [
+            "/**group分组 即相同为一组 */\n $$data=Model${TM_FILENAME_BASE}::field(\"type,count(type) as count\")->group(\"type\")->select()->toArray(); var_dump($$data); die;"
+        ],
+        "description": "Print to console"
+    },
+
+
+
+
+
+
+
+
+
+
+
+    // ------------------------------------******************函数***********************************------------------------------
+
+    "compact变量转数组": {
+        "prefix": "*_compact",
+        "body": [
+            "compact('$1','$2');"
+
+        ],
+        "description": ""
+    },
+
+    "isset检测变量不为空": {
+        "prefix": "*_isset",
+        "body": [
+            "isset($$1)"
+
+        ],
+        "description": ""
+    },
+
+    "empty检测变量为空": {
+        "prefix": "*_empty",
+        "body": [
+            "empty($$1)"
+
+        ],
+        "description": ""
+    },
+
+    "explode字符串分割": {
+        "prefix": "*_explode",
+        "body": [
+            "explode('$1',$$2);"
+
+        ],
+        "description": ""
+    },
+
+    "join数组分割": {
+        "prefix": "*_join",
+        "body": [
+            " var_dump(join('-', ['jiang','chen','hua']));"
+        ],
+        "description": ""
+    },
+
+    "unset删除数组中指定元素": {
+        "prefix": "*_unset",
+        "body": [
+            "unset($$1);"
+
+        ],
+        "description": ""
+    },
+
+    "call_user_func调用方法": {
+        "prefix": "*_call_user_func",
+        "body": [
+            "$$res=call_user_func([new \\app\\admin\\controller\\MyIndex(),'方法$1'], '传参'); var_dump($$res); die;"
+        ],
+        "description": ""
+    },
+
+    "str_replace字符串替换": {
+        "prefix": "*_str_replace",
+        "body": [
+            "$$str = \"开玩笑\"; $$str = str_replace('开', '开开开', $$str); var_dump($$str); die;"
+        ],
+        "description": ""
+    },
+
+    "reset输出数组中第一个元素": {
+        "prefix": "*_reset",
+        "body": [
+            "$$arr = [7,2]; var_dump(reset($$arr)); die;"
+        ],
+        "description": ""
+    },
+
+    "end输出数组中最后一个元素": {
+        "prefix": "*_end",
+        "body": [
+            "$$arr = [7,2]; var_dump(end($$arr)); die;"
+        ],
+        "description": ""
+    },
+
+    "count计算数组多少个元素": {
+        "prefix": "*_count",
+        "body": [
+            "   $$arr = [1,2,3]$1; $$count = count($$arr); var_dump($$count); die;"
+        ],
+        "description": ""
+    },
+
+    "strip_tags踢除字符串中HTML标签": {
+        "prefix": "*_strip_tags",
+        "body": [
+            "$$str ='<b>jiang</b>'; $$res = strip_tags($$str); var_dump($$res); die;"
+        ],
+        "description": ""
+    },
+
+    "func_get_args接收函数传参返回数组": {
+        "prefix": "*_func_get_args",
+        "body": [
+            "$$arr = func_get_args(); var_dump($$arr); die;"
+        ],
+        "description": ""
+    },
+
+    "is_numeric是否数字或数字字符串": {
+        "prefix": "*_is_numeric",
+        "body": [
+            " var_dump(is_numeric('1'), is_numeric(1), is_numeric('1e'));"
+        ],
+        "description": ""
+    },
+
+    "floatval截取字符串中数字": {
+        "prefix": "*_floatval",
+        "body": [
+            "var_dump(floatval('100true'), floatval('100.8true'), floatval('true100'));"
+        ],
+        "description": ""
+    },
+
+    "stripslashes刪除字符串反斜杠": {
+        "prefix": "*_stripslashes",
+        "body": [
+            "$$str = '\\fdf\\fdfd\\fdf'; echo stripslashes($$str);"
+        ],
+        "description": ""
+    },
+
+    "parse_url解析分割url": {
+        "prefix": "*_parse_url",
+        "body": [
+            "$$url=parse_url('http://layuimini.99php.cn/#page/welcome-2.html?mpi=m-p-i-2'); var_dump($$url); die;"
+        ],
+        "description": ""
+    },
+
+    "list把数组中的值赋给变量": {
+        "prefix": "*_list",
+        "body": [
+            "$$arr = ['jang','chen','hua']; list($$a, , $$b) = $$arr; echo $$a,$$b; die;"
+        ],
+        "description": ""
+    },
+
+    "strstr字符串查找或截取": {
+        "prefix": "*_strstr",
+        "body": [
+            " echo strstr('jiang chen hua!----------', 'g chen'); die;"
+        ],
+        "description": ""
+    },
+
+    "ltrim rtrim删除开头结尾任意字符": {
+        "prefix": "*_ltrim_rtrim",
+        "body": [
+            "echo ltrim('开头', '开'); echo rtrim('jiang.html', '.html');"
+        ],
+        "description": ""
+    },
+
+    "substr_count检索在字符串中出现次数": {
+        "prefix": "*_substr_count",
+        "body": [
+            "  $$str = '开开开玩笑'; echo substr_count($$str, '开');die;"
+        ],
+        "description": ""
+    },
+
+    "strpos查找字符串第一次出现的位置": {
+        "prefix": "*_strpos",
+        "body": [
+            "echo strpos(\"You php love\", \"php\");"
+        ],
+        "description": ""
+    },
+
+    "microtime获取一段代码的执行时间": {
+        "prefix": "*_microtime",
+        "body": [
+            "$$t1 = microtime(true); for ($i=0; $$i < 100000; $$i++) { } $$t2 =microtime(true); echo '耗时'.round($$t2-$$t1, 3).'秒';"
+        ],
+        "description": ""
+    },
+
+    "date时间戳转时间": {
+        "prefix": "*_date",
+        "body": [
+            "echo date(\"Y-m-d H:i:s\", time()$1); echo date(\"Y-12-31 23:59:59\", time());"
+        ],
+        "description": ""
+    },
+
+    "time当前时间戳": {
+        "prefix": "*_time",
+        "body": [
+            "time()"
+        ],
+        "description": ""
+    },
+
+    "strtotime将时间转时间戳": {
+        "prefix": "*_strtotime",
+        "body": [
+            "strtotime($1)"
+        ],
+        "description": ""
+    },
+
+    "mb_strlen计算字符串长度任意字符为1": {
+        "prefix": "*_mb_strlen",
+        "body": [
+            "echo mb_strlen('中国 1a', 'UTF8');"
+        ],
+        "description": ""
+    },
+
+    "mb_substr截取字符串任意字符为1": {
+        "prefix": "*_mb_substr",
+        "body": [
+            "$str = \"解放军 可是烦1[\"; echo mb_substr($str, 0, 5);"
+        ],
+        "description": ""
+    },
+
+    "strcasecmp比较两个字符串不区分大小写": {
+        "prefix": "*_strcasecmp",
+        "body": [
+            "echo strcasecmp(\"shanghai\", \"SHANGHAI\");"
+        ],
+        "description": ""
+    },
+
+    "json_decode将json转数组": {
+        "prefix": "*_json_decode",
+        "body": [
+            "var_dump(json_decode('{\"code\":200}', true));"
+        ],
+        "description": ""
+    },
+
+    "json_encode将数组转json": {
+        "prefix": "*_json_encode",
+        "body": [
+            "echo json_encode(['a'=>1,'b'=>2]);"
+        ],
+        "description": ""
+    },
+
+    "min最小值": {
+        "prefix": "*_min",
+        "body": [
+            "echo min([0,3,4,5]);"
+        ],
+        "description": ""
+    },
+
+    "min最大值": {
+        "prefix": "*_max",
+        "body": [
+            "echo max([0,3,4,5]);"
+        ],
+        "description": ""
+    },
+    "rand随机数": {
+        "prefix": "*_rand",
+        "body": [
+            "echo rand(100, 500);"
+        ],
+        "description": ""
+    },
+    "trim去除两边空格": {
+        "prefix": "*_trim",
+        "body": [
+            "echo trim('  str  ');"
+        ],
+        "description": ""
+    },
+    "file_get_contents发送http请求": {
+        "prefix": "*_file_get_contents",
+        "body": [
+            "$$url = 'https://lite6.camel.com.cn/index.php?controller=api_gashapon&action=getCoupon'; $$contents = file_get_contents($$url); var_dump($$contents); die;"
+        ],
+        "description": ""
+    },
+    "unlink删除文件": {
+        "prefix": "*_unlink",
+        "body": [
+            "var_dump(unlink($1));die;"
+        ],
+        "description": ""
+    },
+    "basename截取文件名,带扩展或不带扩展": {
+        "prefix": "*_basename",
+        "body": [
+            "/*不带扩展*/echo basename(__FILE__, '.php');/*带扩展*/echo basename(__FILE__);"
+        ],
+        "description": ""
+    },
+
+
+
+
+
+
+
+
+
+
+    //-----------------------------------------------------数组函数-----------------------------------------------------------------
+    "array_multisort数组值排序": {
+        "prefix": "*array",
+        "body": [
+            "$$arr = [100,20,10]; array_multisort($$arr); var_dump($$arr); die;"
+        ],
+        "description": ""
+    },
+    "array_intersect检索两个数组中相同值并返回": {
+        "prefix": "*array",
+        "body": [
+            "$$a = [1,2,3]; $$b = [3,4,5]; $$res =array_intersect($$a, $$b); var_dump($$res);"
+        ],
+        "description": ""
+    },
+    "array_diff检索两个数组中不相同值并返回": {
+        "prefix": "*array",
+        "body": [
+            "  $$a = [1,2,3]; $$b = [3,4,5]; $$res =array_diff($$a, $$b); var_dump($$res); die;"
+        ],
+        "description": ""
+    },
+    "array_unshift从数组头部插入一个或多个": {
+        "prefix": "*array",
+        "body": [
+            "$$arr = [7,2]$1; array_unshift($$arr, 5); var_dump($$arr); die;"
+        ],
+        "description": ""
+    },
+    "array_push从数组尾部插入一个或多个": {
+        "prefix": "*array",
+        "body": [
+            "$$arr = [7,2]$1; array_push($$arr, 5); var_dump($$arr); die;"
+        ],
+        "description": ""
+    },
+    "array_slice截取数组一段元素返回数组": {
+        "prefix": "*array",
+        "body": [
+            "$$arr = [1,2,3,4,5,6]; $$arr =array_slice($$arr, 0, 3); var_dump($$arr); die;"
+        ],
+        "description": ""
+    },
+    "array_search筛选数组元素并返回键": {
+        "prefix": "*array",
+        "body": [
+            "$$arr = ['name'=>'jiang','age'=>28]; echo array_search(28, $$arr); die;"
+        ],
+        "description": ""
+    },
+    "array_reverse将数组反转": {
+        "prefix": "*array",
+        "body": [
+            "$$arr = [1,2,3];$1 $$arr = array_reverse($$arr); var_dump($$arr); die;"
+        ],
+        "description": ""
+    },
+    "array_sum数组相加求和": {
+        "prefix": "*array",
+        "body": [
+            "var_dump(array_sum([1,2,3,5]));die;"
+        ],
+        "description": ""
+    },
+    "array_column获取多维中一列数组": {
+        "prefix": "*array",
+        "body": [
+            "$$arr = [ ['id'=>1,'name'=>'jiang'], ['id'=>2,'name'=>'chen'] ]; $$arr = array_column($$arr, 'name'); var_dump($$arr); die;"
+        ],
+        "description": ""
+    },
+    "array_merge合并数组": {
+        "prefix": "*array",
+        "body": [
+            "$$arr = array_merge($$1,$$2);"
+        ],
+        "description": ""
+    },
+    "array_filter数组过滤": {
+        "prefix": "*array",
+        "body": [
+            "$$arr = array_filter(['a'=>1,'b'=>'']); var_dump($$arr); die;"
+        ],
+        "description": ""
+    },
+    "in_array搜索数组是否存在指定的值": {
+        "prefix": "*array",
+        "body": [
+            "$$arr = array(\"jiang\", \"hua\"); if (in_array(\"jiang\", $$arr)) { /**存在 */ } else { /**不存在 */ }"
+        ],
+        "description": ""
+    },
+    "is_array检查是否是数组": {
+        "prefix": "*array",
+        "body": [
+            "is_array($arr$1)"
+        ],
+        "description": ""
+    },
+    "array_keys获取数组中所有键返回新数组": {
+        "prefix": "*array",
+        "body": [
+            "var_dump(array_keys(['name'=>'jiang','age'=>28])); die;"
+        ],
+        "description": ""
+    },
+    "array_unique移出数组中重复的值": {
+        "prefix": "*array",
+        "body": [
+            "$$arr = [1,2,1]; $$arr_unique = array_unique($$arr); var_dump($$arr_unique); die;"
+        ],
+        "description": ""
+    },
+    "arr_values获取数组中所有值返回新数组": {
+        "prefix": "*array",
+        "body": [
+            " $$arr = ['name'=>'jiang','age'=>28]; $$arr_values = array_values($$arr); var_dump($$arr_values); die;"
+        ],
+        "description": ""
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //------------------------------魔术常量/$_SERVER------------------------------------------
+
+    "__DIR__路径['C:/Users/14614/Desktop/hexin-1/app/admin/controller']": {
+        "prefix": ".",
+        "body": [
+            "echo __DIR__;"
+        ],
+        "description": ""
+    },
+    "__FILE__路径['C:/Users/14614/Desktop/hexin-1/app/admin/controller/Test.php']": {
+        "prefix": ".",
+        "body": [
+            "echo __FILE__;"
+        ],
+        "description": ""
+    },
+    "__CLASS__路径['app/admin/controller/Test']": {
+        "prefix": ".",
+        "body": [
+            "echo __CLASS__;"
+        ],
+        "description": ""
+    },
+    "__NAMESPACE__路径['app/admin/controller']": {
+        "prefix": ".",
+        "body": [
+            "echo __NAMESPACE__;"
+        ],
+        "description": ""
+    },
+    "$_SERVER['REQUEST_URI']路径['/index.php/admin/test/index.html?id=1&name=hh']": {
+        "prefix": ".",
+        "body": [
+            "echo $$_SERVER['REQUEST_URI'];"
+        ],
+        "description": ""
+    },
+    "$_SERVER['PATH_INFO']路径['/admin/test/index.html']": {
+        "prefix": ".",
+        "body": [
+            "echo $$_SERVER['PATH_INFO'];"
+        ],
+        "description": ""
+    },
+    "$_SERVER['SERVER_NAME']域名['www.xin.com']": {
+        "prefix": ".",
+        "body": [
+            "echo $$_SERVER['SERVER_NAME'];"
+        ],
+        "description": ""
+    },
+    "$_SERVER['REMOTE_ADDR']IP地址['127.0.0.1']": {
+        "prefix": ".",
+        "body": [
+            "echo $$_SERVER['REMOTE_ADDR'];"
+        ],
+        "description": ""
+    },
+    "$_SERVER打印": {
+        "prefix": ".",
+        "body": [
+            "var_dump($$_SERVER);die;"
+        ],
+        "description": ""
+    },
+
+
+
+    //------------------------------函数------------------------------------------
+    "__construct()初始化函数": {
+        "prefix": ".",
+        "body": [
+            "public function __construct() { echo 'hello'; }"
+        ],
+        "description": ""
+    },
+
+
+
+
+    //------------------------------调试------------------------------------------
+    "var_dump打印": {
+        "prefix": "!var_dump",
+        "body": [
+            "var_dump($$1);die;"
+        ],
+        "description": ""
+    },
+    "halt打印": {
+        "prefix": "!halt",
+        "body": [
+            "halt($$1);"
+        ],
+        "description": ""
+    },
+    "print_r打印": {
+        "prefix": "!print_r",
+        "body": [
+            "print_r($$1);die;"
+        ],
+        "description": ""
+    },
+    "exit输出字符串": {
+        "prefix": "!exit",
+        "body": [
+            "exit(\"------测试-------\");"
+        ],
+        "description": ""
+    },
+    "echo输出字符串": {
+        "prefix": "!echo",
+        "body": [
+            "echo $$1;"
+        ],
+        "description": ""
+    },
+    "return返回": {
+        "prefix": "!return",
+        "body": [
+            "return $1;"
+        ],
+        "description": ""
+    },
+    "continue跳出本次循环": {
+        "prefix": "!continue",
+        "body": [
+            "continue;"
+        ],
+        "description": ""
+    },
+    "break终止循环": {
+        "prefix": "!break",
+        "body": [
+            "break;"
+        ],
+        "description": ""
+    },
+    "buildSQL调试SQL语句": {
+        "prefix": "!buildSQL",
+        "body": [
+            "buildSQL"
+        ],
+        "description": ""
+    },
+    "phpinfo查看php扩展": {
+        "prefix": "!phpinfo",
+        "body": [
+            "echo phpinfo();"
+        ],
+        "description": ""
+    },
+    "返回json格式": {
+        "prefix": "!return_json",
+        "body": [
+            "return json(['code'=>200,'msg'=>'请求成功','data'=>'$1']);"
+        ],
+        "description": ""
+    },
+
+
+
+
+
+
+
+
+
+    //------------------------------api方法------------------------------------------
+    "初始api文件": {
+        "prefix": ":api",
+        "body": [
+            "namespace app\\api\\controller; use think\\facade\\Request; use think\\facade\\Db;use app\\api\\model\\\\${TM_FILENAME_BASE} as Model${TM_FILENAME_BASE}; class ${TM_FILENAME_BASE} extends \\app\\BaseController { public function __construct() { $$dir_name = ucfirst(str_replace('/', '', $$_SERVER['SCRIPT_NAME'])); $$res=call_user_func([new \\app\\admin\\controller\\MyIndex(),'createMolde'], $$dir_name); }\n/** \n*index \n*\n* @author handsome \n* @date ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE} ${CURRENT_HOUR}:${CURRENT_MINUTE} \n* @see app/api/controller/${TM_FILENAME_BASE}::index \n*/\n public function index() { $$data['uid'] = Request::instance()->param('uid'); if (!$$data['uid']) { return json(['code'=>401,'msg'=>'参数错误']); } $$data=new Model${TM_FILENAME_BASE}; var_dump($$data); die; return json(['code'=>200,'msg'=>'请求成功','data'=>$$data]); }}"
+        ],
+        "description": "Print to console"
+    },
+    "api/index方法": {
+        "prefix": ":api",
+        "body": [
+            "\n/** \n*index \n*\n* @author handsome \n* @date ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE} ${CURRENT_HOUR}:${CURRENT_MINUTE} \n* @see app/api/controller/index::index \n*/\n public function index$1() {$$where = [['id','>=',1]];$$field = '*'; $$data=Model${TM_FILENAME_BASE}::where($$where)->field($$field)->order('id desc')->select()->toArray(); var_dump($$data); die;  return json(['code'=>200,'msg'=>'请求成功','data'=>$$data]); }"
+        ],
+        "description": ""
+    },
+    "api/update方法": {
+        "prefix": ":api",
+        "body": [
+            "\n/** \n*update \n*\n* @author handsome \n* @date ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE} ${CURRENT_HOUR}:${CURRENT_MINUTE} \n* @see app/api/controller/${TM_FILENAME_BASE}::update \n*/\n public function update$1() {$$data['uid'] = Request::instance()->param('uid'); if (!$$data['uid']) { return json(['code'=>401,'msg'=>'参数错误']); }$$where = [['id','>=',1]];$$data=Model${TM_FILENAME_BASE}::where($$where)->update($$data); var_dump($$data); die;  return json(['code'=>200,'msg'=>'请求成功','data'=>['status'=>$$data]]); }"
+        ],
+        "description": ""
+    },
+    "api/log方法": {
+        "prefix": ":api",
+        "body": [
+            "\n/** \n*log \n*http://localhost/index.php/api/index/log?uid=1admin&page=1&limit=5\n* @author handsome \n* @date ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE} ${CURRENT_HOUR}:${CURRENT_MINUTE} \n* @see app/api/controller/${TM_FILENAME_BASE}::log \n*/\n public function log$1() {$$get=input('get.'); if (!$$get['uid']||!$$get['page']||!$$get['limit']) { return json(['code'=>401,'msg'=>'参数错误']); } $$offset = ($$get['page']- 1)*$$get['limit']; $$where = [['uid','>=',$$get['uid']]]; $$data=Db::name('log')->where($$where)->limit($$offset, $$get['limit'])->order('logid desc')->select()->toArray();$$count=Db::name('log')->where($$where)->count();return json(['code'=>200,'msg'=>'请求成功','data'=>['count'=>$$count,'isLastPage'=>$$get['page']==ceil($$count/$$get['limit'])?true :false,'data'=>$$data]]);}"
+        ],
+        "description": ""
+    },
+    "__construct": {
+        "prefix": ":api",
+        "body": [
+            "public function __construct(){\n\n}"
+
+        ],
+        "description": ""
+    },
+    "http请求": {
+        "prefix": ":api",
+        "body": [
+            "/** htpp请求 */\npublic function curl_request($$curl, $$https = true, $$method = 'get', $$data = null, $$jsonType = true) { $$ch = curl_init(); curl_setopt($$ch, CURLOPT_URL, $$curl); curl_setopt($$ch, CURLOPT_HEADER, false); curl_setopt($$ch, CURLOPT_RETURNTRANSFER, true); if ($$https) { curl_setopt($$ch, CURLOPT_SSL_VERIFYPEER, false); curl_setopt($$ch, CURLOPT_SSL_VERIFYHOST, false); } if ($$method == 'post') { if ($$jsonType === true) { $$header[] = 'Accept:application/json'; $$header[] = 'Content-Type:application/json;charset=utf-8'; curl_setopt($$ch, CURLOPT_HTTPHEADER, $$header); } curl_setopt($$ch, CURLOPT_POST, true); curl_setopt($$ch, CURLOPT_POSTFIELDS, $$data); } $$str = curl_exec($$ch); curl_close($$ch);/**关闭curl，释放资源*/ return $$str; } public function test() { /**get请求*/ $$get = $$this->curl_request('http://localhost/index.php/admin/myindex/json', true, 'get', ''); /**post请求*/ $$post = $$this->curl_request('http://localhost/index.php/admin/myindex/haltPost', true, 'post', json_encode(['a'=>1,'b'=>2])); }"
+
+        ],
+        "description": ""
+    },
+    //------------------------------admin方法------------------------------------------
+    "初始admin文件": {
+        "prefix": ":admin",
+        "body": [
+            "namespace app\\admin\\controller; use think\\facade\\Request; use think\\facade\\Db;use app\\admin\\model\\\\${TM_FILENAME_BASE} as Model${TM_FILENAME_BASE}; class ${TM_FILENAME_BASE} extends \\app\\BaseController { public function __construct() { $$dir_name = ucfirst(str_replace('/', '', $$_SERVER['SCRIPT_NAME'])); $$res=call_user_func([new \\app\\admin\\controller\\MyIndex(),'createMolde'], $$dir_name, 'admin'); }\n/** \n*index \n*\n* @author handsome \n* @date ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE} ${CURRENT_HOUR}:${CURRENT_MINUTE} \n* @see app/admin/controller/${TM_FILENAME_BASE}::index \n*/\n public function index() {}}"
+        ],
+        "description": "Print to console"
+    },
+    "获取IP地址": {
+        "prefix": ":admin",
+        "body": [
+            "/** \n*获取IP地址 \n* \n* @author handsome \n* @date 2021-05-24 14:39 \n* @see app/api/controller/index::getIp */\n public function getIp$1() { if (getenv(\"HTTP_CLIENT_IP\") && strcasecmp(getenv(\"HTTP_CLIENT_IP\"), \"unknown\")) { $$ip = getenv(\"HTTP_CLIENT_IP\"); } elseif (getenv(\"HTTP_X_FORWARDED_FOR\") && strcasecmp(getenv(\"HTTP_X_FORWARDED_FOR\"), \"unknown\")) { $$ip = getenv(\"HTTP_X_FORWARDED_FOR\"); } elseif (getenv(\"REMOTE_ADDR\") && strcasecmp(getenv(\"REMOTE_ADDR\"), \"unknown\")) { $$ip = getenv(\"REMOTE_ADDR\"); } elseif (isset($$_SERVER['REMOTE_ADDR']) && $$_SERVER['REMOTE_ADDR'] && strcasecmp($$_SERVER['REMOTE_ADDR'], \"unknown\")) { $$ip = $$_SERVER['REMOTE_ADDR']; } else { $$ip = \"unknown\"; } return ($$ip); }"
+        ],
+        "description": ""
+    },
+    "日期转换星期": {
+        "prefix": ":admin",
+        "body": [
+            "/**获取星期方法*/\n public function get_week($$date='2021-05-25 13:23:14'$1) { \n/**强制转换日期格式*/\n $$date_str=date('Y-m-d', strtotime($$date)); \n/**封装成数组 */\n $$arr=explode(\" - \", $$date_str); \n/**参数赋值*/\n /**年*/\n $$year=$$arr[0]; \n/**月，输出2位整型，不够2位右对齐*/\n $$month=sprintf('%02d', $$arr[1]); \n/**日，输出2位整型，不够2位右对齐*/ \n$$day=sprintf('%02d', $$arr[2]); \n/**时分秒默认赋值为0；*/\n $$hour = $$minute = $$second = 0; \n/**转换成时间戳*/\n $$strap = mktime($$hour, $$minute, $$second, $$month, $$day, $$year); \n/**获取数字型星期几*/ $$number_wk=date(\"w\", $$strap); \n/**自定义星期数组*/\n $$weekArr=array(\"星期日\",\"星期一\",\"星期二\",\"星期三\",\"星期四\",\"星期五\",\"星期六\");\n/**获取数字对应的星期*/\n return $$weekArr[$$number_wk]; }"
+        ],
+        "description": ""
+    },
+    "是否为手机号": {
+        "prefix": ":admin",
+        "body": [
+            "/** \n* 验证手机号 \n* @param $$telephone \n* @return bool */\n public function isMobile($$telephone=13155766950$1) {\n $$RegExp = '/^(?:13|15|16|18|17|19)[0-9]{9}$$/';\n return preg_match($$RegExp, $$telephone) ? 1 : 0;\n }"
+        ],
+        "description": ""
+    },
+    "分钟前": {
+        "prefix": ":admin",
+        "body": [
+            "public function format_date($$time=1621924296) {\n $$nowtime = time();\n $$difference = $$nowtime - $$time;\n switch ($$difference) {\n      case $$difference <= '60':\n        $$msg = '刚刚';\n      break; \n      case $$difference > '60' && $$difference <= '3600':\n        $$msg = floor($$difference / 60) . '分钟前'; \n      break; \n      case $$difference > '3600' && $$difference <= '86400':\n        $$msg = floor($$difference / 3600) . '小时前';\n      break; \n      case $$difference > '86400' && $$difference <= '2592000':\n        $$msg = floor($$difference / 86400) . '天前';\n      break;\n      case $$difference > '2592000' &&  $$difference <= '7776000':\n        $$msg = floor($$difference / 2592000) . '个月前';\n      break;\n      case $$difference > '7776000':        $$msg = '很久以前';\n        $$msg =  date('Y-m-d', $$time); \n      break;\n      } return        $$msg; }"
+        ],
+        "description": ""
+    },
+    "秒钟前": {
+        "prefix": ":admin",
+        "body": [
+            "public function mdate($$time = null) { $$text = ''; $$time = $$time === null || $$time > time() ? time()-1 : intval($$time); $$t = time() - $$time; /**时间差 （秒）*/\n $$y = date('Y', $$time)-date('Y', time());/**是否跨年*/\n switch ($$t) {\n      case $$t == 0:\n       $$text = '刚刚';       break;\n       case $$t < 60:\n       $$text = $$t . '秒前'; /** 一分钟内*/\n        break;\n       case $$t < 60 * 60:\n       $$text = floor($$t / 60) . '分钟前'; /**一小时内*/\n       break; \n       case $$t < 60 * 60 * 24:\n       $$text = floor($$t / (60 * 60)) . '小时前'; /**一天内*/ \n       break;\n       case $$t < 60 * 60 * 24 * 3:\n       $$text = floor($$time/(60*60*24)) ==1 ?'昨天 ' . date('H:i', $$time) : '前天 ' . date('H:i', $$time) ; /**昨天和前天*/\n       break;\n       case $$t < 60 * 60 * 24 * 30:\n       $$text = date('m月d日 H:i', $$time); /**一个月内*/ \n       break;\n       case $$t < 60 * 60 * 24 * 365&&$$y==0:\n       $$text = date('m月d日', $$time); /**一年内*/\n       break;       default:\n       $$text = date('Y年m月d日', $$time); /**一年以前*/\n       break; } return $$text; }"
+        ],
+        "description": ""
+    },
+    "活动状态": {
+        "prefix": ":admin",
+        "body": [
+            "/**活动状态*/\n public function activityState($$start='2021-05-24 06:11:55', $$end='2022-05-26 06:11:55') { $$start_time = strtotime($$start); $$end_time = strtotime($$end); $$now = time(); if ($$start_time>$$now) { return '未开始'; } if ($$end_time<$$now) { return '已结束'; } if ($$start_time<$$now && $$end_time > $$now) { return '进行中'; } return '其它'; }"
+        ],
+        "description": ""
+    },
+    "excel导出": {
+        "prefix": ":admin",
+        "body": [
+            "/** \n* 数据导出 \n* @param array $title   标题行名称 \n* @param array $data   导出数据 \n* @param string $fileName 文件名 \n* @param string $savePath 保存路径 \n* @param $type   是否下载  false--保存   true--下载 \n* @return string   返回文件全路径 \n* @throws PHPExcel_Exception \n* @throws PHPExcel_Reader_Exception \n*/\n public function exportExcel($$title=array(), $$data=array(), $$fileName='', $$savePath='./', $$isDown=false) { set_time_limit(0); ini_set('memory_limit', '628M'); header('PHPExcel.Classes.PHPExcel'); header('PHPExcel.Classes.PHPExcel.IOFactory.PHPExcel_IOFactory'); header('PHPExcel.Classes.PHPExcel.Reader.Excel5'); include_once \"../extend/PHPExcel/PHPExcel.php\"; $$obj = new \\PHPExcel(); $$cellName = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH', 'AI', 'AJ', 'AK', 'AL', 'AM', 'AN', 'AO', 'AP', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AV', 'AW', 'AX', 'AY', 'AZ'); $$obj->getActiveSheet(0)->setTitle('sheet名称'); $$_row = 0; if ($$title) { $$_cnt = count($$title); /**$$obj->getActiveSheet(0)->mergeCells('A'.$_row.':'.$$cellName[$_cnt-1].$$_row);   合并单元格 $$obj->setActiveSheetIndex(0)->setCellValue('A'.$$_row, '数据导出：'.date('Y-m-d H:i:s'));  设置合并后的单元格内容*/ $$_row++; $$i = 0; foreach ($$title as $$v) { $$obj->setActiveSheetIndex(0)->setCellValue($$cellName[$$i].$$_row, $$v); $$i++; } $$_row++; } /**填写数据*/ if ($$data) { $$i = 0; foreach ($$data as $$_v) { $$j = 0; foreach ($$_v as $$_cell) { $$obj->getActiveSheet(0)->setCellValue($$cellName[$$j] . ($$i+$$_row), $$_cell); $$j++; } $$i++; } } /**文件名处理*/ if (!$$fileName) { $$fileName = uniqid(time(), true); } $$objWrite = \\PHPExcel_IOFactory::createWriter($$obj, 'Excel2007'); if ($$isDown) {   /**网页下载*/ header('pragma:public'); header(\"Content-Disposition:attachment;filename=$$fileName.xlsx\"); $$objWrite->save('php://output'); exit; } $$_fileName = iconv(\"utf-8\", \"gb2312\", $$fileName); $$_savePath = $$savePath.$$_fileName.'.xlsx'; $$objWrite->save($$_savePath); return $$savePath.$$fileName.'.xlsx'; }    public function test() { $$title = array('id'); $$filename=date('Y-m-d', time()).'发货名单'; $$this->exportExcel($$title, [['id'=>1],['id'=>1],['id'=>1]], $$filename, './', true); }"
+        ],
+        "description": ""
+    },
+    "``蒋*华``": {
+        "prefix": ":admin",
+        "body": [
+            "/**只保留字符串首尾字符，隐藏中间用*代替（两个字符时只显示第一个）*/\npublic function substr_cut($$user_name='蒋郴华'$1) { $$strlen     = mb_strlen($$user_name, 'utf-8'); $$firstStr     = mb_substr($$user_name, 0, 1, 'utf-8'); $$lastStr     = mb_substr($$user_name, -1, 1, 'utf-8'); return $$strlen == 2 ? $$firstStr . str_repeat('*', mb_strlen($$user_name, 'utf-8') - 1) : $$firstStr . str_repeat(\" * \", $$strlen - 2) . $$lastStr; }"
+        ],
+        "description": ""
+    },
+    "``131****6950``": {
+        "prefix": ":admin",
+        "body": [
+            "public function substr_tel($$tel=13155766950) { $$pattern = '/(\\d{3})(\\d{4})(\\d{4})/i'; $$replacement = '\\$1****\\$3'; $$resstr = preg_replace($$pattern, $$replacement, $$tel); return $$resstr; }"
+        ],
+        "description": ""
+    },
+    "``剩余365天13时49分``": {
+        "prefix": ":admin",
+        "body": [
+            "/**计算剩余天时分*/\n public function ShengYu_Tian_Shi_Fen($$start='2021-05-24 06:11:55', $$end='2022-05-26 06:11:55'$1) { $$start_time = strtotime($$start); $$end_time = strtotime($$end); if ($$start_time>time()) { return '未开始'; } if ($$end_time<time()) { return '已结束'; } \n/*if ($$unixEndTime <= time()) { return '0天0时0分'; }*/\n $$time = $$end_time - time(); $$days = 0; if ($$time >= 86400) { $$days = (int)($$time / 86400); $$time = $$time % 86400; } $$xiaoshi = 0; if ($$time >= 3600) { $$xiaoshi = (int)($$time / 3600); $$time = $$time % 3600; } $$fen = (int)($$time / 60); return '剩余'.$$days.'天'.$$xiaoshi.'时'.$$fen.'分'; }"
+        ],
+        "description": ""
+    },
+    //------------------------------片段代码------------------------------------------
+    "try事务": {
+        "prefix": ":php_try",
+        "body": [
+            "/** 启动事务 */\n Db::startTrans(); try { $$res1 = 1;$1 $$res2 = 1; if ($$res1 && $$res2) { DB::commit(); return json(['code'=>0, 'msg' => '请求成功',  'data' => '']); } } catch (\\Exception $$e) { /** 回滚事务 */\n  Db::rollback(); return json(['code'=>401, 'msg' => \"错误信息:{$e->getMessage()}\"]);}"
+
+        ],
+        "description": ""
+    },
+    "文件锁": {
+        "prefix": ":php_wjs",
+        "body": [
+            "$$dir = __DIR__.'/locks.lock'; \n/**不存在创建文件 */\n if (!file_exists($$dir)) { touch($$dir); } if (file_exists($$dir)) { $$fp = fopen($$dir, \"w + \"); if (flock($$fp, LOCK_EX)) { \n/** *这里写逻辑 */$1\n flock($$fp, LOCK_UN);\n/**执行完成解锁*/\n } fclose($$fp);/**执行完成关闭文件*/\n return json(['code' => '200', 'msg' => '请求成功']); } else { return json(['code' => '401', 'msg' => '系统出错~']); }"
+        ],
+        "description": ""
+    },
+
+
+
+    //------------------------------判断------------------------------------------
+    "switch": {
+        "prefix": ":if",
+        "body": [
+            "switch ($$type$1) {",
+            "    case '1':\n",
+            "      break;",
+            "    case '2':\n",
+            "      break;",
+            "    default:\n",
+            "      break;",
+            "  }"
+        ],
+        "description": "Print to console"
+    },
+    "if": {
+        "prefix": ":if",
+        "body": [
+            "if($1){\n\n}"
+        ],
+        "description": "Print to console"
+    },
+    "if else": {
+        "prefix": ":if",
+        "body": [
+            "if($1){\n\n}else{\n\n}"
+        ],
+        "description": "Print to console"
+    },
+    "if elseif else": {
+        "prefix": ":if",
+        "body": [
+            "if($1){\n\n}else if{\n\n}else{\n\n}"
+        ],
+        "description": "Print to console"
+    },
+
+    //------------------------------循环------------------------------------------
+    "for": {
+        "prefix": ":xh",
+        "body": [
+            "for ($$i=0; $$i < $1; $$i++) { \n\n}"
+        ],
+        "description": "Print to console"
+    },
+    "foreach": {
+        "prefix": ":xh",
+        "body": [
+            "foreach ($$data as $$k => $$v) { \n\n}"
+        ],
+        "description": "Print to console"
+    }
+}

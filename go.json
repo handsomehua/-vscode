@@ -1,0 +1,456 @@
+{
+    //------------------------------调试--------------------------------------------
+    "fmt.Print打印": {
+        "prefix": "!_",
+        "body": [
+            "fmt.Print($1)"
+        ],
+        "description": "!~"
+    },
+    "fmt.Println打印": {
+        "prefix": "!_ln",
+        "body": [
+            "fmt.Println($1)"
+        ],
+        "description": "!~ln"
+    },
+    "fmt.Printf打印": {
+        "prefix": "!_f",
+        "body": [
+            "fmt.Printf(``$1)"
+        ],
+        "description": "!~f"
+    },
+    "fmt.Sprintf拼接并返回不打印": {
+        "prefix": "!_sf",
+        "body": [
+            "fmt.Sprintf(\"%s\",$1)"
+        ],
+        "description": "!~sf"
+    },
+    "%占位符打印": {
+        "prefix": "!_%",
+        "body": [
+            "fmt.Printf(\"%s,%s,%d,%.2f,100%%,%v\", \"一\", \"二\", 100, 3.889,3.889$1)"
+        ],
+        "description": "!~%"
+    },
+    "fmt.Printf打印类型": {
+        "prefix": "!_t",
+        "body": [
+            "fmt.Printf(\"%T\\n\", $1)"
+        ],
+        "description": "!~t"
+    },
+    "reflect.TypeOf返回类型": {
+        "prefix": "!_TypeOf",
+        "body": [
+            "fmt.Println(reflect.TypeOf($1)) "
+        ],
+        "description": "!~TypeOf"
+    },
+    "fmt.Printf打印值": {
+        "prefix": "!_v",
+        "body": [
+            "fmt.Printf(\"%v\\n\",$1)"
+        ],
+        "description": "!~v"
+    },
+    "%p打印内存地址": {
+        "prefix": "!_p",
+        "body": [
+            "fmt.Printf(\"数组的内存地址：%p \\n\", &$1)"
+        ],
+        "description": "!~p"
+    },
+    "continue跳出本次循环": {
+        "prefix": "!_continue",
+        "body": [
+            "continue"
+        ]
+    },
+    "break跳出循环": {
+        "prefix": "!_break",
+        "body": [
+            "break"
+        ]
+    },
+    "暂停代码执行": {
+        "prefix": "!_time",
+        "body": [
+            "time.Sleep(time.Millisecond * 1000$1)"
+        ]
+    },
+    "程序执行时间": {
+        "prefix": "!_time",
+        "body": [
+            "start := time.Now().Unix()\n \n end := time.Now().Unix()\n \n fmt.Println(end - start) //3毫秒\n"
+        ]
+    },
+    "铺获error继续执行代码+": {
+        "prefix": "!_err",
+        "body": [
+            "defer func() {\n //铺获test抛出的panic\n if err := recover(); err != nil {\n fmt.Println(\"发生错误\", err)\n }\n }()\n"
+        ]
+    },
+    "空接口反射打印变量类型+": {
+        "prefix": "!_TypeOf",
+        "body": [
+            "v := reflect.TypeOf(x)\n // v.Name() //类型名称\n // v.Kind() //种类\n fmt.Printf(\"类型:%v 类型名称:%v 类型种类:%v \\n\", v, v.Name(), v.Kind())\n"
+        ]
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //------------------------------GO函数-------------------------------------------
+    "用户输入fmt.Scan": {
+        "prefix": "*_Scan",
+        "body": [
+            "var name string\n var age int\n fmt.Println(\"请输入用户名：\")\n count, err := fmt.Scan(&name, &age)\n fmt.Println(name, age)\n fmt.Print(count, err)\nn"
+        ],
+        "description": "*~Scan"
+    },
+
+    "用户输入(推荐)fmt.Scanln": {
+        "prefix": "*_Scanln",
+        "body": [
+            "\n var name string\n fmt.Print(\"请输入用户名：\")\n fmt.Scanln(&name)\n fmt.Println(name)\n"
+        ],
+        "description": "*~Scanln"
+    },
+    "读取用户输入内容包括空格后内容": {
+        "prefix": "*_Stdin",
+        "body": [
+            "reader := bufio.NewReader(os.Stdin)\n line, _, _ := reader.ReadLine()\n data := string(line)\n fmt.Print(data)\n"
+        ],
+        "description": "*~Stdin"
+    },
+    "SetString存储超大整型": {
+        "prefix": "*_SetString",
+        "body": [
+            "v1 := new(big.Int)\n v1.SetString(\"4411341541831321535151351231$1\", 10)\n fmt.Println(v1)\n"
+        ],
+        "description": "*~SetString"
+    },
+    "计算字符串长度任意字符为1": {
+        "prefix": "*_utf8",
+        "body": [
+            "utf8.RuneCountInString($1)"
+        ],
+        "description": "*~utf8"
+    },
+    "查找一段字符串中是否存在'老子'": {
+        "prefix": "*_strings",
+        "body": [
+            "strings.Contains($1,$2)"
+        ],
+        "description": "*~strings"
+    },
+    "去两边空格": {
+        "prefix": "*_Trim",
+        "body": [
+            "strings.Trim(\"  jiangchenhua \"$1, \" \")\n"
+        ],
+        "description": "*~Trim"
+    },
+    "字符串替换": {
+        "prefix": "*_Replace",
+        "body": [
+            "strings.Replace(\"wupeipeiqi\", \"pei\", \"PE\", 1) //1替换前一个 2替换前两个 -1替换所以"
+        ],
+        "description": "*~Replace"
+    },
+    "字符串分割成数组": {
+        "prefix": "*_Split",
+        "body": [
+            "strings.Split(\"抬老子的意大利炮来\", \"的\")"
+        ],
+        "description": "*~Split"
+    },
+    "效率最高的字符串拼接": {
+        "prefix": "*_builder",
+        "body": [
+            "//效率最高的字符串拼接\n var builder strings.Builder\n builder.WriteString(\"中\"$1)\n builder.WriteString(\"国\")\n value := builder.String()\n fmt.Println(value)\n"
+        ],
+        "description": "*~builder"
+    },
+    "获取长度": {
+        "prefix": "*_len",
+        "body": [
+            "len($1)"
+        ],
+        "description": "*~len"
+    },
+    "获取容量": {
+        "prefix": "*_cap",
+        "body": [
+            "cap($1)"
+        ],
+        "description": "*~cap"
+    },
+    "切片入栈追加": {
+        "prefix": "*_append",
+        "body": [
+            "append($1)"
+        ],
+        "description": "*~append"
+    },
+    "获取指针下一个元素的值+": {
+        "prefix": "*_unsafe",
+        "body": [
+            "dataList := [3]int8{11, 22, 33}\n \n //1.获取数组第一个元素的地址（指针）\n var firstDataPtr *int8 = &dataList[0]\n \n //2.转换成Pointer类型\n ptr := unsafe.Pointer(firstDataPtr)\n \n //3.转换成uintptr类型，然后进行内存地址的计算（即：地址加1个字节，意味着取第二个索引位置的值）。\n targetAddress := uintptr(ptr) + 1 //2下两个\n \n //4.根据新地址，重新转换成Pointer类型\n newPtr := unsafe.Pointer(targetAddress)\n \n //5.Pointer对象转换为int8指针类型\n value := (*int8)(newPtr)\n \n //6.根据指针获取值\n fmt.Println(\"最终结果为：\", *value)\n"
+        ]
+    },
+    "赋值通过指针同步修改": {
+        "prefix": "*_*&",
+        "body": [
+            "//通过指针实现同步修改\n type Person struct {\n hobby  *[2]string\n hobby2 [2]string\n }\n p1 := Person{\n hobby:  &[2]string{\"裸奔\", \"大保健\"}, //同步修改\n hobby2: [2]string{\"裸奔\", \"大保健\"},  //拷贝\n }\n p2 := p1\n \n p1.hobby[0] = \"搓澡\"\n p1.hobby2[0] = \"搓澡\"\n fmt.Println(p1, *p1.hobby)\n fmt.Println(p2, *p1.hobby)\n"
+        ]
+    },
+    "json序列化数据+": {
+        "prefix": "*_json",
+        "body": [
+            "json.Marshal($1)"
+        ],
+        "description": "*~json"
+    },
+    "json反序列化数据": {
+        "prefix": "*_json",
+        "body": [
+            "json.Unmarshal($1)"
+        ],
+        "description": "*~json"
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //------------------------------块函数-------------------------------------------
+    "获取文件扩展名": {
+        "prefix": "_file",
+        "body": [
+            "//获取文件扩展名\n ext := path.Ext(\"xxx/xxx/xxx/xx.txt\")\n fmt.Println(ext)\n"
+        ],
+        "description": "~file"
+    },
+    "路径拼接(推荐)": {
+        "prefix": "_file",
+        "body": [
+            "//路径拼接(推荐)\n filePath := filepath.Join(\"v1\", \"v2\", \"v3\", \"v6.exe\")\n fmt.Println(filePath)\n"
+        ],
+        "description": "~file"
+    },
+    "生成绝对路径": {
+        "prefix": "_file",
+        "body": [
+            "//生成绝对路径\n absPath, _ := filepath.Abs(\"test\") //不是创建文件，而是拼接上绝对地址\n fmt.Println(absPath)\n"
+        ],
+        "description": "~file"
+    },
+    "创建单多级目录": {
+        "prefix": "_file",
+        "body": [
+            "//创建单级目录\n // err := os.Mkdir(\"x2\", 0755)\n // fmt.Println(err)\n // if err != nil {\n \n // }\n //简写\n if err := os.Mkdir(\"x2\", 0755); err == nil {\n fmt.Println(\"文件夹x2创建成功\")\n } else {\n fmt.Println(err)\n }\n //创建多级目录，已存在则什么都不做\n // err2 := os.MkdirAll(\"t2/src/code/test\", 0755)\n // fmt.Println(err2)\n if err2 := os.MkdirAll(\"t2/src/code/test\", 0755); err2 != nil {\n fmt.Println(\"t2/src/code/test创建成功\")\n } else {\n fmt.Println(err2)\n }\n"
+        ],
+        "description": "~file"
+    },
+    "删除文件或单多目录": {
+        "prefix": "_file",
+        "body": [
+            "//删除文件和文件夹\n //删除文件或空文件夹，文件夹下存在文件则报错\n if err := os.Remove(\"x2\"); err != nil {\n fmt.Println(\"删除失败\", err)\n } else {\n fmt.Println(\"删除成功\")\n }\n //删除文件或文件夹（同时删除子目录）\n if err := os.RemoveAll(\"t2\"); err != nil {\n fmt.Println(\"删除失败：\", err)\n } else {\n fmt.Println(\"删除成功\")\n }\n"
+        ],
+        "description": "~file"
+    },
+    "字符串函数": {
+        "prefix": "_str",
+        "body": [
+            "//是否以\"武开头\n name1 := \"武沛齐\"\n result1 := strings.HasPrefix(name1, \"武\")\n fmt.Println(result1) //true\n \n //是否以\"齐\"结尾\n name2 := \"武沛齐\"\n result2 := strings.HasSuffix(name2, \"齐\")\n fmt.Println(result2) //true\n \n //全部转大写\n name3 := \"jiangchenhua\"\n result3 := strings.ToUpper(name3)\n fmt.Println(result3) //JIANGCHENHUA\n \n //全部转小写\n name4 := \"JIANGCHENHUA\"\n result4 := strings.ToLower(name4)\n fmt.Println(result4) //jiangchenhua\n \n //去两边字符\n name5 := \"jiangchenhua\"\n result5 := strings.TrimRight(name5, \"hua\")\n result6 := strings.TrimLeft(name5, \"jiang\")\n fmt.Println(result5, result6) //jiangchen chenhua\n"
+        ],
+        "description": "~str"
+    },
+    "数字运算": {
+        "prefix": "_math",
+        "body": [
+            "fmt.Println(math.Abs(-19))                //绝对值\n fmt.Println(math.Floor(3.14))             //向下取整\n fmt.Println(math.Ceil(3.14))              //向上取整\n fmt.Println(math.Round(3.5478))           //四舍五入\n fmt.Println(math.Round(3.3478*100) / 100) //保留小数点后两位\n fmt.Println(math.Mod(11, 3))              //取余数，同11%3\n fmt.Println(math.Pow(2, 5))               //计算次方，如：2的5次方\n fmt.Println(math.Pow10(2))                //计算次方，如：2的10次方\n fmt.Println(math.Max(1, 2))               //最大值\n fmt.Println(math.Min(1, 2))               //最小值\n \n"
+        ],
+        "description": "~math"
+    },
+    "整型转int[int,8,16,32]()": {
+        "prefix": "_type",
+        "body": [
+            "//提示：高位不能转向地位\nint$1($2)"
+        ],
+        "description": "~type"
+    },
+    "整型转字符串": {
+        "prefix": "_type",
+        "body": [
+            "strconv.Itoa($1)"
+        ],
+        "description": "~type"
+    },
+    "数字字符串转整型": {
+        "prefix": "_type",
+        "body": [
+            "strconv.Atoi($1)"
+        ],
+        "description": "~type"
+    },
+    "转指针类型": {
+        "prefix": "_type",
+        "body": [
+            "&"
+        ],
+        "description": "~type"
+    },
+    "字符串转布尔类型": {
+        "prefix": "_type",
+        "body": [
+            "strconv.ParseBool($1)"
+        ],
+        "description": "~type"
+    },
+    "字符串转换字节集合+": {
+        "prefix": "_type",
+        "body": [
+            "//字符串转为一个 \"字节集合\"\n //字符串可以是中文 数字 符合等\n //字节集合是十进制的集合，进制之间可以互相转换\n name := \"蒋郴华\"\n byteSet := []byte(name)\n fmt.Println(byteSet) //[232 146 139 233 131 180 229 141 142]\n"
+        ],
+        "description": "~type"
+    },
+    "字节集合转换字符串+": {
+        "prefix": "_type",
+        "body": [
+            "//字节集合转字符串\n byteList := []byte{232, 146, 139, 233, 131, 180, 229, 141, 142}\n targetString := string(byteList)\n fmt.Println(targetString) //蒋郴华\n"
+        ],
+        "description": "~type"
+    },
+    "字符串转rune集合+": {
+        "prefix": "_type",
+        "body": [
+            "//字符串转rune的集合\nvar name string = \"武沛齐\"\n tempSet := []rune(name)\n fmt.Println(tempSet) //[33931 37108 21326]\n"
+        ]
+    },
+    "rune集合转字符串+": {
+        "prefix": "_type",
+        "body": [
+            "//rune的集合转字符串\n runes := []rune{33931, 37108, 21326}\n // fmt.Println(strconv.FormatInt(int64(runes[0]), 16))\n // fmt.Println(strconv.FormatInt(int64(runes[1]), 16))\n // fmt.Println(strconv.FormatInt(int64(runes[2]), 16))\n fmt.Println(string(runes))\n"
+        ],
+        "description": "~type"
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //------------------------------判断-------------------------------------------
+    "if": {
+        "prefix": "_if",
+        "body": [
+            "if $1 {\n $2 \n}"
+        ],
+        "description": "~if"
+    },
+    "else if ": {
+        "prefix": "_else if",
+        "body": [
+            "if $1{\n fmt.Println(1)\n } else if $2 {\n fmt.Println(2)\n } else {\n fmt.Println(3)\n }\n"
+        ],
+        "description": "~else if"
+    },
+    "switch": {
+        "prefix": "_switch",
+        "body": [
+            "switch $1{\n case 1:\n fmt.Println(1)\n case 2: fmt.Println(2)\n default:\n fmt.Println(0)\n }\n"
+        ],
+        "description": "~switch"
+    },
+    "goto": {
+        "prefix": "_goto",
+        "body": [
+            "var name string\n fmt.Print(\"请输入姓名：\")\n fmt.Scanln(&name)\n if name == \"武武\" {\n goto VIP\n } else if name == \"华华\" {\n goto SVIP\n }\n fmt.Println(\"预约...\")\n VIP:\n fmt.Println(\"等待...\")\n SVIP:\n fmt.Println(\"进入...\")\n"
+        ]
+    },
+    //------------------------------循环-------------------------------------------
+    "for循环": {
+        "prefix": "_for",
+        "body": [
+            "for i := 1; i < 10$1; i++ {\n $2\n }\n"
+        ],
+        "description": "~for"
+    },
+    "for range循环": {
+        "prefix": "_for range",
+        "body": [
+            "for _, item := range $1 {\n \n }\n"
+        ],
+        "description": "~for range"
+    },
+    "一维数组循环": {
+        "prefix": "_for arr1",
+        "body": [
+            "\n for k, v := range $1 {\n fmt.Println(k,v)\n }\n"
+        ],
+        "description": "~for arr1"
+    },
+    "二维数组循环": {
+        "prefix": "_for arr2",
+        "body": [
+            "var arr3 = [2][3]int{{1, 2, 3}, {4, 5, 6}}\n //for-range遍历二维数组\n for _, v := range arr3 {\n for _, v2 := range v {\n fmt.Println(v2)\n }\n }\n"
+        ],
+        "description": "~for arr2"
+    },
+}

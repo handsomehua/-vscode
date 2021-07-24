@@ -1,0 +1,22 @@
+{
+    //----------------------终端------------------------
+    "打印": {
+        "prefix": "!3",
+        "body": [
+            "print($1);"
+        ],
+    },
+    //----------------------语法------------------------
+    "定义变量常量": {
+        "prefix": "dart",
+        "body": [
+            "//定义string类型变量\n String a = \"中国\";\n print(a);\n \n //定义int类型变量\n int myNum = 123;\n print(myNum);\n //定义浮点型\n double b= 23.5;\n print(b);\n b=24;\n print(b);\n \n //定义布尔类型\n bool flag = true;\n print(flag);\n\n //定义常量\n const PI = 3.11;\n print(PI);\n \n //final定义常量\n final PS = 2.333;\n print(PS);\n \n \n //final 和 const 的区别\n final A = new DateTime.now();\n print(A);\n \n //报错\n // const B = new DateTime.now();\n"
+        ],
+    },
+    "三引号": {
+        "prefix": "dart",
+        "body": [
+            "String str1 = '''\n this is str1\n this is str1\n ''';\n print(str1);\n \n \n String str2 = \"\"\"\n this is str1\n this is str1\n \"\"\";\n print(str2);\n"
+        ],
+    },
+}

@@ -1,0 +1,320 @@
+{
+	//---------------------调试---------------------------
+	"打印": {
+		"scope": "go",
+		"prefix": "!2",
+		"body": [
+			"this.Ctx.ResponseWriter.Write([]byte($1))"
+		]
+	},
+	"输出字符串": {
+		"scope": "go",
+		"prefix": "!2_s",
+		"body": [
+			"this.Ctx.WriteString(\"$1\")"
+		]
+	},
+	//---------------------路由---------------------------
+	"url get请求": {
+		"scope": "go",
+		"prefix": "#router",
+		"body": [
+			"beego.Router(\"/$1\", &controllers.$12Controller{}, \"get:$3\")"
+		]
+	},
+	"post请求": {
+		"scope": "go",
+		"prefix": "#router",
+		"body": [
+			"beego.Router(\"/test\", &controllers.TestController{}, \"post:Test\")"
+		]
+	},
+	//---------------------函数---------------------------
+	"form写入结构体+": {
+		"scope": "go",
+		"prefix": "*2_ParseForm",
+		"body": [
+			"u := 结构体{}\n if err := this.ParseForm(&u); err != nil {\n this.Ctx.WriteString(\"post提交失败\")\n return\n }\n"
+		]
+	},
+	"beego返回json数据": {
+		"scope": "go",
+		"prefix": "*2_json",
+		"body": [
+			"//返回一个json数据\n this.Data[\"json\"] =$1 \n this.ServeJSON()\n"
+		]
+	},
+	"页面跳转": {
+		"scope": "go",
+		"prefix": "*2_Redirect",
+		"body": [
+			" this.Redirect(\"/$1\", 302)"
+		]
+	},
+	"字符串截取": {
+		"scope": "go",
+		"prefix": "*2_substr",
+		"body": [
+			"//字符串的截取\n var str = \"你好这是文章列表\"\n slice := []rune(str)\n aaa := string(slice[1:5])\n fmt.Println(aaa)\n"
+		]
+	},
+
+
+
+
+
+
+
+	//---------------------块函数---------------------------
+	"接收get string传参": {
+		"scope": "go",
+		"prefix": "#request",
+		"body": [
+			"this.GetString($1)"
+		]
+	},
+	"接收get int传参": {
+		"scope": "go",
+		"prefix": "@request",
+		"body": [
+			"//接收的get参数必须是数字\n id, err := this.GetInt(\"id\")\n if err != nil {\n this.Ctx.WriteString(\"id必须是int类型\")\n return\n }\n this.Ctx.ResponseWriter.Write([]byte(strconv.Itoa(id)))\n"
+		]
+	},
+	"获取conf配置信息": {
+		"scope": "go",
+		"prefix": "*2_conf",
+		"body": [
+			"conf := beego.AppConfig.String(\"$1\")"
+		]
+	},
+	"获取conf多个参数": {
+		"scope": "go",
+		"prefix": "*2_conf",
+		"body": [
+			"confs := beego.AppConfig.Strings(\"$1\")"
+		]
+	},
+	"控制器中添加conf配置": {
+		"scope": "go",
+		"prefix": "*2_conf",
+		"body": [
+			"beego.AppConfig.Set(\"$1\", \"$2\")"
+		]
+	},
+	//---------------------终端---------------------------
+	"运行": {
+		"scope": "go",
+		"prefix": ":bcmd",
+		"body": [
+			"bee run"
+		]
+	},
+	"创建项目": {
+		"scope": "go",
+		"prefix": ":bcmd",
+		"body": [
+			"bee new 项目名$1"
+		]
+	},
+	//---------------------块终端---------------------------
+	"搭建beego项目": {
+		"scope": "go",
+		"prefix": ":b_cmd",
+		"body": [
+			"//搭建beego项目", " //1.创建项目名称为beegodemo01", " T:\\goproject>bee new beegodemo01", " //2.下载beego", " eegodemo01>go get github.com/astaxie/beego", " //3.运行", " eegodemo01>bee run", " //4.访问http://localhost:8080/"
+		]
+	},
+	//-----------------------beego-----------------------------
+	"渲染": {
+		"scope": "go",
+		"prefix": "beego",
+		"body": [
+			"this.TplName = \"$1\""
+		]
+	},
+	"渲染数据": {
+		"scope": "go",
+		"prefix": "beego",
+		"body": [
+			"this.Data[\"name\"] = \"beego\""
+		]
+	},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//-----------------------beego配置-----------------------------
+	"修改运行端口": {
+		"scope": "go,html",
+		"prefix": ":conf",
+		"body": [
+			"httpport = 8081"
+		]
+	},
+	"关闭调试模式": {
+		"scope": "go,html",
+		"prefix": ":conf",
+		"body": [
+			"EnableErrorsRender = false"
+		]
+	},
+	"开启session": {
+		"scope": "go,html",
+		"prefix": ":conf",
+		"body": [
+			"sessionon=true"
+		]
+	},
+	"设置session 有效期10秒": {
+		"scope": "go,html",
+		"prefix": ":conf",
+		"body": [
+			"sessionongcmaxlifetime=10"
+		]
+	},
+	//-----------------------{{beego}}-----------------------------
+	"定义变量": {
+		"scope": "go,html",
+		"prefix": "{{beego}}",
+		"body": [
+			"{{$names := .name}} {{$names}}"
+		]
+	},
+	"循环遍历切片": {
+		"scope": "go,html",
+		"prefix": "{{beego}}",
+		"body": [
+			"//控制器\n this.Data[\"sliceList\"] = []string{\"php\", \"java\", \"golang\"}\n //html\n {{range $key,$val :=.sliceList}}\n <p>{{$key}}----{{$val}}</p>\n {{end}}\n"
+		]
+	},
+	"循环遍历map": {
+		"scope": "go,html",
+		"prefix": "{{beego}}",
+		"body": [
+			"//控制器\n userinfo := make(map[string]interface{})\n userinfo[\"userinfo\"] = \"张三\"\n userinfo[\"age\"] = 20\n userinfo[\"sex\"] = \"男\"\n this.Data[\"userinfo\"] = userinfo\n //html\n {{range $keys,$vals := .userinfo}}\n <p>{{$keys}}----{{$vals}}</p>\n {{end}}\n"
+		]
+	},
+	"循环遍历结构体类型的切片+": {
+		"scope": "go,html",
+		"prefix": "{{beego}}",
+		"body": [
+			"//控制器\n type Article struct {\n Title   string\n Content string\n }\n \n //结构体类型的切片\n this.Data[\"articleList\"] = []Article{\n {\n Title:   \"新闻111\",\n Content: \"新闻内容111\",\n },\n {\n Title:   \"新闻222\",\n Content: \"新闻内容222\",\n },\n {\n Title:   \"新闻333\",\n Content: \"新闻内容333\",\n },\n {\n Title:   \"新闻444\",\n Content: \"新闻内容444\",\n },\n }\n //html\n //结构体类型的切片（用的非常多）\n <p></p>\n {{range $keys,$vals := .userinfo}}\n <p>{{$keys}}----{{$vals}}</p>\n {{end}} {{range $key,$val := .articleList}}\n <p>{{$key}}----{{$val.Title}}---{{$val.Content}}</p>\n {{end}}\n"
+		]
+	},
+	"if else if else": {
+		"scope": "go,html",
+		"prefix": "{{beego}}",
+		"body": [
+			"<p></p>\n {{if .a}} a =true {{end}}\n <p></p>\n {{if .a}} a =true {{else}} a =false {{end}}\n <p></p>\n {{if .a}} a =true {{else if .a}} a =false {{end}}\n"
+		]
+	},
+	"自定义代码块^": {
+		"scope": "go,html",
+		"prefix": "{{beego}}",
+		"body": [
+			"{{end}} {{define \"aaa\"}}\n <h4>这是一个自定义的代码块</h4>\n {{end}}\n \n <div>\n {{template \"aaa\" .}}\n </div>\n"
+		]
+	},
+	"引入模板": {
+		"scope": "go,html",
+		"prefix": "{{beego}}",
+		"body": [
+			"{{template \"/public/footer$1.html\"}}"
+		]
+	},
+	"子模板渲染数据": {
+		"scope": "go,html",
+		"prefix": "{{beego}}",
+		"body": [
+			"{{template \"/public/footer$1.html\" .}}"
+		]
+	},
+	"格式化日期": {
+		"scope": "go,html",
+		"prefix": "{{beego}}",
+		"body": [
+			"//控制器\n now := time.Now()\n this.Data[\"now\"] = now\n \n //html\n <p>{{date .now \"Y-m-d H:i:s\"}}</p>\n"
+		]
+	},
+	"字符串截取": {
+		"scope": "go,html",
+		"prefix": "{{beego}}",
+		"body": [
+			"//控制器\n this.Data[\"name\"] = \"beego\"\n //html\n <p>{{substr .name 3 5}}</p>\n"
+		]
+	},
+	"剔除和解析html标签": {
+		"scope": "go,html",
+		"prefix": "{{beego}}",
+		"body": [
+			"//控制器\n this.Data[\"str\"] = \"<h2>这是一个后台渲染的h2</h2>\"\n \n //html\n {{.str}}\n <p>{{.str | html2str}}</p>\n <p>{{html2str .str}}</p>\n \n <p>{{.str | str2html}}</p>\n <p>{{str2html .str}}</p>\n"
+		]
+	},
+	"引入css或js": {
+		"scope": "go,html",
+		"prefix": "{{beego}}",
+		"body": [
+			"{{assets_css \"/static/css/index.css\"}}\n {{assets_js \"/static/js/1.js\"}}\n"
+		]
+	},
+	"获取conf配置+": {
+		"scope": "go,html",
+		"prefix": "{{beego}}",
+		"body": [
+			"{{config \"String\" \"httpport\" \"\"}}\n {{config \"String\" \"appname\" \"\"}}\n"
+		]
+	},
+	"获取map对象数据++": {
+		"scope": "go,html",
+		"prefix": "{{beego}}",
+		"body": [
+			"//控制器\n user := make(map[string]interface{})\n user[\"username\"] = \"张三\"\n user[\"age\"] = 20\n user[\"a\"] = map[string]float64{\n \"c\": 4,\n }\n this.Data[\"user\"] = user\n \n //html\n {{map_get .user \"username\"}} \n {{map_get .user \"age\"}} \n {{map_get .user \"a\" \"c\"}}\n"
+		]
+	},
+	"自定义模板函数+": {
+		"scope": "go,html",
+		"prefix": "{{beego}}",
+		"body": [
+			"--------------------------models/tools.go \n package models\n \n import \"time\"\n \n func UnixToDate(timestamp int) string {\n \n t := time.Unix(int64(timestamp), 0)\n \n return t.Format(\"2006-01-02 15:04:05\")\n \n }\n --------------------------main.go\n package main\n \n import (\n \"beegodemo03/models\"\n _ \"beegodemo03/routers\"\n \n \"github.com/astaxie/beego\"\n )\n \n func main() {\n beego.AddFuncMap(\"hi\", models.Hello)\n beego.AddFuncMap(\"unixToDate\", models.UnixToDate)\n beego.Run()\n }\n----------------------------控制器\n this.Data[\"time\"] = 1626697782\n -----------------------------html\n <div>\n {{.time}}\n </div>\n <div>\n {{.time | unixToDate}}\n </div>\n"
+		]
+	},
+
+
+
+
+
+
+
+
+
+
+
+
+	//-----------------------定义-----------------------------
+	"定义结构体类型的切片*2": {
+		"scope": "go,html",
+		"prefix": "#dy",
+		"body": [
+			"//定义结构体类型的切片--------1---------\n \n type Article struct {\n Title   string\n Content string\n }\n \n this.Data[\"articleList\"] = []Article{\n {\n Title:   \"新闻111\",\n Content: \"新闻内容111\",\n },\n {\n Title:   \"新闻222\",\n Content: \"新闻内容222\",\n },\n {\n Title:   \"新闻333\",\n Content: \"新闻内容333\",\n },\n {\n Title:   \"新闻444\",\n Content: \"新闻内容444\",\n },\n }\n \n //定义结构体类型的切片--------2---------\n jgt := []struct {\n Title string\n }{\n {\n Title: \"新闻111\",\n },\n {\n Title: \"新闻111\",\n },\n }\n fmt.Println(jgt)\n"
+		]
+	},
+}

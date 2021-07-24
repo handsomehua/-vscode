@@ -1,0 +1,184 @@
+{
+	//---------------------调试---------------------------
+	"打印": {
+		"scope": "go",
+		"prefix": "!1",
+		"body": [
+			"this.Ctx.ResponseWriter.Write([]byte(\"Ids:\"))"
+		]
+	},
+	"输出字符串": {
+		"scope": "go",
+		"prefix": "!1_s",
+		"body": [
+			"this.Ctx.WriteString(\"test\")"
+		]
+	},
+	//---------------------路由---------------------------
+	"get请求": {
+		"scope": "go",
+		"prefix": "@router",
+		"body": [
+			"beego.Router(\"/goods\", &controllers.ArticleController{}, \"get:EditArticle\")"
+		]
+	},
+	"post请求": {
+		"scope": "go",
+		"prefix": "@router",
+		"body": [
+			"beego.Router(\"/test\", &controllers.TestController{}, \"post:Test\")"
+		]
+	},
+	"/goods/:id请求^": {
+		"scope": "go",
+		"prefix": "@router",
+		"body": [
+			"//路由\n beego.Router(\"/goods/:id\", &controllers.GoodsController{})\n //控制器\n id := this.Ctx.Input.Param(\":id\")\n beego.Info(\"ID:\" + id)\n this.Ctx.ResponseWriter.Write([]byte(\"Id:\" + id))\n"
+		]
+	},
+	"/goods/0-9请求^": {
+		"scope": "go",
+		"prefix": "@router",
+		"body": [
+			"//url地址http://localhost:8080/goods/1\n beego.Router(\"/goods/:id([0-9])\", &controllers.GoodsController{})//0-9\n"
+		]
+	},
+	"/goods/0-99999请求^": {
+		"scope": "go",
+		"prefix": "@router",
+		"body": [
+			"//url地址http://localhost:8080/goods/99999999\n beego.Router(\"/goods/:id([0-9]+)\", &controllers.GoodsController{})//0-99999999\n"
+		]
+	},
+	"正则[localhost/cms_15.html->15]^": {
+		"scope": "go",
+		"prefix": "@router",
+		"body": [
+			"//访问\n http://localhost:8080/cms_11454441.html\n //路由\n beego.Router(\"/cms_:id([0-9]+).html\", &controllers.CmsController{})\n //控制器\n func (this *CmsController) Get() {\n cmsId := this.Ctx.Input.Param(\":id\")\n this.Ctx.ResponseWriter.Write([]byte(\"Id:\" + cmsId)) \n //打印结果\n //Id:11454441\n }\n"
+		]
+	},
+	"获取url路径和扩展名^": {
+		"scope": "go",
+		"prefix": "@router",
+		"body": [
+			"//路由\n beego.Router(\"/upload/*.*\", &controllers.UploadController{})\n //控制器\n path := this.Ctx.Input.Param(\":path\")\n beego.Info(path)\n ext := this.Ctx.Input.Param(\":ext\")\n beego.Info(ext)\n this.Ctx.ResponseWriter.Write([]byte(\"文件路径：\" + path + \",扩展名：\" + ext))\n \n //请求地址 http://localhost:8080/upload/file/img/helloword.png\n //打印结果 文件路径：file/img/helloword,扩展名：png\n"
+		]
+	},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//---------------------函数---------------------------
+	"form写入结构体+": {
+		"scope": "go",
+		"prefix": "*1_ParseForm",
+		"body": [
+			"//路由\nbeego.Router(\"/user/edit\", &controllers.UserController{}, \"get:EditUser\")\n beego.Router(\"/user/doEdit\", &controllers.UserController{}, \"post:DoEditUser\")\n//控制器\n //定义一个User的结构体\n type User struct {\n Username string   `form:\"username\"`\n Password string   `form:\"password\"`\n Hoddy    []string `form:\"hobby\"`\n }\n \n func (this *UserController) DoEditUser() {\n u := User{}\n if err := this.ParseForm(&u); err != nil {\n this.Ctx.WriteString(\"post提交失败\")\n return\n }\n fmt.Printf(\"%#v\", u)\n this.Ctx.WriteString(\"解析post数据成功\")\n }\n //html\n <form action=\"/user/doEdit\" method=\"post\">\n <p></p> 用户名 <input type=\"text\" name=\"username\">\n <p></p> 密 码 <input type=\"password\" name=\"password\">\n <p></p>爱好 <input type=\"checkbox\" name=\"hobby\" value=\"1\" id=\"lable1\" /><label for=\"lable1\">吃饭</label>\n <input type=\"checkbox\" name=\"hobby\" value=\"2\" id=\"lable2\" /><label for=\"lable2\">睡觉</label>\n <input type=\"checkbox\" name=\"hobby\" value=\"3\" id=\"lable3\" /><label for=\"lable3\">敲代码</label>\n <input type=\"submit\" value=\"提交\">\n </form>\n"
+		]
+	},
+	"beego返回json数据": {
+		"scope": "go",
+		"prefix": "*1_json",
+		"body": [
+			"//路由\n beego.Router(\"/user/getUser\", &controllers.UserController{}, \"get:GetUser\")\n \n \n \n \n //控制器\n //定义一个User的结构体\n type User struct {\n Username string   `form:\"username\"`\n Password string   `form:\"password\"`\n Hoddy    []string `form:\"hobby\"`\n }\n func (this *UserController) GetUser() {\n u := User{\n Username: \"张三\",\n Password: \"123456\",\n Hoddy:    []string{\"1\", \"2\"},\n }\n //返回一个json数据\n this.Data[\"json\"] = u\n this.ServeJSON()\n }\n"
+		]
+	},
+	"页面跳转": {
+		"scope": "go",
+		"prefix": "*1_Redirect",
+		"body": [
+			"\n //跳转方法一\n this.Redirect(\"/login\", 302)\n \n //跳转方法二\n this.Ctx.Redirect(302, \"/login\")\n"
+		]
+	},
+	"字符串截取": {
+		"scope": "go",
+		"prefix": "*1_substr",
+		"body": [
+			"//字符串的截取\n var str = \"你好这是文章列表\"\n slice := []rune(str)\n aaa := string(slice[1:5])\n fmt.Println(aaa)\n"
+		]
+	},
+
+	//---------------------块函数---------------------------
+	"接收get string传参": {
+		"scope": "go",
+		"prefix": "@request",
+		"body": [
+			"//获取get传值\n id := c.GetString(\"id\")\n c.Ctx.WriteString(id)\n"
+		]
+	},
+	"接收get int传参": {
+		"scope": "go",
+		"prefix": "@request",
+		"body": [
+			"//接收的get参数必须是数字\n id, err := this.GetInt(\"id\")\n if err != nil {\n this.Ctx.WriteString(\"id必须是int类型\")\n return\n }\n this.Ctx.ResponseWriter.Write([]byte(strconv.Itoa(id)))\n"
+		]
+	},
+	"接收get string传参+": {
+		"scope": "go",
+		"prefix": "@request",
+		"body": [
+			"//控制器\n hobby := this.GetStrings(\"hobby\")\n fmt.Printf(\"值%v%T\n\", hobby, hobby)\n \n //html\n <p></p>爱好 <input type=\"checkbox\" name=\"hobby\" value=\"1\" id=\"lable1\" /><label for=\"lable1\">吃饭</label>\n <p></p> <input type=\"checkbox\" name=\"hobby\" value=\"2\" id=\"lable2\" /><label for=\"lable2\">睡觉</label>\n <p></p> <input type=\"checkbox\" name=\"hobby\" value=\"3\" id=\"lable3\" /><label for=\"lable3\">敲代码</label>\n \n //打印结果\n 值[2 3] 类型[]string\n"
+		]
+	},
+	"接收xml并解析^": {
+		"scope": "go",
+		"prefix": "@request",
+		"body": [
+			"type Product struct {", "\tTitle   string `form:\"title\" xml:\"title\"`", "\tContent string `form:\"content\" xml:\"content\"`", "}", "//路由", "beego.Router(\"/goods/xml\", &controllers.GoodsController{}, \"post:Xml\")", "", "//postman", "//使用postman 选择post->Body->raw粘贴xml数据", "//xml数据样本", "/*", "<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<article>", "    <content type=\"string\">我是张三</content>", "    <title type=\"string\">张三</title>", "</article>", "*/", "//控制器", "//接收Post传过来的XML数据", "//注意：需要在conf/app.conf添加一行copyrequestbody = true 然后必须重启bee run", "func (this *GoodsController) Xml() {", "\t// beego.Info(string(this.Ctx.Input.RequestBody))", "\t// str := string(this.Ctx.Input.RequestBody)", "\t// this.Ctx.WriteString(str)", "\tp := Product{}", "\tvar err error", "\tif e := xml.Unmarshal(this.Ctx.Input.RequestBody, &p); e != nil {", "\t\tthis.Data[\"json\"] = err.Error()", "\t\tthis.ServeJSON()", "\t} else {", "\t\t//返回一个json数据", "\t\tthis.Data[\"json\"] = p", "\t\tthis.ServeJSON()", "\t\t//返回结果", "\t\t// {", "\t\t// \"Title\": \"张三\",", "\t\t// \"Content\": \"我是张三\"", "\t\t//  }", "", "\t}", "}", ""
+		]
+	},
+	"获取conf配置信息": {
+		"scope": "go",
+		"prefix": "*1_conf",
+		"body": [
+			"mysqluser := beego.AppConfig.String(\"mysqluser\")\n beego.Info(mysqluser)\n this.Ctx.WriteString(mysqluser)\n"
+		]
+	},
+	"获取conf多个参数": {
+		"scope": "go",
+		"prefix": "*1_conf",
+		"body": [
+			"//模拟conf配置 admin = \"admin\",\"list\",\"arr\"\n \n conf := beego.AppConfig.Strings(\"admin\")\n beego.Info(conf) //[\"admin\",\"list\",\"arr\"] 切片类型\n"
+		]
+	},
+	"控制器中添加conf配置": {
+		"scope": "go",
+		"prefix": "*1_conf",
+		"body": [
+			"//func main\n //配置redis数据库的连接地址\n beego.AppConfig.Set(\"redisuser\", \"admin666\")\n //其他控制器可以获取到该配置\n"
+		]
+	},
+	"加载其他配置文件^": {
+		"scope": "go",
+		"prefix": "*1_conf",
+		"body": [
+			"//func main \n //加载其他配置文件 (不建议使用)\n beego.LoadAppConfig(\"ini\", \"conf/redis.conf\")\n"
+		]
+	},
+	//---------------------GO^---------------------------
+	"结构体转小写^": {
+		"scope": "go",
+		"prefix": "golang_struct",
+		"body": [
+			"//定义一个User的结构体\n //json:\"username\" 表示重命名\n type User struct {\n Username string   `form:\"username\" json:\"username\"`\n Password string   `form:\"password\" json:\"password\"`\n Hoddy    []string `form:\"hobby\" json:\"h\"`\n }\n"
+		]
+	},
+}

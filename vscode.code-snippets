@@ -1,0 +1,34 @@
+{
+    "VsCode快捷键": {
+        "prefix": ":vscode",
+        "body": [
+            "/*命令选择列           F1/Ctrl+Shift+p\n 切换终端             Ctrl+`\n 工作区切换           Alt+[1-9]\n*/"
+        ],
+    },
+ 
+        "VsCode片段常量": {
+            "scope": "html,php,go",
+            "prefix": ".vscode",
+            "body": [
+                "${TM_FILENAME_BASE}",
+                "${TM_FILENAME}",
+                "${TM_DIRECTORY}",
+                "${TM_FILEPATH}",
+                "${RELATIVE_FILEPATH}",
+                "${WORKSPACE_NAME}",
+                "${WORKSPACE_FOLDER}",
+                "${1:选中字符串一}",
+                "${TM_SELECTED_TEXT:${2:选中字符串二}}",
+                "${TM_SELECTED_TEXT:${3:选中字符串三}}",
+                "${1:i}",
+                "${4:i}"
+            ]
+        },
+        "待办事项": {
+            "prefix": ".todo",
+            "body": [
+                "// TODO ：$1"
+            ],
+        },
+
+}

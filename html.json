@@ -1,0 +1,433 @@
+{
+    // Place your snippets for html here. Each snippet is defined under a snippet name and has a prefix, body and 
+    // description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+    // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
+    // same ids are connected.
+    // Example:
+    "点击放大图片": {
+        "prefix": ":html",
+        "body": [
+            "<img onclick=\"magnifyImg('/static/thirdparty/images/img4.jpg')\" src='/static/thirdparty/images/img4.jpg' width='100' height='100' /> <script> function magnifyImg(src) { layer.open({ type: 1, title: false, closeBtn: 0, shadeClose: true, skin: 'yourclass', content: '<img src=' + src + ' width=\"250\" />' }); } </script>"
+        ],
+        "description": "Log output to console"
+    },
+    // "新增表单": {
+    //     "prefix": "xzInput_2",
+    //     "body": [
+    //         "<h1 class='center'>新增表单</h1>",
+    //         "<div class='center'>",
+    //         "    <form action='{:url(\"MyIndex/layForm\")}' class='layui-form' method='POST'>",
+    //         "         <input type='text' name='key' class='input-hover' style='width:330px;height:28px' placeholder='0文本框 1时间 2选择框 3单选框 4开关 5复选框 6文本域'>",
+    //         "         <button class='layui-btn layui-btn-sm' style='background-color: #5FB878; position:relative;right:5px;bottom:1px'><i class='layui-icon'>&#xe605;</i></button>",
+    //         "    </form>",
+    //         "</div>"
+    //     ],
+    //     "description": "Log output to console"
+    // },
+    "save文件": {
+        "prefix": ":html",
+        "body": [
+            "<link rel='stylesheet' href='/static/thirdparty/layui-v2.6.5/layui/css/layui.css' media='all' /> <script src='/static/thirdparty/layui-v2.6.5/layui/layui.js'></script> <script src='/static/thirdparty/jquery.min.js'></script> <style> </style> <body> <form class='layui-form' lay-filter='example' id='admin' style='padding-top:20px'> {present name='res[\"id\"]'} <input type='hidden' name='id' value='{$$res[\"id\"]}'> <div class='layui-form-item'> <label class='layui-form-label'>用户名称</label> <div class='layui-input-block'> <input type='text' name='name' lay-verify='name' id='name' value='{$$res[\"name\"]}' class='layui-input'> </div> </div> <div class='layui-inline'> <label class='layui-form-label'>日期时间选择器</label> <div class='layui-input-inline'> <input type='text' name='create_time' lay-verify='create_time' class='layui-input' value='{:date(' Y-m-d H:i:s ',$$res[\"create_time\"])}' id='create_time' placeholder='yyyy-MM-dd HH:mm:ss'> </div> </div> <div class='layui-form-item'> <label class='layui-form-label'>选择框</label> <div class='layui-input-block'> <select name='type' lay-filter='type'> <option value='0'></option> <option value='1' {eq name='res[\"type\"]' value='1'}selected='true'{/eq}>写作</option> <option value='2' {eq name='res[\"type\"]' value='2'}selected='true'{/eq}>阅读</option></select></div> </div> <div class='layui-form-item'> <label class='layui-form-label'>单选框</label> <div class='layui-input-block'> <input type='radio' name='status' value='1' title='男' {eq name='res[\"status\"]' value='1' }checked='' {/eq}> <input type='radio' name='status' value='0' title='女' {eq name='res[\"status\"]' value='0' }checked='' {/eq}> </div> </div> {else} <div class='layui-form-item'> <label class='layui-form-label'>用户名称</label> <div class='layui-input-block'> <input type='text' name='name' lay-verify='name' id='name' lay-verify='title' autocomplete='off' placeholder='' class='layui-input'> </div> </div> <div class='layui-inline'> <label class='layui-form-label'>日期时间选择器</label> <div class='layui-input-inline'> <input type='text' name='create_time' lay-verify='create_time' class='layui-input' id='create_time' placeholder='yyyy-MM-dd HH:mm:ss'> </div> </div> <div class='layui-form-item'> <label class='layui-form-label'>选择框</label> <div class='layui-input-block'> <select name='type' lay-filter='type'> <option value='0'>请选择</option> <option value='1' >写作</option> <option value='2'>阅读</option></select></div> </div> <div class='layui-form-item'> <label class='layui-form-label'>单选框</label> <div class='layui-input-block'> <input type='radio' name='status' value='1' title='男' checked=''> <input type='radio' name='status' value='0' title='女'> </div> </div> {/present} <input type='hidden' name='tb' value='{$$tb}'> <script> layui.use('laydate', function() { var laydate = layui.laydate; laydate.render({ elem: '#create_time', type: 'datetime' }); }); </script> <div class='layui-form-item'> <div class='layui-input-block'> <button type='button' class='layui-btn' lay-submit lay-filter='*'>立即提交</button> <button type='reset' class='layui-btn layui-btn-primary'>重置</button> </div> </div> </form> </body> <script type='text/javascript'> layui.use(['form', 'tree', 'util', 'table', 'layer', 'laydate', 'flow'], function() { var tree = layui.tree, util = layui.util, form = layui.form, table = layui.table, layer = layui.layer, laydate = layui.laydate, flow = layui.flow; form.verify({ name(value, item) { if (value == '') { return '不能为空'; } }, create_time(value, item) { if (value == '') { return '不能为空'; } }, type(value, item) { if (value == '') { return '不能为空'; } } }); form.on('submit(*)', function(data) { x = $('form').serializeArray(); var str = ''; $.each(x, function(i, field) { var val = field.value == '' ? \"''\" : \"'\" + field.value + \"'\"; str += field.name + ':' + val + \",\"; }); var ll = '$.post(\"{:url(\\'Commons/save\\')}\", {' + str + '}, function(res) { if (res.code == 200) { layer.msg(\"操作成功\", {icon: 1,time: 3000},function(){parent.window.location.reload();});} else { layer.msg(\"操作失败\", {icon: 2,time: 5000}); } });'; eval(ll); }); }); </script>"
+        ],
+        "description": "Log output to console"
+    },
+    // "固定100%布局": {
+    //     "prefix": "b_gd_4",
+    //     "body": [
+    //         "<div class='container-fluid' style='background-color: red; height: 100px;margin-top: 10px;'>",
+    //         "<!--bootstrap固定100%布局-->",
+    //         "   $1",
+    //         "</div>"
+    //     ],
+    //     "description": "Log output to console"
+    // },
+    "数据表格列表": {
+        "prefix": ":html",
+        "body": [
+            "<h2 style=\"color: red;\">使用新增数据或编辑同级目录下创建save调用:html [save文件]</h2><div style='margin-top: 35px;'><form><input type=\"hidden\" id=\"tb\" name=\"tb\"> <!-- 搜索栏开始 --> <div class='layui-input-inline form-label'> <label class='layui-form-label'>名称</label> <div class='layui-input-block'> <input type='text' class='layui-input input-hover' name='name' id='name' value='' autocomplete='off' placeholder=''> </div> </div> <div class='layui-input-inline form-label'> <label class='layui-form-label'>创建时间</label> <div class='layui-input-block'> <input type='text' class='layui-input input-hover' name='create_time' id='create_time' value='' autocomplete='off' placeholder='开始时间'> </div> </div> <div class='layui-input-inline form-label'> <input type='text' class='layui-input input-hover' name='end_time' id='end_time' value='' autocomplete='off' placeholder='结束时间'> </div> <button class='layui-btn form-label' lay-submit='' type='button' id='search'><i class='layui-icon'>&#xe615;</i>查询</button> <!-- 搜索栏结束 --></form></div>",
+            "   <table class=\"layui-table\" id=\"list\" lay-filter=\"list\"></table>",
+            "<!-- 新增数据 -->",
+            "<script type=\"text/html\" id=\"toolBar\">",
+            "<div class=\"layui-btn-container\">",
+            "<button class=\"layui-btn layui-btn-danger\" type=\"button\" lay-submit='' lay-event=\"delete\">批量删除</button>",
+            "<button class=\"layui-btn\" style=\"background: #009688;\" type=\"button\" lay-submit='' lay-event=\"add\">新增数据</button>",
+            "</div>",
+            "<!-- 操作 -->",
+            "<script type='text/html' id='rightBar'>",
+            "<div class='layui-btn-container'>",
+            "     {literal} {{# if(d.is_edit !== 1){ }}",
+            "     <button class='layui-btn layui-btn-xs backg' lay-event='update'>编辑</button> {{# } else { }}",
+            "     <!-- <button class='layui-btn layui-btn-xs' lay-event='update'>发货</button> -->{{# } }} {/literal}",
+            "     <button class='layui-btn layui-btn-xs layui-btn-danger' lay-event='delete'>删除</button>",
+            "</div>",
+            "</script>",
+            "<script>",
+            "   layui.use(['form', 'tree', 'util', 'table', 'layer', 'laydate', 'flow'], function() {\n/**操作表*/  var tb = 'test'; $(\"#tb\").val(tb)",
+            "var str = '<?php echo $$_SERVER[\"PATH_INFO\"]; ?>'; var index = str.lastIndexOf(\"\/\"); str2 = str.substring(index + 1, str.length); var path = str.replace(str2, 'save');",
+            "            // #--------------------数据表格--------------------------# ",
+            "        var tree = layui.tree, util = layui.util, form = layui.form, table = layui.table, layer = layui.layer, laydate = layui.laydate, flow = layui.flow;",
+            "            var tableIn = table.render({",
+            "                  elem: '#list',",
+            "                  //height: 300,",
+            "                  limit: 5,",
+            "                  limits: [10, 20, 30, 40, 50],",
+            "                  toolbar: '#toolBar', //toolbar:true 开启导出",
+            "                  page: true,",
+            "                  url: '{:url(\"Commons/log\")}',",
+            "                  where: {tb: tb,",
+            "                  name: $('#name').val(),",
+            "                  emit_date: $('#create_time').val(),",
+            "                  end_date: $('#end_time').val()",
+            "                     },",
+            "                  method: 'get',",
+            "                 cols: [[",
+            "                      {checkbox: true, fixed: true},",
+            "                      {field: 'id', title: 'ID', width: 70, fixed: true, sort: true},",
+            "                      {field: 'name', title: '名称', fixed: true},",
+            "                      {title: '操作',width: 250,fixed: 'right',toolbar: '#rightBar'},",
+            "                       ]]",
+            "    });",
+            "table.on('toolbar(list)', (obj) => { switch (obj.event) { case 'delete': layer.confirm('确定删除吗', { icon: 3 }, function(index) { layer.close(index); var checkStatus = table.checkStatus('list'); var ids = []; $(checkStatus.data).each(function(index, item) { ids.push(item.id); }); if (ids == '') { layer.msg('请选择数据', { time: 1000, icon: 2 }); return false; } post(\"{:url('Commons/layDelete')}\", \"test\", ids) }); break; case 'add': layer.open({ type: 2, title: '信息', shade: 0, maxmin: true, content: '/admin/Commons/find?path=' + path + '&tb=' + tb, area: ['50%', '80%'] }); break;} })",
+            "table.on('tool(list)', (obj) => { switch (obj.event) { case 'update': layer.open({ type: 2, title: '信息', shade: 0, maxmin: true, content: '/admin/Commons/find?id=' + obj.data.id + '&path=' + path + '&tb=' + tb, area: ['50%', '80%'] }); break; case 'delete':        layer.confirm('确定删除吗', { icon: 3 }, function(index) { post(\"{:url('Commons/layDelete')}\", \"test\", obj.data.id); });break; } })",
+            "function post(url, table, id) { var loading = layer.load(1, { shade: [0.1, '#fff'] }); $.post(url, { id: id, 'table': table }, function(res) { layer.close(loading); if (res.code > 0) { layer.msg(res.msg, { time: 1000, icon: 1 }); tableIn.reload(); } else { layer.msg(res.msg, { time: 1000, icon: 2 }); } }); }",
+            "laydate.render({ elem: '#create_time', type: 'datetime' }); laydate.render({ elem: '#end_time', type: 'datetime' });",
+            "                $('#search').on('click', function() { x = $('form').serializeArray(); var str = '{'; $.each(x, function(i, field) { var val = field.value == '' ? \"''\" : \"'\" + field.value + \"'\"; str += field.name + ':' + val + \",\"; }); str += '}'; var ll = 'tableIn.reload({page: {page: 1},where: ' + str + ',url: \"{:url(\\'Commons/log\\')}\" })'; eval(ll); });",
+            "});",
+            "</script>"
+        ],
+        "description": "Log output to console"
+    },
+    "数据表格编辑": {
+        "prefix": ":html",
+        "body": [
+            "<div style='margin-top: 35px;' id='arr_id'><form id='form'> <input type=\"hidden\" id=\"tb\" name=\"tb\"><input type=\"hidden\" id=\"w_order\" name=\"w_order\"><input type=\"hidden\" id=\"w_where\" name=\"w_where\"> <!-- 搜索栏开始 --> <div class='layui-input-inline form-label'> <label class='layui-form-label'>名称</label> <div class='layui-input-block'> <input type='text' class='layui-input input-hover' name='name' id='name' value='' autocomplete='off' placeholder=''> </div> </div> <div class='layui-input-inline form-label'> <label class='layui-form-label'>创建时间</label> <div class='layui-input-block'> <input type='text' class='layui-input input-hover' name='create_time' id='create_time' value='' autocomplete='off' placeholder='开始时间'> </div> </div> <div class='layui-input-inline form-label'> <input type='text' class='layui-input input-hover' name='end_time' id='end_time' value='' autocomplete='off' placeholder='结束时间'> </div> <button class='layui-btn form-label' lay-submit='' type='button' id='search'><i class='layui-icon'>&#xe615;</i>查询</button> <!-- 搜索栏结束 --></form> </div> <table class='layui-table' id='list' lay-filter='list'></table> <!-- 新增数据 --> <script type='text/html' id='toolBar'> <div class='layui-btn-container'> <button class='layui-btn layui-btn-danger' type='button' lay-submit='' lay-event='delete'>批量删除</button> </div> <!-- 操作 --> <script type='text/html' id='rightBar'> <div class='layui-btn-container'> <button class='layui-btn layui-btn-xs layui-btn-danger' lay-event='delete'>删除</button> </div> </script> <!-- 操作 --> <script type='text/html' id='img'> <div class=\"table\"><img src='{{d.img}}' class='upload{{d.id}} img-thumb' onload=\"myFunction('{{d.id}}')\" height='30'></div> </script><script type='text/html' id='status'> <form action=''> <div class='layui-form-item'> <label class='layui-form-label'>开关</label> <div class='layui-input-block'> <input name='status' lay-text=\"开启|关闭\" {{ (d.status==0)? 'checked' : '' }} value='{{d.status}}' type='checkbox' lay-skin=\"switch\" lay-filter=\"status\"> </div> </div> </form> </script> <script type='text/html' id='selectTool' desc='下拉选择器' intro='用到了layui模板（不能设置lay-ignore,否则监听不到事件）'> <form action=''> <select name='type' dataId='{{d.id}}' lay-filter='selectDemo'> {{# layui.each(prize_type, function(index, item){ }} <option {{ (d.type==index)?'selected' : '' }} value='{{index}}'>{{ item }}</option> {{# }); }} </select></form> </script> <script type='text/javascript'> var prize_type = ['实物', '互动币', '果果币', '达人币']; </script> <style> /* 防止下拉框的下拉列表被隐藏---必须设置--- */ .layui-table-cell { overflow: visible !important; } /* 设置下拉框的高度与表格单元相同 */ .layui-input, .layui-select, .layui-textarea { height: 30px !important; z-index: 999; } </style> <script>            /**操作*/ var tb = 'test'; var w_order = 'id asc';var w_where = 'is_delete = 0';  $(\"#tb\").val(tb); $(\"#w_order\").val(w_order);$(\"#w_where\").val(w_where); layui.use(['form', 'tree', 'util', 'table', 'layer', 'laydate', 'flow'], function() {  \n  $(\"#tb\").val(tb); var tree = layui.tree, util = layui.util, form = layui.form, table = layui.table, layer = layui.layer, laydate = layui.laydate, flow = layui.flow; var tableIn = table.render({ elem: '#list', height: 1300, limit: 5, limits: [10, 20, 30, 40, 50], toolbar: '#toolBar', page: true, url: '{:url(\"Commons/log\")}', where: { tb: tb, name: $('#name').val(), emit_date: $('#create_time').val(), end_date: $('#end_time').val(),w_order: w_order,w_where: w_where }, method: 'get', cols: [ [{ checkbox: true, fixed: true }, { field: 'id', title: 'ID', width: 70, fixed: true, sort: true }, { field: 'name', title: '名称', fixed: true, edit: 'text' }, { field: 'img', title: '图片', templet: '#img', unresize: true },  { field: 'status', title: '开启关闭', templet: '#status', unresize: true }, { field: 'type', title: '奖品类型', width: 150, templet: '#selectTool' }, { title: '操作', width: 250, fixed: 'right', toolbar: '#rightBar' }, ] ] }); table.on('toolbar(list)', (obj) => { switch (obj.event) { case 'delete': layer.confirm('确定删除吗', { icon: 3 }, function(index) { layer.close(index); var checkStatus = table.checkStatus('list'); var ids = []; $(checkStatus.data).each(function(index, item) { ids.push(item.id); }); if (ids == '') { layer.msg('请选择数据', { time: 1000, icon: 2 }); return false; } post('{:url(\"Commons/layDelete\")}', tb, ids) }); break; } }); table.on('tool(list)', (obj) => { switch (obj.event) { case 'update': layer.alert('id：' + obj.data.id); break; case 'delete': layer.confirm('确定删除吗', { icon: 3 }, function(index) { post('{:url(\"Commons/layDelete\")}', tb, obj.data.id); }); break; } }); table.on('edit(list)', function(obj) { var value = obj.value , data = obj.data, field = obj.field; if (value) { $.post('{:url(\"Commons/layUpdate\")}', { 'id': data.id, 'field': field, 'value': value, 'table':tb}, function(res) { if (res.code > 0) { layer.msg(res.msg, { time: 1800, icon: 1 }, function() { tableIn.reload(); }); } else { layer.msg(res.msg, { time: 1800, icon: 2 }); } }) } }); form.on('select(selectDemo)', function(obj) { console.log(obj.elem.getAttribute('dataId')); console.log(obj.elem.getAttribute('name')); console.log(obj.value); $.ajax({ url: '{:url(\"admin/Commons/layUpdate\")}', data: {id: obj.elem.getAttribute('dataId'), field: obj.elem.getAttribute('name'), value: obj.value,table: tb }, type: 'post', async: false, success: function(res) { console.log(res); if (res.code > 0) { layer.msg(res.msg, { time: 1800, icon: 1 }, function() { tableIn.reload(); }); } else { layer.msg(res.msg, { time: 1800, icon: 2 }); } } }) });   form.on('switch(status)', function(data) {            var status; if (data.elem.checked) { status = 0; } else { status = 1; } alert(status); }) function post(url, table, id) { var loading = layer.load(1, { shade: [0.1, '#fff'] }); $.post(url, { id: id, 'table': table }, function(res) { layer.close(loading); if (res.code > 0) { layer.msg(res.msg, { time: 1000, icon: 1 }); tableIn.reload(); } else { layer.msg(res.msg, { time: 1000, icon: 2 }); } }); } laydate.render({ elem: '#create_time', type: 'datetime' }); laydate.render({ elem: '#end_time', type: 'datetime' });   $('#search').on('click', function() { x = $('#form').serializeArray(); var str = '{'; $.each(x, function(i, field) { var val = field.value == '' ? \"''\" : \"'\" + field.value + \"'\"; str += field.name + ':' + val + \",\"; }); str += '}'; var ll = 'tableIn.reload({page: {page: 1},where: ' + str + ',url: \"{:url(\\'Commons/log\\')}\" })'; eval(ll); }); });  function myFunction(id) { $('#arr_id').addClass(id); var img = '.upload' + id; layui.use('upload', function() { var upload = layui.upload; var uploadInst = upload.render({ elem: img , url: '{:url(\"Views/uploadSingleImage\")}' , done: function(res) { if (res.code == 200) { $(img).attr('src', res.data); $.ajax({ url: '{:url(\"Commons/layUpdate\")}', data: { id: id, field: 'img', value: res.data,table: tb }, type: 'post', success: function(res) { if (res.code == 200) { layer.msg('修改成功', { icon: 1, time: 3000 }, function() {window.location.reload();}); } else { layer.msg('修改失败', { icon: 2, time: 3000 }); } } }); } else { layer.msg(res.msg); } }, error: function() { var demoText = $('#demoText'); demoText.html(\"<span style='color: #FF5722;'>上传失败</span> <a class='layui-btn layui-btn-mini demo-reload'>重试</a>\"); demoText.find('.demo-reload').on('click', function() { uploadInst.upload(); }); } }); }); $('.table').on('mouseenter', '.img-thumb', imageZoom); /* * 图片放大 * @param event */ } </script><script> function imageZoom(event) { console.log('r'); function moveImage(width, height, x, y) { var limit = 350; if (width > limit) { height *= limit / width; width = limit; } if (height > limit) { width *= limit / height; height = limit; } var left = x - width - 5; var top = y - 5 - height; top = top > 0 ? top : y + 5; $('.altwei-big-img').css({ 'left': left, 'position': 'fixed', 'z-index': 999, 'top': top, 'position': 'fixed', width: width, height: height, display: 'block' }); } var $$this = $(this); var e = event || window.event; var image = document.createElement('img'); image.className = 'altwei-big-img'; image.src = this.src; var width = image.width; var height = image.height; moveImage(width, height, e.pageX, e.pageY); $('body').append(image); $$this.on('mousemove', function(event) { var ee = event || window.event; moveImage(width, height, ee.pageX, ee.pageY); }); $$this.on('mouseleave', function() { $('.altwei-big-img').remove(); }); } </script>"
+        ],
+        "description": "Log output to console"
+    },
+    "log记录列表": {
+        "prefix": ":html",
+        "body": [
+            "    <style type=\"text/css\"> .layui-table>tbody>tr { background-color: #F2F2F2 } .layui-table>tbody>tr:nth-child(odd) { background: #ffffff; } .form-label { margin-left: 20px; margin-right: 5px; } .layui-table>thead>tr>th { background-color: #F2F2F2; } </style> <div style='margin-top: 35px;'> <form> <input type=\"hidden\" id=\"tb\" name=\"tb\"> <!-- 搜索栏开始 --> <div class='layui-input-inline form-label'> <label class='layui-form-label'>用户名</label> <div class='layui-input-block'> <input type='text' class='layui-input input-hover' name='name' id='name' value='' autocomplete='off' placeholder=''> </div> </div> <div class='layui-input-inline form-label'> <label class='layui-form-label'>创建时间</label> <div class='layui-input-block'> <input type='text' class='layui-input input-hover' name='create_time' id='create_time' value='' autocomplete='off' placeholder='开始时间'> </div> </div> <div class='layui-input-inline form-label'> <input type='text' class='layui-input input-hover' name='end_time' id='end_time' value='' autocomplete='off' placeholder='结束时间'> </div> <button class='layui-btn form-label' lay-submit='' type='button' id='search'><i class='layui-icon'>&#xe615;</i>查询</button> <!-- 搜索栏结束 --> </form> </div> <table class=\"layui-table\" id=\"list\" lay-filter=\"list\"></table> <!--时间 --> <script type=\"text/html\" id=\"time_1\"> {{layui.util.toDateString(d.create_time*1000, 'yyyy-MM-dd HH:mm:ss')}} </script> <script> layui.use(['form', 'tree', 'util', 'table', 'layer', 'laydate', 'flow'], function() { /**操作表*/ var tb = 'test'; $(\"#tb\").val(tb); var tree = layui.tree, util = layui.util, form = layui.form, table = layui.table, layer = layui.layer, laydate = layui.laydate, flow = layui.flow; var tableIn = table.render({ elem: '#list',  limit: 5, limits: [10, 20, 30, 40, 50], toolbar: '#toolBar', page: true, url: '{:url(\"Commons/log\")}', where: { tb: tb, name: $('#name').val(), emit_date: $('#create_time').val(), end_date: $('#end_time').val() }, method: 'get', cols: [ [{ field: 'id', title: 'ID', width: 260, fixed: true, sort: true }, { field: 'name', title: '用户名', width: 260, fixed: true }, { field: 'create_time', title: '创建时间', width: 260, templet: '#time_1' }, ] ] }); laydate.render({ elem: '#create_time', type: 'datetime' }); laydate.render({ elem: '#end_time', type: 'datetime' }); $('#search').on('click', function() { x = $('form').serializeArray(); var str = '{'; $.each(x, function(i, field) { var val = field.value == '' ? \" ''\" : \"'\" + field.value + \"'\"; str += field.name + ':' + val + \", \"; }); str += '}'; var ll = 'tableIn.reload({page: {page: 1},where: ' + str + ',url: \"{:url(\\'Commons/log\\')}\" })'; eval(ll); }); }); </script>"
+        ],
+        "description": ""
+    },
+    "title表格": {
+        "prefix": ":html",
+        "body": [
+            "<style type='text/css'>",
+            "   .layui-table>tbody>tr {background-color: #F2F2F2}",
+            "   .layui-table>tbody>tr:nth-child(odd) {background: #ffffff;}",
+            "   .form-label {margin-left: 20px;margin-right: 5px;}",
+            "   .layui-table>thead>tr>th {background-color: #F2F2F2;}",
+            "</style>",
+            "<div style='width:96%;margin:50px auto;'>",
+            "<form action='{:url(\"MyIndex/haltPost\")}' class='layui-form' method='post'> <table class='layui-table' lay-skin='' style='margin:0;width: 100%;'> <thead> <tr> <th style='text-align:center;'>名称</th> <th style='text-align:center;'>百度</th> <th style='text-align:center;'>360</th> <th style='text-align:center;'>搜狗</th> <th style='text-align:center;'>神马</th> <th style='text-align:center;'>信息流</th> <th style='text-align:center;'>联展平台</th> </tr> </thead> <tbody> {foreach [['id'=>1,'name'=>'美女'],['id'=>2,'name'=>'帅哥']] as $1$$v} <tr> <input type='hidden' name='i[{$$v.id}][id]' value='{$1$$v.id}'> <td rowspan='1' style='text-align:center;width: 60px'>{$1$$v.name}</td> <td rowspan='1' style='text-align:center;width: 80px'><input type='number' name='i[{$1$$v.id}][status_1]' class='layui-input layui-table-input input-hover' value='1'></td> <td rowspan='1' style='text-align:center;width: 80px'><input type='number' name='i[{$1$$v.id}][status_2]' class='layui-input layui-table-input input-hover' value='1'></td> <td rowspan='1' style='text-align:center;width: 80px'><input type='number' name='i[{$1$$v.id}][status_3]' class='layui-input layui-table-input input-hover' value='1'></td> <td rowspan='1' style='text-align:center;width: 80px'><input type='number' name='i[{$1$$v.id}][status_4]' class='layui-input layui-table-input input-hover' value='1'></td> <td rowspan='1' style='text-align:center;width: 80px'><input type='number' name='i[{$$v.id}][status_5]' class='layui-input layui-table-input input-hover' value='1'></td> <td rowspan='1' style='text-align:center;width: 80px'><input type='number' name='i[{$$v.id}][status_6]' class='layui-input layui-table-input input-hover' value='1'></td> </tr> {/foreach} </tbody> </table> <div class='layui-form-item' style='text-align:center;margin-top: 20px;margin-right: 120px;'> <div class='layui-input-block'> <button class='layui-btn' type='submit' lay-submit=''>立即提交</button> <button type='reset' class='layui-btn layui-btn-primary'>重置</button> </div> </div> </form>",
+            "</div>"
+        ],
+        "description": "Log output to console"
+    },
+    "编辑器": {
+        "prefix": ":html",
+        "body": [
+            "<div class=''> <form class='layui-form' action='{:url(\"MyIndex/haltPost\")}' method='post'> <div class='layui-form-item layui-form-text'> <label class='layui-form-label'><span style='color: red'>*</span>&nbsp;说明:</label> <div class='layui-input-block' style='max-width:100%;'> <textarea placeholder='请输入内容' class='layui-textarea' name='content' id='container' style='border:0;padding:0'> {notempty name='$model.content'}{$model.content}{/notempty} </textarea> </div> </div> <div class='layui-form-item'> <div class='layui-input-block'> <button class='layui-btn' lay-submit lay-filter='admin'>保存</button> </div> </div> </form> </div> <!-- 加载编辑器的容器 --> <script id='container' name='content' type='text/plain'> 这里写你的初始化内容 </script> <!-- 配置文件 --> <script type='text/javascript' src='/static/thirdparty/else/ueditor/ueditor.config.js'></script> <!-- 编辑器源码文件 --> <script type='text/javascript' src='/static/thirdparty/else/ueditor/ueditor.all.js'></script> <!-- 实例化编辑器 --> <script type='text/javascript'> var ue = UE.getEditor('container'); </script>"
+        ],
+        "description": "Log output to console"
+    },
+    "显示隐藏": {
+        "prefix": ":html",
+        "body": [
+            " <div> <button type='button' class='displauy1' onclick='displauy1()'>显示隐藏</button> <div id='displauy1' style='display: none'>fdfdf</div> </div> <script> function displauy1() { var id = $('#displauy1'); if (id.attr('style') == 'display: none') { id.attr('style', 'display: show') } else { id.attr('style', 'display: none') } } </script>"
+        ],
+        "description": "Log output to console"
+    },
+    "鼠标放上图片放大": {
+        "prefix": ":html",
+        "body": [
+            "<h1 class='center'>放上图片放大</h1> <div class='table'> <img src='/static/thirdparty/images/img4.jpg' width='250' alt='' class='img-thumb'> </div> <script>  $('.table').on('mouseenter', '.img-thumb', imageZoom); /* * 图片放大 * @param event */ function imageZoom(event) { function moveImage(width, height, x, y) { var limit = 350; if (width > limit) { height *= limit / width; width = limit; } if (height > limit) { width *= limit / height; height = limit; } var left = x - width - 5; var top = y - 5 - height; top = top > 0 ? top : y + 5; $('.altwei-big-img').css({ 'left': left, 'position': 'fixed', 'top': top, 'position': 'fixed', width: width, height: height, display: 'block' }); } var $$this = $(this); var e = event || window.event; var image = document.createElement('img'); image.className = 'altwei-big-img'; image.src = this.src; var width = image.width; var height = image.height; moveImage(width, height, e.pageX, e.pageY); $('body').append(image);  $$this.on('mousemove', function(event) { var ee = event || window.event; moveImage(width, height, ee.pageX, ee.pageY); });  $$this.on('mouseleave', function() { $('.altwei-big-img').remove(); }); } </script>"
+        ],
+        "description": "Log output to console"
+    },
+    "背景颜色5FB878": {
+        "prefix": ":style",
+        "body": [
+            "background: #5FB878;"
+        ],
+        "description": "Log output to console"
+    },
+    "背景颜色009688": {
+        "prefix": ":style",
+        "body": [
+            "background: #009688;"
+        ],
+        "description": "Log output to console"
+    },
+    "背景颜色1E9FFF": {
+        "prefix": ":style",
+        "body": [
+            "background: #1E9FFF;"
+        ],
+        "description": "Log output to console"
+    },
+    "button按钮": {
+        "prefix": ":layui",
+        "body": [
+            "<button type='button' class='layui-btn on-click' onclick='$1'>默认按钮</button>"
+        ],
+        "description": "Log output to console"
+    },
+    "弹框": {
+        "prefix": ":tk",
+        "body": [
+            "<button class='layui-btn' id='btn-edit'>弹框</button> <script> layui.use(['layer'], function() { var layer = layui.layer; $(\"#btn-edit\").click(function() { layer.open({ type: 2, title: '信息', shade: 0, maxmin: true, content: 'index', area: ['50%', '80%'] }); }); }) </script>"
+        ],
+        "description": "Log output to console"
+    },
+    "询问弹框": {
+        "prefix": ":tk",
+        "body": [
+            "<button class='layui-btn' id='btn-confirm'>confirm / 询问</button> <script> layui.use(['layer'], function() { var layer = layui.layer; $('#btn-confirm').click(() => { layer.confirm('提示', { icon: 3 }, function(index) { layer.close(index); alert('222222') }); }) }) </script>"
+        ],
+        "description": "Log output to console"
+    },
+    "输入弹框": {
+        "prefix": ":tk",
+        "body": [
+            "<button class='layui-btn' id='btn-prompt'>prompt / 输入</button> <script> layui.use(['layer'], function() { var layer = layui.layer; $('#btn-prompt').click(() => { layer.prompt({ title: '输入' }, (content) => { alert(content) }) }) }) </script>"
+        ],
+        "description": "Log output to console"
+    },
+    "多功能弹框": {
+        "prefix": ":tk",
+        "body": [
+            "<button class='layui-btn' id='btn-multifunction'>多功能弹框</button> <script> layui.use(['layer'], function() { var layer = layui.layer; $('#btn-multifunction').click(() => { layer.open({ title: '标题', content: '多功能弹框，10秒自动关闭', icon: 6, time: 10000, anim: 0, area: ['400px', '250px'], offset: 'auto', btn: ['确定', '取消', '自定义按钮'], yes(index, obj) { alert('确定' + index) }, btn1() { alert('确定') }, btn2() { alert('取消') }, btn3() { alert('自定义按钮') }, cancel() { alert('x被点击了') }, success(obj, index) { alert('创建后回调' + index) }, closeBtn: 1 }) }) }) </script>"
+        ],
+        "description": "Log output to console"
+    },
+    "jquery询问弹框": {
+        "prefix": ":tk",
+        "body": [
+            "<button type='button' class='layui-btn' onclick='xunwen()'>jquery询问弹框</button> <script> function xunwen() { var xunwen = confirm('确定删除吗?'); if (xunwen == true) {　　 alert('确定')　　 } else { alert('取消') } } </script>"
+        ],
+        "description": "Log output to console"
+    },
+    "提示弹框": {
+        "prefix": ":tk",
+        "body": [
+            "<button class='layui-btn' id='btn-msg'>msg / 提示</button> <script> layui.use(['layer'], function() { var layer = layui.layer; $('#btn-msg').click(() => { layer.msg('提示', { icon: 2, time: 3000 }); }) }) </script>"
+        ],
+        "description": "Log output to console"
+    },
+    "log弹框": {
+        "prefix": ":tk",
+        "body": [
+            "<style> .layer_notice { background: #5FB878; height: 500px; width: 830px; padding: 10px 10px 10px 10px; overflow-y: scroll; overflow-x: hidden; counter-reset: count; } .layer_notice p { color: #fff; font-size: 25px; } .layer_notice P::before { counter-increment: count 1; content: counter(count)'.'; font-size: 25px; color: #fff; } </style> <button class='layui-btn' id='btn-log'>log框</button> <div class='layer_notice' style='display: none;'> <p>css</p> <p>javascript</p> <p>php</p> </div> <script> layui.use(['layer'], function() { var layer = layui.layer; $('#btn-log').click(() => { layer.open({ type: 1, shade: false, title: false, content: $('.layer_notice'), cancel: function() { $('.layer_notice').css('display', 'none') } }); }) }) </script>"
+        ],
+        "description": "Log output to console"
+    },
+    "多媒体框": {
+        "prefix": ":tk",
+        "body": [
+            "  <button class='layui-btn' id='btn-video'>多媒体框</button> <script> layui.use(['layer'], function() { var layer = layui.layer; $('#btn-video').click(() => { layer.open({ type: 2, title: false, area: ['630px', '360px'], shade: 0.8, closeBtn: 0, shadeClose: true, content: '//player.youku.com/embed/XMzI1NjQyMzkwNA==' }); layer.msg('点击任意处关闭'); }) }) </script>"
+        ],
+        "description": "Log output to console"
+    },
+    "任意处关闭框": {
+        "prefix": ":tk",
+        "body": [
+            " <button class='layui-btn' id='btn-prompt'>html任意关闭弹框</button> <script> layui.use(['layer'], function() { var layer = layui.layer; $('#btn-prompt').click(() => { layer.open({ type: 1, title: false, closeBtn: 0, shadeClose: true, area: ['1000px', '650px'], skin: 'yourclass', content: '<div>任意html代码</div>' }); }) })</script>"
+        ],
+        "description": "Log output to console"
+    },
+    "全屏单例框": {
+        "prefix": ":tk",
+        "body": [
+            "  <button class='layui-btn' id='btn-quanping'>全屏单例弹框</button> <script> layui.use(['layer'], function() { var layer = layui.layer; $('#btn-quanping').click(() => { var index = layer.open({ type: 2, content: 'https://fly.layui.com/jump/alyhot/', area: ['320px', '195px'], maxmin: true }); layer.full(index); }) }) </script>"
+        ],
+        "description": "Log output to console"
+    },
+    "导航栏": {
+        "prefix": ":html",
+        "body": [
+            "<style> .b_center { text-align: center; padding-top: 35%; } </style> <div class='larryms-topbar-right' id='topbarR'> <ul class='layui-nav clearfix' style='background-color: #23262E'> <li class='layui-nav-item layui-this' id='view1'> <a onclick='cut(1)'><cite>基础设置</cite></a> </li> <li class='layui-nav-item' id='view2' lay-unselect> <a onclick='cut(2)'><cite>普通奖项设置</cite></a> </li> <li class='layui-nav-item' id='view3' lay-unselect> <a onclick='cut(3)'><cite>集卡设置</cite></a> </li> <li class='layui-nav-item' id='view4' lay-unselect> <a onclick='cut(4)'><cite>游戏界面</cite></a> </li> <li class='layui-nav-item' id='view5' lay-unselect> <a onclick='cut(5)'><cite>其他设置</cite></a> </li> </ul> </div> <div id='html'> <form action='{:url(\"MyIndex/haltPost\")}' class='layui-form' method='post'> <input type='hidden' name='name' value='测试'> <div id='html_1'> <div class='b_center'><button type='button' onclick='cut(2)' class='layui-btn' lay-filter='*' lay-submit=''>下一步</button></div> </div> <div id='html_2'> <div class='b_center'><button type='button' onclick='cut(1)' class='layui-btn' lay-filter='*' lay-submit=''>上一步</button><button type='button' onclick='cut(3)' class='layui-btn' lay-filter='*' lay-submit=''>下一步</button></div> </div> <div id='html_3'> <div class='b_center'><button type='button' onclick='cut(2)' class='layui-btn' lay-filter='*' lay-submit=''>上一步</button><button type='button' onclick='cut(4)' class='layui-btn' lay-filter='*' lay-submit=''>下一步</button></div> </div> <div id='html_4'> <div class='b_center'><button type='button' onclick='cut(3)' class='layui-btn' lay-filter='*' lay-submit=''>上一步</button><button type='button' onclick='cut(5)' class='layui-btn' lay-filter='*' lay-submit=''>下一步</button></div> </div> <div id='html_5'> <div class='b_center'><button type='button' onclick='cut(4)' class='layui-btn' lay-filter='*' lay-submit=''>上一步</button><button type='submit' class='layui-btn submit' lay-filter='*' lay-submit=''>保存</button></div> </div> </form> </body> <script> $(function() { cut(1); }) function cut(id) { $('.layui-nav >li').attr('class', 'layui-nav-item'); $('#view' + id).attr('class', 'layui-nav-item layui-this'); $('#html >form>div').attr('style', 'display:none'); $('#html_' + id).attr('style', ''); } </script>"
+        ],
+        "description": "Log output to console"
+    },
+    "卡片": {
+        "prefix": ":html",
+        "body": [
+            "<style> html:root { background: #F1F2F7; } .form-label { margin-left: 20px; margin-right: 5px; } .layuiadmin-badge { top: 50%; margin-top: -9px; color: #01AAED; } .layuiadmin-card-list { padding: 10px; } .layuiadmin-card-list p.layuiadmin-big-font { font-size: 36px; color: #666; line-height: 30px; padding: 1px 0 20px; overflow: hidden; text-overflow: ellipsis; word-break: break-all; white-space: nowrap; } .layuiadmin-badge, .layuiadmin-btn-group, .layuiadmin-span-color { position: absolute; right: 15px; } </style> <div class='layui-row layui-col-space15'> <div class='layui-col-md2'> <div class='layui-card'> <div class='layui-card-header'> <b>互动币</b> <span class='layui-badge layui-bg-blue layuiadmin-badge'>今日</span> </div> <div class='layui-card-body layuiadmin-card-list'> <p class='layuiadmin-big-font'>1</p> <p>今日消耗 <span class='layuiadmin-span-color'>1<i class='layui-inline layui-icon layui-icon-flag'></i></span> </p> <p>互动币总数 <span class='layuiadmin-span-color'>1<i class='layui-icon'>&nbsp;&#xe66c;</i></span> </p> </div> </div> </div> <div class='layui-col-md2'> <div class='layui-card'> <div class='layui-card-header'> <b>果果币</b> <span class='layui-badge layui-bg-green layuiadmin-badge'>今日</span> </div> <div class='layui-card-body layuiadmin-card-list'> <p class='layuiadmin-big-font'>2</p> <p>今日消耗 <span class='layuiadmin-span-color'>2<i class='layui-inline layui-icon layui-icon-flag'></i></span> </p> <p>果果币总数 <span class='layuiadmin-span-color'>2<i class='layui-icon'>&nbsp;&#xe66c;</i></span> </p> </div> </div> </div> <div class='layui-col-md2'> <div class='layui-card'> <div class='layui-card-header'> <b>达人币</b> <span class='layui-badge layui-bg-orange layuiadmin-badge'>今日</span> </div> <div class='layui-card-body layuiadmin-card-list'> <p class='layuiadmin-big-font'>3</p> <p>今日消耗 <span class='layuiadmin-span-color'>3<i class='layui-inline layui-icon layui-icon-flag'></i></span> </p> <p>达人币总数 <span class='layuiadmin-span-color'>3<i class='layui-icon'>&nbsp;&#xe66c;</i></i></span> </p> </div> </div> </div> </div>"
+        ],
+        "description": "Log output to console"
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //-------------------------------:layui----------------------------------------------
+
+    "自动加载更多": {
+        "prefix": ":layui",
+        "body": [
+            "    <style> #LAY_demo1 { display: flex; flex-wrap: wrap; flex-direction: row; justify-content: start; align-content: stretch; text-align: center; width: 300px; height: 100px; overflow-x: hidden; overflow-y: scroll; } #LAY_demo1>li { width: 45%; margin: 2%; height: 30px; border: 1px solid darkturquoise; } #LAY_demo1>div { margin: auto; } </style> <ul class='flow-default' id='LAY_demo1'></ul> <script> layui.use('flow', function() { var flow = layui.flow; flow.load({ elem: '#LAY_demo1', scrollElem: '#LAY_demo1', done: function(page, next) { setTimeout(function() { var lis = []; for (var i = 0; i < 8; i++) { lis.push('<li>' + ((page - 1) * 8 + i + 1) + '</li>') } next(lis.join(''), page < 2); }, 500); } }); }); </script>"
+        ],
+        "description": "Log output to console"
+    },
+    "滑动条": {
+        "prefix": ":layui",
+        "body": [
+            "    <div id='slideTest8' class='demo-slider' style='width: 400px;margin-top: 30px;'></div> <script> layui.use('slider', function() { var $ = layui.$, slider = layui.slider; slider.render({ elem: '#slideTest8', input: true  }); }) </script>"
+        ],
+        "description": "Log output to console"
+    },
+    "form表单": {
+        "prefix": ":layui",
+        "body": [
+            "<form class='layui-form serch' lay-filter='form'> <div class='layui-form-item'> <label class='layui-form-label'>输入框</label> <div class='layui-input-block'> <input type='text' name='username' required lay-verify='required' placeholder='请输入标题' autocomplete='off' class='layui-input'> </div> </div> <div class='layui-form-item'> <label class='layui-form-label'>单选框</label> <div class='layui-input-block'> <input type='radio' name='sex' value='男' title='男'> <input type='radio' name='sex' value='女' title='女' checked> </div> </div> <div class='layui-form-item'> <label class='layui-form-label'>下拉选择框</label> <div class='layui-input-block'> <select name='open' lay-filter='aihao'> <option value='0'>写作</option> <option value='1'>阅读</option> </select> </div> </div> <div class='layui-form-item'> <label class='layui-form-label'>复选框</label> <div class='layui-input-block'> <input type='checkbox' name='check[write]' title='写作'> <input type='checkbox' name='check[read]' title='阅读'> </div> </div> <div class='layui-form-item'> <label class='layui-form-label'>开关</label> <div class='layui-input-block'> <input name='auth' type='checkbox' lay-skin='switch'> </div> </div> <div class='layui-form-item layui-form-text'> <label class='layui-form-label'>文本域</label> <div class='layui-input-block'> <textarea name='desc' placeholder='请输入内容' class='layui-textarea'></textarea> </div> </div> </form>"
+        ],
+        "description": "Log output to console"
+    },
+    "图标": {
+        "prefix": ":layui",
+        "body": [
+            "<i class='layui-icon'>&#xe624;</i> <i class='layui-icon'>&#xe67e;</i> <i class='layui-icon'>&#xe654;</i> <i class='layui-icon'>&#xe615;</i> <i class='layui-icon'>&#x1006;</i> <i class='layui-icon'>&#xe605;</i> <i class='layui-icon'>&#xe642;</i>"
+        ],
+        "description": ""
+    },
+    //-------------------------------:其他----------------------------------------------
+    "收起展示": {
+        "prefix": "show_none_24",
+        "body": [
+            "<div class='sqzs'> <img src='/static/thirdparty/images/img5.jpg' width='300'> </div> <button type='button' class='layui-btn on-click'>收起展示</button> <script> $(document).ready(function() { $('.on-click').on('click', function() { $('.sqzs').slideToggle(); }); }); </script>"
+        ],
+        "description": "Log output to console"
+    },
+    "嵌入php代码": {
+        "prefix": ":php",
+        "body": [
+            "{php} $1 {/php}"
+        ],
+        "description": "Log output to console"
+    },
+    "渲染变量是否定义": {
+        "prefix": ":php",
+        "body": [
+            "{present name='result'}\n\n  {else}\n\n  {/present}"
+        ],
+        "description": "Log output to console"
+    },
+    "volist循环": {
+        "prefix": ":php",
+        "body": [
+            "{volist name='[1,2,3]$1' id='vo'} {$$vo} {/volist}"
+        ],
+        "description": "Log output to console"
+    },
+    "if判断": {
+        "prefix": ":php",
+        "body": [
+            "{if condition='(1$1 == 1)'}{else /}{/if}"
+        ],
+        "description": "Log output to console"
+    },
+    "empty存在||不存在": {
+        "prefix": ":php",
+        "body": [
+            "{empty name=\"$name\"}为空{/empty} {notempty name=\"$name\"}不为空{/notempty}"
+        ],
+        "description": "Log output to console"
+    },
+    "时间戳转时间": {
+        "prefix": ":php",
+        "body": [
+            "{:date('Y-m-d H:i:s',1616860800)}"
+        ],
+        "description": "Log output to console"
+    },
+    "eq等于": {
+        "prefix": ":php",
+        "body": [
+            "{eq name='res' value='2'}true{else /}false{/eq}"
+        ],
+        "description": "Log output to console"
+    },
+    "switch条件判断": {
+        "prefix": ":php",
+        "body": [
+            "{switch 4} {case 1}爆款热卖{/case} {case 2}限时立减{/case} {case 3}店长推荐{/case} {case 4}好货精选{/case} {/switch}"
+        ],
+        "description": "Log output to console"
+    },
+    "foreach循环": {
+        "prefix": ":php",
+        "body": [
+            "{php} $list=[1,2,3]; {/php} {foreach name='list' item='vo'} {$key} {$vo} {/foreach}"
+        ],
+        "description": "Log output to console"
+    },
+    //-------------------------------html5文字居中标签---------------------------------------------- 
+    "文字居中标签": {
+        "prefix": ":html5",
+        "body": [
+            "<center></center>",
+        ]
+    },
+
+    //---------------------------------------bootstrap-------------------------------------------------------
+    "自写流式布局": {
+        "prefix": ":bootstrap",
+        "body": [
+            "<style> /* 超小屏幕 */ /*当屏幕小于575px进入 */ @media (max-width:575px) { .container-self { width: 100%; background-color: red; } } /* 小屏幕 */ /* 当屏幕大于576px 并且  小于767px进入*/ @media (min-width:576px) and (max-width:767px) { .container-self { width: 540px; background-color: green; } } /* 中等屏幕 */ /* 当屏幕大于576px 并且  小于767px进入*/ @media (min-width:768px) and (max-width:991px) { .container-self { width: 720px; background-color: blue; } } /* 大屏幕 */ /* 当屏幕大于576px 并且  小于767px进入*/ @media (min-width:992px) and (max-width:1199px) { .container-self { width: 960px; background-color: greenyellow; } } /* 超大屏幕 */ /* 当屏幕大于1200px进入*/ @media (min-width:1200px) { .container-self { width: 1140px; background-color: purple; } } </style> <div class=\"container-self\" style=\"height:100px;margin:0 auto;margin-top: 10px;\">自写流式布局</div>",
+        ]
+    },
+    "屏幕不同占比": {
+        "prefix": ":bootstrap",
+        "body": [
+            "<style> .container>div>div:nth-child(1) { background-color: red; } .container>div>div:nth-child(2) { background-color: goldenrod; } .container>div>div:nth-child(3) { background-color: greenyellow; } </style> <!-- col-sm 小屏幕 col-md 中屏幕 大屏幕col-lg  --> <h1>屏幕不同占比</h1> <div class=\"container\"> <div class=\"row\"> <div class=\"col-sm-1 col-md-3 col-lg-5\">第一部分</div> <div class=\"col-sm-10 col-md-6 col-lg-2\">第二部分</div> <div class=\"col-sm-1 col-md-3 col-lg-5\">第三部分</div> </div> </div>",
+        ]
+    },
+    "垂直居下": {
+        "prefix": ":bootstrap",
+        "body": [
+            "  <style> .container>div>div:nth-child(1) { background-color: red; } .container>div>div:nth-child(2) { background-color: goldenrod; } .container>div>div:nth-child(3) { background-color: greenyellow; } .row { background-color: hotpink; height: 200px; margin-top: 30px; } </style> <h1>垂直居下</h1> <div class=\"container\"> <div class=\"row align-items-end\"> <div class=\"col-md-3\">第一部分</div> <div class=\"col-md-6\">第二部分</div> <div class=\"col-md-3\">第三部分</div> </div> </div>",
+        ]
+    },
+    "垂直居中": {
+        "prefix": ":bootstrap",
+        "body": [
+            "  <style> .container>div>div:nth-child(1) { background-color: center; } .container>div>div:nth-child(2) { background-color: goldenrod; } .container>div>div:nth-child(3) { background-color: greenyellow; } .row { background-color: hotpink; height: 200px; margin-top: 30px; } </style> <h1>垂直居中</h1> <div class=\"container\"> <div class=\"row align-items-end\"> <div class=\"col-md-3\">第一部分</div> <div class=\"col-md-6\">第二部分</div> <div class=\"col-md-3\">第三部分</div> </div> </div>",
+        ]
+    },
+    "居中": {
+        "prefix": ":bootstrap",
+        "body": [
+            "<style> .container>div>div:nth-child(1) { background-color: red; } .container>div>div:nth-child(2) { background-color: goldenrod; } .container>div>div:nth-child(3) { background-color: greenyellow; } .row { background-color: hotpink; height: 200px; margin-top: 30px; } </style> <h1 class=\"center\">居右</h1> <div class=\"container\"> <div class=\"row justify-content-center\"> <div class=\"col-md-3\">第一部分</div> <div class=\"col-md-3\">第二部分</div> </div> </div>",
+        ]
+    },
+    "居两边": {
+        "prefix": ":bootstrap",
+        "body": [
+            "    <style> .container>div>div:nth-child(1) { background-color: red; } .container>div>div:nth-child(2) { background-color: goldenrod; } .container>div>div:nth-child(3) { background-color: greenyellow; } .row { background-color: hotpink; height: 200px; margin-top: 30px; } </style> <h1 class=\"center\">居两边</h1> <div class=\"container\"> <div class=\"row justify-content-between\"> <div class=\"col-md-3\">第一部分</div> <div class=\"col-md-3\">第二部分</div> </div> </div>",
+        ]
+    },
+    "对折布局": {
+        "prefix": ":bootstrap",
+        "body": [
+            "    <style> .container>div>div:nth-child(1) { background-color: red; } .container>div>div:nth-child(2) { background-color: goldenrod; } .container>div>div:nth-child(3) { background-color: greenyellow; } .row { background-color: hotpink; height: 200px; margin-top: 30px; } </style> <h1 class=\"center\">垂直居中-对折布局</h1> <div class=\"container\"> <div class=\"row align-items-center justify-content-around\"> <div class=\"col-md-3\">第一部分</div> <div class=\"col-md-3\">第二部分</div> <div class=\"col-md-3\">第三部分</div> </div> </div>",
+        ]
+    },
+    "流式容器和固定宽度容器": {
+        "prefix": ":bootstrap",
+        "body": [
+            "<div class=\"container\" style=\"background-color: red; height: 100px;\"> 流式容器 </div> <div class=\"container-fluid\" style=\"background-color: red; height: 100px;margin-top: 10px;\"> 固定宽度容器 </div>",
+        ]
+    },
+}

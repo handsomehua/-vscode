@@ -1,0 +1,204 @@
+{
+        //------------------------------终端-------------------------------------------
+        "终端:打印go版本": {
+            "prefix": ":cmd",
+            "body": [
+                "go version"
+            ]
+        },
+        "打印go环境信息:终端": {
+            "prefix": ":cmd",
+            "body": [
+                "go env"
+            ]
+        },
+        "运行:终端": {
+            "prefix": ":cmd",
+            "body": [
+                "go run \"${TM_FILEPATH}\""
+            ]
+        },
+        "运行多文件:终端": {
+            "prefix": ":cmd",
+            "body": [
+                "//好处不用引入文件\ngo run ${TM_FILENAME} 文件二$1.go"
+            ]
+        },
+        "运行目录下所以文件:终端": {
+            "prefix": ":cmd",
+            "body": [
+                "//1.好处不用引入文件\n//2.不能带有tempCodeRunnerFile.go文件\ngo run ${TM_DIRECTORY}\n\n\ngo run ./"
+            ]
+        },
+        "生成.exe:终端": {
+            "prefix": ":cmd",
+            "body": [
+                "go build \"${TM_FILEPATH}\""
+            ]
+        },
+        "运行.exe:终端": {
+            "prefix": ":cmd",
+            "body": [
+                "${TM_DIRECTORY}/${TM_FILENAME_BASE}.exe"
+            ]
+        },
+        "修改环境变量": {
+            "prefix": ":cmd",
+            "body": [
+                "go env -w GO111MODULE=auto"
+            ]
+        },
+        "代码执行终端命令": {
+            "prefix": ":cmd",
+            "body": [
+                "//代码执行终端命令\n var out bytes.Buffer\n // cmdPtr := exec.Command(\"ls\")\n // cmdPtr := exec.Command(\"ls\", []string{\"-a\", \"-l\"}...)\n cmdPtr := exec.Command(\"go\", \"version\") //打印版本\n // cmdPtr := exec.Command(\"go\", \"env\")     //打印环境信息\n cmdPtr.Stdout = &out\n cmdPtr.Run()\n result := out.String()\n fmt.Println(result)\n"
+            ]
+        },
+        "代码指定目录执行终端命令": {
+            "prefix": ":cmd",
+            "body": [
+                "//代码执行终端命令\n var out bytes.Buffer\n cmdPtr := exec.Command(\"go\", \"build\", \"-o\", \"demo4\") //只能和main平级，才能生成demo4\n cmdPtr.Dir = \"W:/goproject/src/day02\"\n \n cmdPtr.Stdout = &out\n cmdPtr.Run()\n result := out.String()\n fmt.Println(result)\n"
+            ]
+        },
+	//------------------------------第三方包------------------------------------------------
+	"精确小数位": {
+		"scope": "go",
+		"prefix": "&_decimal",
+		"body": [
+			"//第三方decimal包\n //使用场景：浮点型精度丢失\n //下载包：W:/goproject> go get github.com/shopspring/decimal\n \n //引入包：\"github.com/shopspring/decimal\"\n \n v1 := decimal.NewFromFloat(0.00000000012)\n v2 := decimal.NewFromFloat(0.29)\n var v3 = v1.Add(v2) //加\n var v4 = v1.Sub(v2) //减\n var v5 = v1.Mul(v2) //乘\n var v6 = v1.Div(v2) //除\n fmt.Println(v3, v4, v5, v6)\n \n var price = decimal.NewFromFloat(3.4626)\n var data1 = price.Round(1)    //保留小数点后一位（四舍五入）\n var data2 = price.Truncate(1) //保留小数点后一位\n fmt.Println(data1, data2)\n"
+		]
+	},
+    "筛选数组值": {
+		"scope": "go",
+		"prefix": "&_arrays",
+		"body": [
+			"//第三方arrays包\n //使用场景：筛选数组值\n //下载包：W:/goproject> go get \"github.com/wxnacy/wgo/arrays\"\n //引入包：\"github.com/wxnacy/wgo/arrays\"\n \n var str = \"342\"\n var numbers []string\n numbers = append(numbers, \"3332\", \"342\", \"ssddd\", \"ssss\", \"%%%%\")\n index := arrays.ContainsString(numbers, str)\n if index == -1 {\n fmt.Printf(\"not exists\") //-1说明不存在\n } else {\n fmt.Println(index) //存在则会返回元素的下标\n }\n"
+		]
+	},
+
+	//------------------------------内置包-----------------------------------------------
+	"获取终端参数-h -p": {
+		"scope": "go",
+		"prefix": "&flag",
+		"body": [
+			"\t//方式一","\t//终端执行go run \"w:/goproject/src/day02/main.go\"-h locahost -p 3306", "\t// fmt.Println(os.Args)", "", "\t//方式二", "\t//终端执行：go run \"w:/goproject/src/day02/main.go\" -h locahost -p 3306", "\thost := flag.String(\"h\", \"127.0.0.1\", \"主机名\") //默认127.0.0.1", "\tport := flag.Int(\"p\", 8080, \"端口\")            //默认8080", "", "\tvar email string", "\tflag.StringVar(&email, \"e\", \"\", \"邮箱\")", "", "\tflag.Parse()", "", "\tfmt.Println(*port, *host, email) //3306 locahost 1461411275@qq.com"
+		]
+	},
+    "正则表达式": {
+		"scope": "go",
+		"prefix": "&regexp",
+		"body": [
+            "\t//1.根据字符串匹配", "\tm2, _ := regexp.MatchString(\"foo.*\", \"seafood\")", "\tfmt.Println(m2) //true", "", "\t//2.根据字符串查找", "\treg1 := regexp.MustCompile(`\\d{11}`)", "\tret1 := reg1.FindString(\"12345678901asfg12155766598\")", "\tret2 := reg1.FindAllString(\"15112731394FDFD15112734334\", -1) //1表示找一个 2表示找两个 -1全部", "\tfmt.Println(ret1)", "\tfmt.Println(ret2)"
+		]
+	},
+    //------------------------------块内置包-----------------------------------------------
+    "整型升序降序": {
+		"scope": "go",
+		"prefix": "&~sort",
+		"body": [
+            "//整型升序降序\n arrayInt := []int{3, 1, 2, 5, 4}\n //升序\n sort.Ints(arrayInt)\n fmt.Println(arrayInt)\n //降序\n sort.Sort(sort.Reverse(sort.IntSlice(arrayInt)))\n fmt.Println(arrayInt)\n"
+		]
+	},
+    "浮点型升序降序": {
+		"scope": "go",
+		"prefix": "&~sort",
+		"body": [
+            "//浮点型升序降序\n arrayFloat := []float64{3.2, 1.8, 1.9, 2.2, 4.3}\n //升序\n sort.Float64s(arrayFloat)\n fmt.Println(arrayFloat)\n //降序\n sort.Sort(sort.Reverse(sort.Float64Slice(arrayFloat)))\n fmt.Println(arrayFloat)\n"
+		]
+	},
+    //-----------------------------goroutine---------------------------------------------
+    "线程协程同时执行": {
+		"scope": "go",
+		"prefix": "$go",
+		"body": [
+            "package main\n \n import (\n \"fmt\"\n \"time\"\n )\n \n //协程\n func test() {\n \n for i := 0; i < 10; i++ {\n fmt.Println(\"test() golang-\", i)\n time.Sleep(time.Millisecond * 1000)\n }\n \n }\n \n //主线程\n func main() {\n go test() //表示开启一个协程\n for i := 0; i < 10; i++ {\n fmt.Println(\"main() golang-\", i)\n time.Sleep(time.Millisecond * 1000)\n }\n }\n"
+		]
+	},
+    "不等待协程执行完毕": {
+		"scope": "go",
+		"prefix": "$go",
+		"body": [
+            "package main\n \n import (\n \"fmt\"\n \"time\"\n )\n \n //协程\n func test() {\n \n for i := 0; i < 10; i++ {\n fmt.Println(\"test() golang-\", i)\n time.Sleep(time.Millisecond * 1000)\n }\n \n }\n \n //主线程\n func main() {\n go test() //表示开启一个协程\n for i := 0; i < 10; i++ {\n fmt.Println(\"main() golang-\", i)\n time.Sleep(time.Millisecond * 100)\n }\n }\n"
+		]
+	},
+    "等待单个协程执行完毕": {
+		"scope": "go",
+		"prefix": "$go",
+		"body": [
+            "package main\n \n import (\n \"fmt\"\n \"sync\"\n \"time\"\n )\n \n var wg sync.WaitGroup\n \n //协程\n func test() {\n \n for i := 0; i < 10; i++ {\n fmt.Println(\"test() golang-\", i)\n time.Sleep(time.Millisecond * 1000)\n }\n wg.Done() //协程计数器-1\n }\n \n //主线程\n func main() {\n wg.Add(1) //协程计数器+1\n go test() //表示开启一个协程\n for i := 0; i < 10; i++ {\n fmt.Println(\"main() golang-\", i)\n time.Sleep(time.Millisecond * 50)\n }\n // time.Sleep(time.Second)\n wg.Wait() //等待协程执行完毕...\n fmt.Println(\"主线程退出...\")\n }\n"
+		]
+	},
+    "等待多个协程执行完毕": {
+		"scope": "go",
+		"prefix": "$go",
+		"body": [
+            "package main\n \n import (\n \"fmt\"\n \"sync\"\n \"time\"\n )\n \n var wg sync.WaitGroup\n \n //协程\n func test(num int) {\n defer wg.Done()\n for i := 1; i < 5; i++ {\n fmt.Printf(\"协程(%v)打印的第%v条数据\\n\", num, i)\n time.Sleep(time.Millisecond * 1000)\n }\n \n }\n \n //主线程\n func main() {\n for i := 1; i <= 6; i++ {\n wg.Add(1) //计数器加1\n go test(i)\n }\n wg.Wait()\n }\n"
+		]
+	},
+    "为什么使用协程+": {
+		"scope": "go",
+		"prefix": "$go",
+		"body": [
+            "package main\n \n import (\n \"fmt\"\n \"sync\"\n \"time\"\n )\n \n //统计1-120000的数字中那些是素数？goroutine实现\n /*\n 1 协程 统计 1-30000\n 2 协程 统计 30001-60000\n 3 协程 统计 60001-90000\n 4 协程 统计 90001-120000\n */\n func test(n int) {\n for num := (n - 1) * 30000; num < n*30000; num++ {\n var flag = true\n for i := 2; i < num; i++ {\n if num%i == 0 {\n flag = false\n break\n }\n }\n if flag {\n // fmt.Println(num, \"是素数\")\n }\n }\n wg.Done()\n }\n \n var wg sync.WaitGroup\n \n //不使用协程\n func test2() {\n start2 := time.Now().Unix()\n for num := 2; num < 120000; num++ {\n var flag = true\n for i := 2; i < num; i++ {\n if num%i == 0 {\n flag = false\n break\n }\n }\n if flag {\n // fmt.Print(num, \"是素数\")\n }\n }\n end2 := time.Now().Unix()\n \n fmt.Println(end2 - start2) //3毫秒\n }\n func main() {\n //不使用协程\n test2()\n //使用协程\n start := time.Now().Unix()\n for i := 1; i < 4; i++ {\n wg.Add(1)\n go test(i)\n }\n wg.Wait() //等待协程执行完毕..\n end := time.Now().Unix()\n \n fmt.Println(end - start) //3毫秒\n \n }\n"
+		]
+	},
+    "goroutine和channel协同案例+": {
+		"scope": "go",
+		"prefix": "$go",
+		"body": [
+            "package main\n \n import (\n \"fmt\"\n \"sync\"\n \"time\"\n )\n \n var wg sync.WaitGroup\n \n //写数据\n func fn1(ch chan int) {\n for i := 1; i < 10; i++ {\n ch <- i\n fmt.Printf(\"【写入】数据%v成功\\n\", i)\n time.Sleep(time.Millisecond * 51)\n }\n \n close(ch)\n wg.Done()\n }\n \n func fn2(ch chan int) {\n for v := range ch {\n fmt.Printf(\"【读取】数据%v成功\\n  %v\\n\", v, v)\n time.Sleep(time.Millisecond * 50)\n }\n wg.Done()\n \n }\n \n func main() {\n var ch = make(chan int, 10)\n wg.Add(1)\n go fn1(ch)\n wg.Add(1)\n go fn2(ch)\n wg.Wait()\n }\n"
+		]
+	},
+    "goroutine和channel实现并发和并行+": {
+		"scope": "go",
+		"prefix": "$go",
+		"body": [
+            "package main\n \n import (\n \"fmt\"\n \"sync\"\n \"time\"\n )\n \n var wg sync.WaitGroup\n \n //向 intChan放入 1-120000个数\n func putNum(intChan chan int) {\n for i := 2; i < 120000; i++ {\n intChan <- i\n }\n close(intChan)\n wg.Done()\n \n }\n \n //从 intChan取出数据，并判断是否为素数，如果是，就把得到的放在primeChan\n func primeNum(intChan chan int, primeChan chan int, exitchan chan bool) {\n for num := range intChan {\n var flag = true\n for i := 2; i < num; i++ {\n if num%i == 0 {\n flag = false\n break\n }\n }\n if flag {\n primeChan <- num\n //fmt.Println(num,\"是素数\")\n }\n }\n //要关闭 primeChan\n // close(primeChan) //如果一个channel关闭了就法给这个channel发送数据了\n exitchan <- true\n wg.Done()\n \n }\n \n //printPrime打印素的方法\n func printPrime(primeChan chan int) {\n for v := range primeChan {\n fmt.Println(v)\n }\n wg.Done()\n }\n \n func main() {\n start := time.Now().Unix()\n intChan := make(chan int, 1000)\n primeChan := make(chan int, 50000)\n exitchan := make(chan bool, 16)\n \n //存放数字的协程\n wg.Add(1)\n go putNum(intChan)\n \n //统计素数的协程\n for i := 0; i < 16; i++ { //重点：16是开启16个协程执行，这里是16下面74行也是16\n wg.Add(1)\n go primeNum(intChan, primeChan, exitchan)\n }\n \n //打印素数的协程\n wg.Add(1)\n go printPrime(primeChan)\n \n //判断exitChan是否存满值\n wg.Add(1)\n go func() {\n for i := 0; i < 16; i++ {\n <-exitchan\n }\n //关闭primeChan\n close(primeChan)\n wg.Done()\n }()\n \n wg.Wait()\n end := time.Now().Unix()\n \n fmt.Println(end - start)\n \n fmt.Println(\"执行完毕...\")\n }\n"
+		]
+	},
+    "goroutine互斥锁1": {
+		"scope": "go",
+		"prefix": "$go",
+		"body": [
+            "package main\n \n import (\n \"fmt\"\n \"sync\"\n \"time\"\n )\n \n var count = 0\n var wg sync.WaitGroup\n var mutex sync.Mutex //互斥锁\n \n func test() {\n mutex.Lock() //上锁\n count++\n fmt.Println(\"the count is:\", count)\n time.Sleep(time.Millisecond)\n mutex.Unlock() //执行完解锁\n wg.Done()\n }\n \n func main() {\n for r := 0; r < 20; r++ {\n wg.Add(1)\n go test()\n }\n wg.Wait()\n }\n"
+		]
+	},
+    "goroutine互斥锁2": {
+		"scope": "go",
+		"prefix": "$go",
+		"body": [
+            "package main\n \n import (\n \"fmt\"\n \"sync\"\n \"time\"\n )\n \n var count = 0\n var wg sync.WaitGroup\n var mutex sync.Mutex //互斥锁\n var m = make(map[int]int, 0)\n \n func test(num int) {\n mutex.Lock() //上锁\n var sum = 1\n for i := 1; i < num; i++ {\n sum *= i\n }\n m[num] = sum\n \n fmt.Printf(\"key=%v value=%v\\n\", num, sum)\n time.Sleep(time.Millisecond)\n mutex.Unlock() //执行完解锁\n wg.Done()\n }\n \n func main() {\n for r := 0; r < 20; r++ {\n wg.Add(1)\n go test(r)\n }\n wg.Wait()\n }\n"
+		]
+	},
+    "读写锁读多个写一个+": {
+		"scope": "go",
+		"prefix": "$go",
+		"body": [
+            "package main\n \n import (\n \"fmt\"\n \"sync\"\n \"time\"\n )\n \n var wg sync.WaitGroup\n var mutex sync.RWMutex\n \n //读写锁  读多个写一个\n //写的方法\n func write() {\n mutex.Lock()\n fmt.Println(\"执行写操作\")\n time.Sleep(time.Second * 2)\n mutex.Unlock()\n wg.Done()\n }\n \n //读的方法\n func read() {\n mutex.RLock()\n fmt.Println(\"---执行读操作\")\n time.Sleep(time.Second * 2)\n mutex.RUnlock()\n wg.Done()\n }\n \n func main() {\n //开启10个协程执行写操作\n for i := 1; i < 10; i++ {\n wg.Add(1)\n go read()\n }\n //开启10个协程执行读操作\n for i := 1; i < 10; i++ {\n wg.Add(1)\n go write()\n }\n wg.Wait()\n }\n"
+		]
+	},
+
+
+    //------------------------------参考-----------------------------------------------
+    "冒泡排序^": {
+		"scope": "go",
+		"prefix": "^",
+		"body": [
+            "package main\n \n import \"fmt\"\n \n //冒泡排序>升序  降序<\n func BubbleSort(arr *[5]int) {\n temp := 0\n for i := 0; i < len(*arr); i++ {\n for j := 0; j < len(*arr)-1-i; j++ {\n if (*arr)[j] < (*arr)[j+1] { // >升序  降序<\n temp = (*arr)[j]\n (*arr)[j] = (*arr)[j+1]\n (*arr)[j+1] = temp\n }\n }\n }\n fmt.Println((*arr))\n }\n \n func main() {\n \n //定义数组\n arr := [5]int{11, 33, 66, 33, 22}\n //将数组传递给一个函数，完成排序\n BubbleSort(&arr)\n \n }\n"
+		]
+	},
+    "筛选数组值^": {
+		"scope": "go",
+		"prefix": "^",
+		"body": [
+            "//搜索数组是否存在指定的值\n names := [4]string{\"将\", \"蒋\", \"奖\", \"江\"}\n str := \"蒋\"\n index := -1\n for i := 0; i < len(names); i++ {\n if str == names[i] {\n index = i\n break\n }\n }\n if index != -1 {\n fmt.Println(str, \"找到了下标为：\", index)\n } else {\n fmt.Println(\"没有找到\")\n }\n"
+		]
+	},
+    "指定开始下标筛选数组值^": {
+		"scope": "go",
+		"prefix": "^",
+		"body": [
+            "package main\n \n import \"fmt\"\n \n // TODO ：main.go\n \n func BinaryFile(arr *[6]int, leftIndex int, rightIndex int, findVal int) {\n \n if leftIndex > rightIndex {\n fmt.Println(\"找不到\")\n return\n }\n \n //先找到 中间的下标\n middle := (leftIndex + rightIndex) / 2\n \n if (*arr)[middle] > findVal {\n BinaryFile(arr, leftIndex, middle-1, findVal)\n } else if (*arr)[middle] < findVal {\n BinaryFile(arr, middle+1, rightIndex, findVal)\n } else {\n //找到了\n fmt.Println(\"找到了，下标为%v\", middle)\n }\n \n }\n \n func main() {\n arr := [6]int{1, 8, 10, 89, 1000, 1334}\n //2表示下标开始\n BinaryFile(&arr, 2, len(arr)-1, 8)\n }\n"
+		]
+	},
+}

@@ -1,0 +1,125 @@
+{
+    //---------------------------------------css3-------------------------------------------------------
+    "边框圆角": {
+        "prefix": ":css3",
+        "body": [
+            "border-radius:50%;",
+        ]
+    },
+    "文字上下间距": {
+        "prefix": ":css3",
+        "body": [
+            "line-height:10px;",
+        ]
+    },
+    "图片文字居上居下": {
+        "prefix": ":css3",
+        "body": [
+            "vertical-align:text-top;/*:text-bottom*/",
+        ]
+    },
+    "文字粗细": {
+        "prefix": ":css3",
+        "body": [
+            "font-weight: 900;",
+        ]
+    },
+    "文字超出滚动条": {
+        "prefix": ":css3",
+        "body": [
+            "overflow: auto;/*超出div才出现滚动条*/",
+        ]
+    },
+    "li(2)查找元素": {
+        "prefix": ":css3",
+        "body": [
+            ".box p:nth-of-type(2) { color: red; }",
+        ]
+    },
+    "序号": {
+        "prefix": ":css3",
+        "body": [
+            ".box { counter-reset: count; } .box P::before { counter-increment: count 1; content: counter(count\".\"; font-size: 25px; }",
+        ]
+    },
+    "每个文字左右间距": {
+        "prefix": ":css3",
+        "body": [
+            "letter-spacing:10px;",
+        ]
+    },
+    "z-index叠层": {
+        "prefix": ":css",
+        "body": [
+            "z-index: -1;",
+        ]
+    },
+    //---------------------------------------css-------------------------------------------------------
+    "鼠标放上显示小手": {
+        "prefix": ":css",
+        "body": [
+            "cursor: pointer;",
+        ]
+    },
+    "屏幕100%高": {
+        "prefix": ":css",
+        "body": [
+            "height: calc(100vh);",
+        ]
+    },
+    "引入html文件": {
+        "prefix": ":css",
+        "body": [
+            "<iframe src=\"\" width=\"100\" frameborder=\"no\" border=\"0\"></iframe>",
+        ]
+    },
+    //---------------------------------------flex-------------------------------------------------------
+    "flex左": {
+        "prefix": ":flex",
+        "body": [
+            "display: flex; justify-content: flex-start;",
+        ]
+    },
+    "flex中": {
+        "prefix": ":flex",
+        "body": [
+            "display: flex; justify-content: center;",
+        ]
+    },
+    "flex右": {
+        "prefix": ":flex",
+        "body": [
+            "display: flex; justify-content: flex-end;",
+        ]
+    },
+    "flex上": {
+        "prefix": ":flex",
+        "body": [
+            "align-items: flex-end;",
+        ]
+    },
+    "flex垂直局中": {
+        "prefix": ":flex",
+        "body": [
+            "align-items: center;",
+        ]
+    },
+    "flex下": {
+        "prefix": ":flex",
+        "body": [
+            "align-items: flex-end;",
+        ]
+    },
+    "flex对折1": {
+        "prefix": ":flex",
+        "body": [
+            "justify-content: space-between;",
+        ]
+    },
+    "flex对折2": {
+        "prefix": ":flex",
+        "body": [
+            "justify-content: space-around;",
+        ]
+    },
+}
