@@ -203,7 +203,7 @@
 		"scope": "go,html",
 		"prefix": "{{beego}}",
 		"body": [
-			"{{$names := .name}} {{$names}}"
+			"{{$$names := .name}} {{$$names}}"
 		]
 	},
 	"if else if else": {
@@ -288,6 +288,20 @@
 		"prefix": "{{beego}}",
 		"body": [
 			"//控制器\n type User struct {\n Id   int\n Name string\n Age  int\n }\n \n var user User\n user.Id = 1\n user.Name = \"hallen\"\n user.Age = 18\n \n this.Data[\"user\"] = user\n \n //html\n {{.user.Id}} {{.user.Name}} {{.user.Age}}\n"
+		]
+	},
+	"{{$.name}}使用": {
+		"scope": "go,html",
+		"prefix": "{{beego}}",
+		"body": [
+			"//控制器\n arr := []int{1, 2, 3, 4, 5}\n this.Data[\"arr\"] = arr\n this.Data[\"name\"] = \"beego\"\n //html\n {{range $i,$v := .arr}}\n <p>{{$v}}</p>\n <p>{{$.name}}</p>\n {{end}}\n"
+		]
+	},
+	"其他模板语法++": {
+		"scope": "go,html",
+		"prefix": "{{beego}}",
+		"body": [
+			"--------------------------------------\n <p></p>\n {{`<a href=\"www.baidu.com\">百度</a>`}}\n <p></p>\n --------------------------------------\n <p></p>\n {{print nil}}\n <p></p>\n --------------------------------------\n <p></p>\n {{range .arr}}\n <p>{{.}}</p>\n {{else}}\n <p>暂无数据</p>\n {{end}}\n <p></p>\n --------------------------------------\n <!-- this.Data[\"a\"] = \"1\"\n this.Data[\"b\"] = 12 -->\n <p>变量a和b有一个空则返回空，没有则返回最后一个</p>\n {{and .a .b}} //12\n <p></p>\n --------------------------------------\n <!-- this.Data[\"a\"] = \"\"\n this.Data[\"b\"] = 12 -->\n <p>都不为空返回第一个，为空返回最上面一个</p>\n {{or .a .b}} //12\n <p></p>\n --------------------------------------\n <!-- this.Data[\"arr\"] = []int{3, 4, 5, 6} -->\n <!-- this.Data[\"map_data\"] = map[string]interface{}{\"name\": \"hh\", \"age\": 15} -->\n <p></p>\n {{index .arr 1}} //4\n <p></p>\n {{index .map_data \"name\"}} //hh\n <p></p>\n --------------------------------------\n <!-- this.Data[\"arr\"] = []int{3, 4, 5, 6} -->\n <p></p>\n {{len .arr}} //4\n <p></p>\n {{.arr | len}} //4\n <p></p>\n --------------------------------------\n <!-- this.Data[\"is_ok\"] = 0 -->\n <p>取反</p>\n {{.is_ok}} {{not .is_ok}}\n <p></p>\n --------------------------------------\n <p>比较</p>\n {{compare 99 98}}\n <p></p>\n {{compare 'a' 97}}\n <p></p>\n --------------------------------------\n <p>获取访问的路由</p>\n {{urlfor \"MainController.Get\"}}\n"
 		]
 	},
 

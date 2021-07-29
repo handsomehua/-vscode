@@ -1,73 +1,187 @@
 {	
-	//----------------------终端------------------------
+	//----------------------终端^------------------------
 	"查看安装信息": {
 		"scope": "go",
-		"prefix": ":dcmd",
+		"prefix": "~docker",
 		"body": [
 		"docker info"
 		],
 	},
 	"查看docker版本": {
 		"scope": "go",
-		"prefix": ":dcmd",
+		"prefix": "~docker",
 		"body": [
 		"docker version"
 		],
 	},
 	"搜索镜像": {
 		"scope": "go",
-		"prefix": ":dcmd",
+		"prefix": "~docker",
 		"body": [
 		"docker search 镜像名"
 		],
 	},
+	"查看容器日志^": {
+		"scope": "go",
+		"prefix": "~docker",
+		"body": [
+		"docker logs -f 容器ID"
+		],
+	},
+	"退出镜像": {
+		"scope": "go",
+		"prefix": "~docker",
+		"body": [
+		"exit"
+		],
+	},
+	"只查看正在运行容器的ID": {
+		"scope": "go",
+		"prefix": "~docker",
+		"body": [
+		"docker ps -q"
+		],
+	},
+	//----------------------终端------------------------
 	"pull镜像": {
 		"scope": "go",
-		"prefix": ":dcmd",
+		"prefix": "-docker",
 		"body": [
 		"docker pull 镜像名:版本"
 		],
 	},
 	"查看所有镜像": {
 		"scope": "go",
-		"prefix": ":dcmd",
+		"prefix": "-docker",
 		"body": [
 		"docker image ls 或 docker images"
 		],
 	},
 	"删除未运行镜像": {
 		"scope": "go",
-		"prefix": ":dcmd",
+		"prefix": "-docker",
 		"body": [
 		"docker image rmi 镜像名:TAG标签 或 docker image rmi IMAGE ID"
 		],
 	},
 	"从docker导出镜像": {
 		"scope": "go",
-		"prefix": ":dcmd",
+		"prefix": "-docker",
 		"body": [
 		"  //从docker导出镜像\n //./tomcat.image 导出到当前目录下，命名为tomcat.image\n //0e  ID\n \"docker save -o ./tomcat.image 0e\"\n"
 		],
 	},
 	"从window导入镜像": {
 		"scope": "go",
-		"prefix": ":dcmd",
+		"prefix": "-docker",
 		"body": [
 		"//当前目录下tomcat.image镜像\n //注意：导入后名称和TAG是none 重命名镜像名称:版本\n docker load -i ./tomcat.image\n"
 		],
 	},
 	"重命名镜像名称:版本": {
 		"scope": "go",
-		"prefix": ":dcmd",
+		"prefix": "-docker",
 		"body": [
 		"//tomcat:8.5 名称:版本\n docker tag 0e47688cc516 tomcat:8.5\n"
 		],
 	},
-	"退出镜像": {
+	"运行容器": {
 		"scope": "go",
-		"prefix": ":dcmd",
+		"prefix": "-docker",
 		"body": [
-		"exit"
+		"#运行容器\n # -d 后台运行\n # -p win10端口:容器端口 容器端口映射win10端口\n # tomcat  镜像名称 简写名称\n # 0e47688cc516 ID\n # 访问 localhost:8081\n docker run -d -p 8081:8080 --name tomcat 0e47688cc516\n"
+		],
+	},
+	"查看正在运行的容器": {
+		"scope": "go",
+		"prefix": "-docker",
+		"body": [
+		"docker ps"
+		],
+	},
+	"查看所有容器+": {
+		"scope": "go",
+		"prefix": "-docker",
+		"body": [
+		"docker ps -a"
+		],
+	},
+	"进入到容器内部+": {
+		"scope": "go",
+		"prefix": "-docker",
+		"body": [
+		"docker exec -it 容器ID sh 或 docker exec -it 容器ID bash"
+		],
+	},
+	"停止运行容器": {
+		"scope": "go",
+		"prefix": "-docker",
+		"body": [
+		"docker stop 容器ID"
+		],
+	},
+	"删除容器": {
+		"scope": "go",
+		"prefix": "-docker",
+		"body": [
+		"#删除容器（删除容器前，需要先停止容器）\n docker rm 容器ID\n"
+		],
+	},
+	"停止所有运行容器": {
+		"scope": "go",
+		"prefix": "-docker",
+		"body": [
+		"docker stop $(docker ps -qa)"
+		],
+	},
+	"删除所有容器": {
+		"scope": "go",
+		"prefix": "-docker",
+		"body": [
+		"docker rm $(docker ps -qa)"
+		],
+	},
+	"启动容器": {
+		"scope": "go",
+		"prefix": "-docker",
+		"body": [
+		"docker start 容器ID"
+		],
+	},
+	//----------------------docker数据卷-----------------------
+	"创建数据卷": {
+		"scope": "go",
+		"prefix": "#_docker",
+		"body": [
+		"docker volume create volume_ssm_tomcat"
+		],
+	},
+	"查看数据卷详细信息": {
+		"scope": "go",
+		"prefix": "#_docker",
+		"body": [
+		"docker volume inspect test"
+		],
+	},
+	"查看全部数据卷": {
+		"scope": "go",
+		"prefix": "#_docker",
+		"body": [
+		"docker volume ls"
+		],
+	},
+	"删除数据卷": {
+		"scope": "go",
+		"prefix": "#_docker",
+		"body": [
+		"docker volume rm 数据卷名称"
+		],
+	},
+	"手动数据卷映射->占位": {
+		"scope": "go",
+		"prefix": "#_docker",
+		"body": [
+		"//未完成\n docker run -d -p 8080:8080 --name ssm_tomcat -v /G/ss:/usr/local/tomcat 0e47688cc516\n"
 		],
 	},
 }

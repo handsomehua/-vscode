@@ -14,6 +14,13 @@
 			"this.Ctx.WriteString(\"test\")"
 		]
 	},
+	"写入日志文件^": {
+		"scope": "go",
+		"prefix": "!1_log",
+		"body": [
+			"//func main\n //控制台输出log\n // logs.SetLogger(\"console\")\n \n//\"maxlines\":100 每个文件保存的最大行数\n //mandays:1 文件保存的天数，默认7天\n//错误可以分文件存储，详情百度\n logs.SetLogger(logs.AdapterFile, `{\"filename\":\"logs/test.log\"}`)\n \n //default.go\n logs.Emergency(\"这是Emergency日志\")\n logs.Alert(\"这是Alert日志\")\n logs.Critical(\"这是Critical日志\")\n logs.Error(\"这是Error日志\")\n logs.Warn(\"这是Warn日志\")\n logs.Notice(\"这是Notice日志\")\n logs.Info(\"这是info日志\")\n logs.Debug(\"这是debug日志\")\n"
+		]
+	},
 	//---------------------路由---------------------------
 	"get请求": {
 		"scope": "go",

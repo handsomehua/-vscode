@@ -1,0 +1,200 @@
+{
+	
+	//------------------------终端--------------------------------
+	"自动建表命令": {
+		"scope": "go",
+		"prefix": ":sql",
+		"body": [
+			"//1.创建表\n //go run main.go orm syncdb help\n //2.创建表，返回sql语句\n //go run main.go orm syncdb -v\n //3.删除表在创建表(危险)\n //go run main.go orm syncdb -force\n"
+		]
+	},
+	//------------------------SQL--------------------------------
+	"beego连接mysql": {
+		"scope": "go",
+		"prefix": ":sql_beego",
+		"body": [
+			"//导入包\n // \"github.com/astaxie/beego/orm\"\n // _ \"github.com/go-sql-driver/mysql\"\n \n //数据库链接\n username := beego.AppConfig.String(\"username\")\n password := beego.AppConfig.String(\"password\")\n host := beego.AppConfig.String(\"host\")\n port := beego.AppConfig.String(\"port\")\n database := beego.AppConfig.String(\"database\")\n \n dbConn := username + \":\" + password + \"@tcp(\" + host + \":\" + port + \")/\" + database + \"?charset=utf8\"\n \n orm.RegisterDriver(\"mysql\", orm.DRMySQL)\n orm.RegisterDataBase(\"default\", \"mysql\", dbConn)\n \n fmt.Println(\"连接数据库\")\n"
+		]
+	},
+	"自动建表": {
+		"scope": "go",
+		"prefix": ":sql_beego",
+		"body": [
+			"//main\n _ \"beego/models\"\n //func main\n orm.RunCommand()\n //models/model\n \"github.com/astaxie/beego/orm\"\n type User struct {\n Id   int\n Name string\n Age  int\n Addr string\n }\n//重写表名\n func (this *User) TableName() string {\n return \"sys_user\"\n }\n func init() {\n //结构体注册模型\n orm.RegisterModel(new(User))\n }\n //执行终端\n beego> go run main.go orm syncdb help\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n//不执行终端命令代码\n //fmt.Println(\"连接数据库\")后加上\n name := \"default\"\n force := false //危险 这个不能修改\n verbose := true\n err := orm.RunSyncdb(name, force, verbose)\n \n if err != nil {\n panic(err)\n }\n"
+		]
+	},
+	"自动建表 表名映射": {
+		"scope": "go",
+		"prefix": ":sql_beego", 
+		"body": [
+			"//自动建表 表名映射\n//没有重写表名，情况下才生效\n User -> user\n AuthUser -> auth_user\n Auth_User -> auth__user\n DB_AuthUser -> d_b__auth_user\n"
+		]
+	},
+	"打印SQL语句": {
+		"scope": "go",
+		"prefix": ":sql_beego", 
+		"body": [
+			"orm.Debug = true"
+		]
+	},
+
+
+
+
+	//------------------------字段设计--------------------------------
+	"主键&自动增长": {
+		"scope": "go",
+		"prefix": "-sql", 
+		"body": [
+			"`orm:\"pk;auto\"`"
+		]
+	},
+	"忽悠字段": {
+		"scope": "go",
+		"prefix": "-sql", 
+		"body": [
+			"`orm:\"-\"`"
+		]
+	},
+	"允许为null": {
+		"scope": "go",
+		"prefix": "-sql", 
+		"body": [
+			"`orm:\"null\"`"
+		]
+	},
+	"普通索引": {
+		"scope": "go",
+		"prefix": "-sql", 
+		"body": [
+			"`orm:\"index\"`"
+		]
+	},
+	"唯一索引": {
+		"scope": "go",
+		"prefix": "-sql", 
+		"body": [
+			"`orm:\"index;unique\"`"
+		]
+	},
+	"修改字段名": {
+		"scope": "go",
+		"prefix": "-sql", 
+		"body": [
+			"`orm:\"column(address)\"`"
+		]
+	},
+	"字符串长度": {
+		"scope": "go",
+		"prefix": "-sql", 
+		"body": [
+			"`orm:\"size(2000)\"`"
+		]
+	},
+	"小数位": {
+		"scope": "go",
+		"prefix": "-sql", 
+		"body": [
+			"Price float64 `orm:\"digits(4);decimals(2)\"` //长度4 小数位2"
+		]
+	},
+	"插入自动写入datetime时间+": {
+		"scope": "go",
+		"prefix": "-sql", 
+		"body": [
+			"CreateTime time.Time `orm:\"auto_now_add;type(datetime)\"`"
+		]
+	},
+	"默认值": {
+		"scope": "go",
+		"prefix": "-sql", 
+		"body": [
+			"`orm:\"default(1)\"`"
+		]
+	},
+	"注释": {
+		"scope": "go",
+		"prefix": "-sql", 
+		"body": [
+			";description(状态$1)"
+		]
+	},
+	//------------------------DB查询--------------------------------
+	"Filter": {
+		"scope": "go",
+		"prefix": "-db_filter", 
+		"body": [
+			"/*\n *    比较                __exact等于 __gt大于 __lt小于  __gte大于等于 __lte小于等于\n *\n *    不等于              qs.Exclude(\"id\", 1)\n *\n *    模糊查询            __contains\n *\n *    查询以什么开始       __startswith\n *\n *    查询以什么结尾       __endswith\n *\n *    in查询              \"id__endswith\",1,23,4,5\n *\n *    是否为null           name__isnull\", true\n *\n *    排序降序             qs.OrderBy(\"-id\")\n */\n"
+		]
+	},
+	"查询一条数据": {
+		"scope": "go",
+		"prefix": "-db_one", 
+		"body": [
+			"o := orm.NewOrm()\n qs := o.QueryTable(new(models.User))\n // o.QueryTable(\"sys_user\")\n user := models.User{}\n qs.Filter(\"id\", 1).One(&user)\n"
+		]
+	},
+	"查询所有": {
+		"scope": "go",
+		"prefix": "-db_all", 
+		"body": [
+			"o := orm.NewOrm()\n qs := o.QueryTable(new(models.User))\n users := []models.User{}\n qs.Filter(\"id__gt\", 1).All(&users)\n fmt.Println(users)\n"
+		]
+	},
+	"limit offset": {
+		"scope": "go",
+		"prefix": "-db_limit", 
+		"body": [
+			"o := orm.NewOrm()\n qs := o.QueryTable(new(models.User))\n users := []models.User{}\n qs.Limit(5).Offset(2).All(&users)\n"
+		]
+	},
+	"排序降序": {
+		"scope": "go",
+		"prefix": "-db_order", 
+		"body": [
+			"o := orm.NewOrm()\n qs := o.QueryTable(new(models.User))\n users := []models.User{}\n qs.OrderBy(\"-id\").All(&users)\n"
+		]
+	},
+	"单多字段去重+": {
+		"scope": "go",
+		"prefix": "-db_distinct", 
+		"body": [
+			"o := orm.NewOrm()\n qs := o.QueryTable(new(models.User))\n users := []models.User{}\n //多个字段去除，也可以单个字段去重\n qs.Distinct().All(&users, \"name\", \"str\")\n"
+		]
+	},
+	"计算多少条记录": {
+		"scope": "go",
+		"prefix": "-db_count", 
+		"body": [
+			"o := orm.NewOrm()\n qs := o.QueryTable(new(models.User))\n users := []models.User{}\n \n count, _ := qs.Count()\n \n this.Data[\"count\"] = count\n"
+		]
+	},
+	"查询到了返回true+": {
+		"scope": "go",
+		"prefix": "-db_exist", 
+		"body": [
+			"o := orm.NewOrm()\n qs := o.QueryTable(new(models.User))\n users := []models.User{}\n //查询到了返回true\n exist := qs.Filter(\"age\", 3).Exist()\n fmt.Println(exist)\n"
+		]
+	},
+	"更新数据": {
+		"scope": "go",
+		"prefix": "-db_update", 
+		"body": [
+			"o := orm.NewOrm()\n qs := o.QueryTable(new(models.User))\n users := []models.User{}\n \n qs.Filter(\"age\", 3).Update(orm.Params{\n \"name\": \"rrrr\",\n })\n"
+		]
+	},
+	"删除数据": {
+		"scope": "go",
+		"prefix": "-db_delete", 
+		"body": [
+			"o := orm.NewOrm()\n qs := o.QueryTable(new(models.User))\n users := []models.User{}\n \n qs.Filter(\"age\", 3).Delete()\n"
+		]
+	},
+	"插入数据": {
+		"scope": "go",
+		"prefix": "-db_insert", 
+		"body": [
+			"o := orm.NewOrm()\n user := models.User{}\n user.Name = \"dfdf\"\n user.Age = 10\n _, err := o.Insert(&user)\n fmt.Println(err)\n"
+		]
+	},
+}
