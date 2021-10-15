@@ -1,11 +1,62 @@
 {
-    "VsCode快捷键": {
-        "prefix": ":vscode",
+    "vim配置": {
+        "scope": "html,php,go",
+        "prefix": ".settings",
         "body": [
-            "/*命令选择列           F1/Ctrl+Shift+p\n 切换终端             Ctrl+`\n 工作区切换           Alt+[1-9]\n*/"
+            "//vim配置 \n \"vim.easymotion\": true,\n \"vim.incsearch\": true,\n \"files.defaultLanguage\": \"markdown\",\n \"vim.useSystemClipboard\": true,\n \"vim.useCtrlKeys\": true,\n \"vim.hlsearch\": true,\n \"vim.insertModeKeyBindings\": [{\n \"before\": [\"j\", \"j\"],\n \"after\": [\"<Esc>\"]\n }],\n \"vim.normalModeKeyBindingsNonRecursive\": [{\n \"before\": [\"<leader>\", \"d\"],\n \"after\": [\"d\", \"d\"]\n },\n {\n \"before\": [\"<C-n>\"],\n \"commands\": [\":nohl\"]\n },\n {\n \"before\": [\"b\"],\n \"after\": [\"<space>\", \"<space>\", \"e\"]\n },\n {\n \"before\": [\"t\"],\n \"after\": [\"<space>\", \"<space>\", \"g\", \"e\"]\n }\n ],\n \"vim.leader\": \"<space>\",\n \"vim.handleKeys\": {\n \"<C-a>\": false,\n \"<C-f>\": false,\n \"<C-w>\": false,\n \"<C-x>\": false,\n \"<C-c>\": false,\n \"<C-v>\": false,\n \"<C-h>\": false,\n \"<C-b>\": false,\n \"<Tab>\": false\n },\n"
         ],
     },
- 
+    "PHP CS Fixer配置": {
+        "scope": "html,php,go",
+        "prefix": ".settings",
+        "body": [
+            "\"php-cs-fixer.exclude\": [\n ],\n \"php-cs-fixer.onsave\": true,　　//Ctrl  + S 时格式化php代码\n \"php-cs-fixer.formatHtml\": true,\n \"[php]\": {\n \"editor.defaultFormatter\": \"junstyle.php-cs-fixer\"\n },\n \"php-cs-fixer.executablePath\": \"${extensionPath}/php-cs-fixer.phar\",\n \"php-cs-fixer.lastDownload\": 1627708854782,\n \"editor.mouseWheelZoom\": true, //格式化.php文件中的html代码（html、css、js）  \n //php安装路径\n \"php.validate.executablePath\": \"H:/phpStudy/phpStudy_64/phpstudy_pro/Extensions/php/php7.3.4nts/php.exe\",\n"
+        ],
+    },
+    "highlight Line配置": {
+        "scope": "html,php,go",
+        "prefix": ".settings",
+        "body": [
+            "//highlight Line配置\n \"highlightLine.borderColor\":\"#454A4D\",\n \"highlightLine.borderWidth\":\"3px\",\n"
+        ],
+    },
+    "php配置": {
+        "scope": "html,php,go",
+        "prefix": ".settings",
+        "body": [
+            "\"php-cs-fixer.exclude\": [\n ],\n \"php-cs-fixer.onsave\": true,　　//Ctrl  + S 时格式化php代码\n \"php-cs-fixer.formatHtml\": true,\n \"[php]\": {\n \"editor.defaultFormatter\": \"junstyle.php-cs-fixer\"\n },\n \"php-cs-fixer.executablePath\": \"${extensionPath}/php-cs-fixer.phar\",\n \"php-cs-fixer.lastDownload\": 1629875096456,\n \"editor.mouseWheelZoom\": true, //格式化.php文件中的html代码（html、css、js）  \n //php安装路径\n \"php.validate.executablePath\": \"H:/phpStudy/phpStudy_64/phpstudy_pro/Extensions/php/php7.3.4nts/php.exe\",\n"
+        ],
+    },
+    "超出编辑宽度换行": {
+        "scope": "html,php,go",
+        "prefix": ".settings",
+        "body": [
+            "\"editor.wordWrap\": \"on\""
+        ],
+    },
+    "`键运行go": {
+        "scope": "html,php,go",
+        "prefix": ".settings",
+        "body": [
+            "\"code-runner.runInTerminal\": true,"
+        ],
+    },
+    "底部显示或隐藏": {
+        "scope": "html,php,go",
+        "prefix": ".settings",
+        "body": [
+            "\"workbench.statusBar.visible\":true,"
+        ],
+    },
+    "结构体`json:name`": {
+        "scope": "html,php,go",
+        "prefix": ".settings",
+        "body": [
+            "//结构体`json:name`\n \"go.addTags\":{\n \"tags\":\"json,form\",\n \"options\":\"json=omitempty\",\n \"promptForTags\": false,\n \"transform\":\"snakecase\"\n },\n"
+        ],
+        "description": "使用：右击->Go: Add Taas To struct Fields"
+    },
+
         "VsCode片段常量": {
             "scope": "html,php,go",
             "prefix": ".vscode",
@@ -24,11 +75,4 @@
                 "${4:i}"
             ]
         },
-        "待办事项": {
-            "prefix": ".todo",
-            "body": [
-                "// TODO ：$1"
-            ],
-        },
-
 }

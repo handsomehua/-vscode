@@ -14,6 +14,13 @@
             "<img src=\"/static/images/tp.png\" class=\"tong\" onclick=\"imgTk('tong')\">\n <script>\n function imgTk(cla) {\n layer.open({\n type: 1,\n title: false,\n closeBtn: 0,\n area: ['auto'],\n skin: 'layui-layer-nobg',\n shadeClose: true,\n content: $('.' + cla)\n });\n }\n </script>\n"
         ]
     },
+    "关闭全部弹框": {
+        "scope": "html",
+        "prefix": ":tk",
+        "body": [
+            " layer.closeAll(); //关闭全部弹框"
+        ]
+    },
     //-------------------------------小组件---------------------------------------------
     "123456序号": {
         "scope": "html",
@@ -79,14 +86,6 @@
             "{include file=\"common/header$1\"/}"
         ]
     },    
-    //-------------------------------{php}---------------------------------------------
-    "重复空格": {
-        "scope": "html",
-        "prefix": ":widget",
-        "body": [
-            "{php} echo str_repeat(\"&nbsp;\", 5); {/php}\n"
-        ]
-    },   
     //-------------------------------{:widget()}--------------------------------------------- 
     "重复空格": {
         "scope": "html",
@@ -110,12 +109,119 @@
             "<a href='' target='_blank'>新窗口打开$1</a>"
         ]
     }, 
+    "login图标": {
+        "scope": "html",
+        "prefix": "icon",
+        "body": [
+            "<link rel=\"icon\" href=\"/favicon.png\" type=\"image/x-icon\" />"
+        ]
+    }, 
+    //-------------------------------{ :admin}---------------------------------------
+    "放大图片": {
+        "scope": "html",
+        "prefix": ":admin",
+        "body": [
+            "{:admin('fdImg',['/static/images/bj_img/plug_in/1.png$1'])}"
+        ]
+    }, 
+    "重复空格": {
+        "scope": "html",
+        "prefix": ":admin",
+        "body": [
+            "{:admin('nbsp',[10])}"
+        ]
+    }, 
+    "重复换行": {
+        "scope": "html",
+        "prefix": ":admin",
+        "body": [
+            "{:admin('wrap',[10])}"
+        ]
+    }, 
+    //-------------------------------css3----------------------------------------------
+    "定位": {
+        "scope": "html",
+        "prefix": ":css3",
+        "body": [
+            "<style>\n .chapter:target {\n border: 1px solid red;\n color: red;\n }\n </style>\n <a href=\"#p1\" class=\"chapter\">定位+样式</a><br>\n {:admin('wrap',[30])}\n <h1 class=\"chapter\" id=\"p1\">css3小功能</h1>\n {:admin('wrap',[30])}\n"
+        ]
+    },  
+    "同级最后一个元素": {
+        "scope": "html",
+        "prefix": ":css3",
+        "body": [
+            "<style>\n div>li:last-child {\n color: green;\n }\n </style>\n <div>\n <h3>同级最后一个元素</h3>\n <li>测试1</li>\n <li>测试2</li>\n <li>测试3</li>\n </div>\n"
+        ]
+    },  
+    "精确同级查找元素": {
+        "scope": "html",
+        "prefix": ":css3",
+        "body": [
+            "<style>\n .test li:nth-of-type(2) {\n color: red;\n }\n </style>\n <h1 class=\"chapter\">精确查找元素</h1>\n <div class=\"test\">\n <li>1</li>\n <li>1</li>\n <li>1</li>\n </div>\n"
+        ]
+    },  
+    "超出显示...": {
+        "scope": "html",
+        "prefix": ":css3",
+        "body": [
+            "<style>\n .cc {\n margin: 50px;\n margin: auto;\n }\n /* .b1 {\n width: 100px;\n border: 1px solid red;\n }\n */\n \n .b2 {\n width: 100px;\n height: 100px;\n border: 1px solid blue;\n overflow: hidden;\n /* overflow-x: hidden;\n overflow-y: scroll; */\n }\n \n .b3 {\n width: 100px;\n border: 1px solid green;\n white-space: nowrap;\n overflow: hidden;\n text-overflow: clip;\n text-overflow: ellipsis;\n }\n </style>\n <div id=\"testr\">\n <div class=\"cc b2\">在的手机说它是一台</div><br>\n <div class=\"cc b3\">在的手机说它是一台微型电脑</div>\n </div>\n"
+        ]
+    },  
+    "下拉阅读": {
+        "scope": "html",
+        "prefix": ":css3",
+        "body": [
+            "<h1 class=\"chapter\">下拉阅读</h1>\n <style>\n .xl {\n width: 200px;\n height: 100px;\n border: 1px solid blue;\n overflow-x: hidden;\n overflow-y: scroll;\n }\n </style>\n <div class=\"xl\">在的手机说它是一台微型电脑毫不夸张，因为它的功能已经和电脑没有什么区别了。现在的手在的手机说它是一台微型电脑毫不夸张，因为它的功能已经和电脑没有什么区别了。</div><br>\n"
+        ]
+    },  
+    "文本溢出换行+++": {
+        "scope": "html",
+        "prefix": ":css3",
+        "body": [
+            "<style>\n .wb {\n width: 100px;\n border: 1px solid red;\n /* margin: 100px; */\n }\n \n .wb2 {\n /* word-wrap: break-word;方式一 */\n /* overflow-wrap: break-word;方式二 */\n word-break: break-all;\n }\n </style>\n <div>\n <div class=\"cc wb\">在的手机说它是一台微型电脑毫不夸张，divdivdivdivdivdivdivdiv</div><br>\n <div class=\"cc wb wb2\">在的手机说它是一台微型电脑毫不夸张，divdivdivdivdivdivdivdiv</div>\n </div>\n"
+        ]
+    },  
+    "文本居左居右": {
+        "scope": "html",
+        "prefix": ":css3",
+        "body": [
+            "<style>\n .align {\n border: 1px solid red;\n }\n \n .div-align p:nth-of-type(1) {\n text-align: start;\n }\n \n .div-align p:nth-of-type(2) {\n text-align: right;\n }\n </style>\n <div class=\"div-align\">\n <p class=\"align\">text-align:start</p>\n <p class=\"align\">text-align</p>\n </div>\n"
+        ]
+    },  
+    "鼠标放上效果": {
+        "scope": "html",
+        "prefix": ":css3",
+        "body": [
+            "<style>\n .pro {\n width: 400px;\n height: 400px;\n position: absolute;\n }\n \n .pro:hover::before {\n content: \"美女\";\n position: absolute;\n top: 0;\n right: 0;\n left: 0;\n bottom: 0;\n background-color: hsla(0, 0%, 10%, .8);\n color: #fff;\n font-size: 20px;\n line-height: 400px;\n text-align: center;\n font-weight: bold;\n border: 2px solid red;\n }\n </style>\n <div class=\"\" style=\"padding-left: 35%;\">\n <div class=\"pro\">\n <img src=\"https://ss1.baidu.com/-4o3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/78310a55b319ebc4cbd4c3e68226cffc1e171624.jpg\" height=\"400\" width=\"400\" alt=\"\">\n </div>\n </div>\n"
+        ]
+    },  
+    "背景图调px": {
+        "scope": "html",
+        "prefix": ":css3",
+        "body": [
+            "<style>\n #bjt1 {\n display: flex;\n justify-content: center;\n }\n \n #bjt1 div {\n width: 200px;\n height: 200px;\n border: 1px solid red;\n background-image: url(https://img2.baidu.com/it/u=1668500299,1550430079&fm=26&fmt=auto&gp=0.jpg);\n background-size: 100px 100px;\n background-repeat: no-repeat;\n }\n \n #bj1 {\n background-position: bottom;\n }\n \n #bj2 {\n background-position: right 50px bottom 110px;\n }\n \n #bj3 {\n background-position: left -40px top -30px;\n }\n </style>\n <div id=\"bjt1\">\n <div id=\"bj1\"></div>\n <div id=\"bj2\"></div>\n <div id=\"bj3\"></div>\n </div>\n"
+        ]
+    },  
+    "背景图显示位置": {
+        "scope": "html",
+        "prefix": ":css3",
+        "body": [
+            "<style>\n .teie {\n width: 200px;\n height: 100px;\n border: 20px dashed rgba(0, 0, 0, .3);\n padding: 20px;\n margin: 30px;\n background: url(https://ss1.baidu.com/-4o3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/78310a55b319ebc4cbd4c3e68226cffc1e171624.jpg) no-repeat left top #abcdef;\n /* background-size: 50px 50px; */\n background-size: contain;\n color: #fff;\n }\n \n #fdfd {\n display: flex;\n }\n \n .sdfd {\n background-origin: padding-box;\n }\n \n .class2 {\n background-origin: border-box;\n }\n \n .class3 {\n background-origin: content-box;\n }\n </style>\n <div id=\"fdfd\">\n <div class=\"teie class1\">从pidding内开始显示</div>\n \n <div class=\"teie class2\">从border开始显示</div>\n \n <div class=\"teie class3\">从pidding外开始显示</div>\n \n </div>\n 注意：背景图像依附的方式不能是fixed，否则无效\n"
+        ]
+    },  
     //-------------------------------包组件---------------------------------------------   
+    // "Copy复制": {
+    //     "scope": "html",
+    //     "prefix": "&copy",
+    //     "body": [
+    //         "<script src=\"/static/tools/clipboard.js-master/dist/clipboard.min.js\"></script>\n <textarea id=\"foo\">\n 哈哈\n </textarea>\n <button class=\"btn\" data-clipboard-target=\"#foo\">Copy</button>\n <script>\n var clipboard = new ClipboardJS('.btn');\n clipboard.on('success', function(e) {\n console.log(e);\n });\n clipboard.on('error', function(e) {\n console.log(e);\n });\n </script>\n"
+    //     ]
+    // }, 
     "Copy复制": {
         "scope": "html",
         "prefix": "&copy",
         "body": [
-            "<script src=\"/static/tools/clipboard.js-master/dist/clipboard.min.js\"></script>\n <textarea id=\"foo\">\n 哈哈\n </textarea>\n <button class=\"btn\" data-clipboard-target=\"#foo\">Copy</button>\n <script>\n var clipboard = new ClipboardJS('.btn');\n clipboard.on('success', function(e) {\n console.log(e);\n });\n clipboard.on('error', function(e) {\n console.log(e);\n });\n </script>\n"
+            "<button onclick=\"copyText('copy_1')\">copy</button>\n <button onclick=\"copyText('copy_2')\">copy</button>\n <textarea id=\"copy_1\">siijkhwm 300a9f5e</textarea>\n <textarea id=\"copy_2\">1976780324@qq.com At53150829</textarea>\n <script type=\"text/javascript\">\n function copyText(status) {\n var copy = document.getElementById(status);\n copy.select(); // 选中文本\n document.execCommand(\"copy\"); // 执行浏览器复制命令\n alert(\"复制成功\");\n }\n </script>\n"
         ]
     }, 
     //-------------------------------CSS---------------------------------------------   
@@ -192,12 +298,42 @@
             "var str = `jiang chen hua`;$1 var res = str.match('chen'); console.log(res);"
         ]
     },
+    //-----------------------------循环-----------------------------------------
+    "switch": {
+        "scope": "javascript",
+        "prefix": "_switch",
+        "body": [
+            "\n switch () {\n case 1:\n \n break;\n case 2:\n \n break;\n default:\n \n }\n"
+        ]
+    },
+
     //-----------------------------小组件------------------------------------------- 
     "定时器": {
         "scope": "javascript",
         "prefix": ":xzj",
         "body": [
             "setTimeout(function() {$1},6000);"
+        ]
+    },
+    "获取当前url地址": {
+        "scope": "javascript",
+        "prefix": ":xzj",
+        "body": [
+            "var test = window.location.href;\n alert(test)\n"
+        ]
+    },
+    "js绑定键盘单双": {
+        "scope": "javascript",
+        "prefix": ":xzj",
+        "body": [
+            "//键盘对应值 https://www.cnblogs.com/wujilong/archive/2012/09/24/2699847.html\n document.onkeydown = function(e) {\n var keyCode = e.keyCode || e.which || e.charCode;\n var shiftKey = e.shiftKey;\n var altKey = e.altKey;\n \n //组合键\n if (shiftKey) {\n switch (keyCode) {\n case 49: //1\n window.open(\"http://www.baidu.com\");\n break;\n default:\n }\n //单键    \n } else {\n switch (keyCode) {\n case 27:\n layer.closeAll(); //关闭全部弹框\n break;\n default:\n }\n }\n e.preventDefault();\n return false;\n }\n"
+        ]
+    },
+    "获取PHP渲染变量": {
+        "scope": "javascript",
+        "prefix": ":xzj",
+        "body": [
+            "$(function() {\n var status = '<?php echo $$status; ?>';\n console.log(status);\n })\n"
         ]
     },
 }

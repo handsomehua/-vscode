@@ -184,4 +184,12 @@
 		"//未完成\n docker run -d -p 8080:8080 --name ssm_tomcat -v /G/ss:/usr/local/tomcat 0e47688cc516\n"
 		],
 	},
+	//----------------------自定义镜像-----------------------
+	"自定义镜像!": {
+		"scope": "go",
+		"prefix": "-_docker",
+		"body": [
+		"#1.创建一个Dockerfile文件\n 内容：\n from daocloud.io/library/tomcat:8.0.44-jre8-alpine\n copy -.tar /usr/local/tomcat/webapps\n #2.创建一个index.html随便写点内容\n \n #Linux操作\n #创建一个目录，随便起一个-docker\n #进入-docker 然后将上面两个创建的文件复制进来\n \n #执行 docker build -t ssm-tomcat:1.0.0 .镜像创建成功然后运行即可\n"
+		],
+	},
 }

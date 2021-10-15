@@ -60,6 +60,12 @@
                 "//代码执行终端命令\n var out bytes.Buffer\n cmdPtr := exec.Command(\"go\", \"build\", \"-o\", \"demo4\") //只能和main平级，才能生成demo4\n cmdPtr.Dir = \"W:/goproject/src/day02\"\n \n cmdPtr.Stdout = &out\n cmdPtr.Run()\n result := out.String()\n fmt.Println(result)\n"
             ]
         },
+		"生成go.mod": {
+            "prefix": ":cmd",
+            "body": [
+                "go mod init src"
+            ]
+        },
 	//------------------------------第三方包------------------------------------------------
 	"精确小数位": {
 		"scope": "go",

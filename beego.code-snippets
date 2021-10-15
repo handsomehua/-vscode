@@ -139,7 +139,13 @@
 			"this.Data[\"name\"] = \"beego\""
 		]
 	},
-
+	"tools文件": {
+		"scope": "go",
+		"prefix": "beego",
+		"body": [
+			"package models\n \n import (\n \"crypto/md5\"\n \"fmt\"\n \"time\"\n )\n \n //时间戳转时间\n //1626703667\n func UnixToDate(timestamp int) string {\n \n t := time.Unix(int64(timestamp), 0)\n \n return t.Format(\"2006-01-02 15:04:05\")\n \n }\n \n //时间转时间戳\n //2021-07-15 15:04:05\n func DataToUnix(str string) int64 {\n \n template := \"2006-01-02 15:04:05\"\n t, err := time.ParseInLocation(template, str, time.Local)\n \n if err != nil {\n return 0\n }\n \n return t.Unix()\n }\n \n //获取当前时间戳\n func GetUnix() int64 {\n return time.Now().Unix()\n }\n \n //获取当前时间\n func GetDate() string {\n template := \"2006-01-02 15:04:05\"\n return time.Now().Format(template)\n }\n \n //md5加密\n //123456\n func Md5(str string) string {\n data := []byte(str)\n return fmt.Sprintf(\"%x\n\", md5.Sum(data))\n }\n"
+		]
+	},
 
 
 

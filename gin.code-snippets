@@ -1,0 +1,255 @@
+{
+
+	//-------------------------------路由-------------------------------------
+	"接收get参数": {
+		"scope": "go",
+		"prefix": "g_router",
+		"body": [
+		"//获取url参数\n name := c.Query(\"$1\")\n"
+		],
+	},
+	"接收get参数没有则给默认值": {
+		"scope": "go",
+		"prefix": "g_router",
+		"body": [
+		"name := c.DefaultQuery(\"$1\", \"$2\")"
+		],
+	},
+	"接收post参数": {
+		"scope": "go",
+		"prefix": "g_router",
+		"body": [
+		"password := c.PostForm(\"password\")"
+		],
+	},
+	//-------------------------------返回-------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//-------------------------------终端-----------------------------------------
+	"安装Gin": {
+		"scope": "go",
+		"prefix": ":g_cmd",
+		"body": [
+		"go mod init src\n go env -w GO111MODULE=on\n go get -u github.com/gin-gonic/gin\n"
+		],
+	},
+	"热加载": {
+		"scope": "go",
+		"prefix": ":g_test",
+		"body": [
+		"//热加载作用，修改代码不需在重新运行\n obj>go get github.com/pilu/fresh \n obj>fresh\n"
+		],
+	},
+
+	//-------------------------------gin----------------------------
+	"渲染单数据": {
+		"scope": "go,tmpl",
+		"prefix": "gin",
+		"body": [
+		"t.Execute(w, $1)\n if err != nil {\n fmt.Println(\"red\")\n return\n }\n"
+		],
+	},
+	"渲染多数据": {
+		"scope": "go,tmpl",
+		"prefix": "gin",
+		"body": [
+		"t.Execute(w, map[string]interface{}{\n \"a\":a,\n \"b\":b,\n })\n \n if err != nil {\n fmt.Println(\"red\")\n return\n }\n"
+		],
+	},
+	"渲染模板&数据+": {
+		"scope": "go,tmpl",
+		"prefix": "gin",
+		"body": [
+		"r := gin.Default()\n //配置路径\n r.LoadHTMLGlob(\"templates/*\")\n r.GET(\"/news\", func(c *gin.Context) {\n c.HTML(http.StatusOK, \"news.html\", gin.H{\n \"title\": \"我是后台数据\",\n })\n })\n"
+		],
+	},
+	"tools文件": {
+		"scope": "go,tmpl",
+		"prefix": "gin",
+		"body": [
+		"package models\n \n import (\n \"time\"\n )\n \n //时间戳转换成日期\n func UnixToTime(timestamp int) string {\n t := time.Unix(int64(timestamp), 0)\n return t.Format(\"2006-01-02 15:04:05\")\n }\n \n //日期转换成时间戳 2020-05-02 15:04:05\n func DateToUnix(str string) int64 {\n template := \"2006-01-02 15:04:05\"\n t, err := time.ParseInLocation(template, str, time.Local)\n if err != nil {\n return 0\n }\n return t.Unix()\n }\n \n //获取时间戳\n func GetUnix() int64 {\n return time.Now().Unix()\n }\n \n //获取当前的日期\n func GetDate() string {\n template := \"2006-01-02 15:04:05\"\n return time.Now().Format(template)\n }\n \n //获取年月日\n func GetDay() string {\n template := \"20060102\"\n return time.Now().Format(template)\n }\n"
+		],
+	},
+	//-------------------------------{{gin}}----------------------------
+	"模板对象": {
+		"scope": "go,tmpl",
+		"prefix": "{{gin}}",
+		"body": [
+		"{{.}}"
+		],
+	},
+	"if else if else": {
+		"scope": "go,tmpl",
+		"prefix": "{{gin}}",
+		"body": [
+		"{{ if ne 1 1 }}\n <p>jiang</p>\n {{else if eq 1 1}}\n <p>chen</p>\n {{else}}\n <p>hua</p>\n {{end}} \n   "
+		],
+	},
+	"定义变量": {
+		"scope": "go,tmpl",
+		"prefix": "{{gin}}",
+		"body": [
+		"{{ $v1 := 100}}\n {{$v1}}\n {{$name := .name}}\n {{$name}}\n"
+		],
+	},
+	"模板注释": {
+		"scope": "go,tmpl",
+		"prefix": "{{gin}}",
+		"body": [
+		"{{/*这是注释*/}}"
+		],
+	},
+	"模板访问-结构体": {
+		"scope": "go,tmpl",
+		"prefix": "{{gin}}",
+		"body": [
+		"//控制器\n user := User{\n Name: \"jiang\",\n }\n //html\n <p>hello {{ .Name }}</p>\n"
+		],
+	},
+	"模板访问-map": {
+		"scope": "go,tmpl",
+		"prefix": "{{gin}}",
+		"body": [
+		"//控制器\n m1 := map[string]interface{}{\n \"name\": \"jiang\",\n }\n //html\n <p>hello {{ .name }}</p>\n"
+		],
+	},
+	"自定义模板函数": {
+		"scope": "go,tmpl",
+		"prefix": "{{gin}}",
+		"body": [
+		"//控制器\n k := func(name string) (string, error) {\n return name + \"年轻又帅气\", nil\n }\n \n //2.解析模板\n t := template.New(\"f.tmpl\")\n \n t.Funcs(template.FuncMap{\n \"kua99\": k,\n })\n \n _, err := t.ParseFiles(\"./f.tmpl\")\n if err != nil {\n fmt.Printf(\"parse template failed,err: %v\n\", err)\n return\n }\n name := \"小王子\"\n \n //渲染模板\n t.Execute(w, name)\n \n \n //html\n {{kua99 . }} //输出结果 小王子年轻又帅气\n"
+		],
+	},
+	"引入模板或子渲染": {
+		"scope": "go,tmpl",
+		"prefix": "{{gin}}",
+		"body": [
+		"//控制器\n func demo1(w http.ResponseWriter, r *http.Request) {\n \n //解析模板\n t, err := template.ParseFiles(\"./index.tmpl\", \"./demo.tmpl\")\n if err != nil {\n fmt.Printf(\"parse template failed,err:%v\n\", err)\n return\n }\n name := \"小王子\"\n //渲染模板 渲染数据\n t.Execute(w, name)\n }\n \n //demo.tmpl\n <li>a</li>\n <li>b</li>\n <li>c</li>\n {{ . }}\n \n //index.tmpl\n <body>\n <h1>测试嵌套template语法</h1>\n <hr> {{template \"demo.tmpl\" .}}\n <hr> {{template \"p.tmpl\"}}\n {{ . }}\n </body>\n \n {{ define \"p.tmpl\"}}\n <p>吃饭</p>\n <p>睡觉</p>\n <p>看片</p>\n {{end}}\n"
+		],
+	},
+	"模板嵌套+++": {
+		"scope": "go,tmpl",
+		"prefix": "{{gin}}",
+		"body": [
+		"//访问\n http://localhost:9090/test\n //控制器\n func test(w http.ResponseWriter, r *http.Request) {\n //解析模板\n t, err := template.ParseFiles(\"./index.tmpl\", \"./test.tmpl\")\n if err != nil {\n fmt.Printf(\"parse template failed,err: %v\n\", err)\n return\n }\n msg := \"这是test页面\"\n //渲染模板\n t.ExecuteTemplate(w, \"test.tmpl\", msg)\n }\n \n \n //index.tmpl\n <body>\n <p>头部</p>\n <p>{{block \"content\" .}} {{end}}\n </p>\n <p>底部</p>\n </body>\n \n \n //test.tmpl\n {{template \"index.tmpl\"}}\n {{define \"content\"}}\n <p>fdfd</p>\n {{end}}\n"
+		],
+	},
+	"不转义html或js": {
+		"scope": "go,tmpl",
+		"prefix": "{{gin}}",
+		"body": [
+		"//控制器\n func main() {\n r := gin.Default()\n r.SetFuncMap(template.FuncMap{\n \"safe\": func(str string) template.HTML {\n return template.HTML(str)\n },\n })\n r.LoadHTMLFiles(\"index.tmpl\") //模板解析\n r.GET(\"/index\", func(c *gin.Context) {\n c.HTML(http.StatusOK, \"index.tmpl\", gin.H{ //模板渲染\n \"title\": \"<a href='liwenzhou.com'>liwenzhou</a>\",\n })\n })\n r.Run(\":8080\")\n }\n \n //html\n <body>\n {{.title|safe}}\n </body>\n"
+		],
+	},
+	"重写static路径": {
+		"scope": "go,html",
+		"prefix": "{{gin}}",
+		"body": [
+		"//控制器\n r.Static(\"/test\", \"./static/public\")\n //html\n//引入建议前面加上/ 如/test/test.png\n <img src=\"/test/test.png\" >\n \n"
+		],
+	},
+	//-------------------------------{{view}}----------------------------
+	"模板访问-结构体": {
+		"scope": "go,html",
+		"prefix": "{{view}}",
+		"body": [
+		"//控制器\n news := &Article{\n Title:   \"新闻标题\",\n Content: \"新闻详情\",\n }\n c.HTML(http.StatusOK, \"index.html\", gin.H{\n \"title\": \"首页\",\n \"news\":  news,\n })\n //html\n <div>{{.title}}</div>\n <p>{{.news.Title}}</p>\n"
+		],
+	},
+	"模板访问-切片": {
+		"scope": "go,html",
+		"prefix": "{{for range}}",
+		"body": [
+		"//控制器\n hobbyList := []string{\n \"篮球\",\n \"足球\",\n \"双色球\",\n }\n t.Execute(w, hobbyList)\n \n //html\n {{ range $idx,$hobbyList := .}}\n \n <p>{{$idx}} - {{$hobbyList}}</p>\n {{else}}\n 没有数据\n {{end}}\n"
+		],
+	},
+	"HTML渲染命名": {
+		"scope": "go,html",
+		"prefix": "{{view}}",
+		"body": [
+		"{{ define \"admin/index.html\" }}\n \n html代码\n \n {{ end }}\n"
+		],
+	},
+	"定义变量+": {
+		"scope": "go,html",
+		"prefix": "{{view}}",
+		"body": [
+		"\n 定义变量\n {{$$t := .title}}\n {{$$t}}\n"
+		],
+	},
+	"模板引入+": {
+		"scope": "go,html",
+		"prefix": "{{view}}",
+		"body": [
+		"//public/head.html文件\n//.可以将模板数据传递到子模板\n {{ define \"public/head.html\" .}}\n <style>\n h1 {\n color: red\n }\n </style>\n {{ end }}\n \n \n //public/head.html文件\n <body>\n {{template \"public/head.html\" .}}\n <h1>fsdfdfd</h1>\n </body>\n"
+		],
+	},
+	//-------------------------------{{for range}}----------------------------
+	"循环遍历切片": {
+		"scope": "go,html",
+		"prefix": "{{for range}}",
+		"body": [
+		"//控制器\n c.HTML(http.StatusOK, \"default/index.html\", gin.H{\n \"hobby\": []string{\"吃饭\", \"睡觉\", \"写代码\"},\n })\n \n //html\n {{range $$key,$$value:=.hobby}}\n <li>{{$$key}}------{{$$value}}</li>\n {{end}}\n"
+		],
+	},
+	"循环遍历结构体": {
+		"scope": "go,html",
+		"prefix": "{{for range}}",
+		"body": [
+		"//控制器\n c.HTML(http.StatusOK, \"default/index.html\", gin.H{\n \"newsList\": []interface{}{\n &Article{\n Title:   \"新闻标题1\",\n Content: \"新闻详情1\",\n },\n &Article{\n Title:   \"新闻标题2\",\n Content: \"新闻详情2\",\n },\n },\n })\n //html\n {{range $$key,$$value:=.newsList}}\n <li>{{$$key}}------{{$$value.Title}}</li>\n <li>{{$$key}}------{{$value.Content}}</li>\n {{end}}\n"
+		],
+	},
+	"with循环遍历": {
+		"scope": "go,html",
+		"prefix": "{{for range}}",
+		"body": [
+		"//控制器\n user := User{\n Name: \"jiang\",\n }\n \n m := map[string]interface{}{\n \"name\": \"jiang\",\n \"age\":  \"18\",\n \"a\":    \"4\",\n }\n \n t.Execute(w, map[string]interface{}{\n \"m\":    m,\n \"user\": user,\n })\n //html\n {{with .m }}\n <p>{{ .name }}</p>\n <p>{{ .age }}</p>\n <p>{{ .a }}</p>\n {{end}}\n"
+		],
+	},
+	//-------------------------------自定义模板函数----------------------------
+	"时间戳转时间": {
+		"scope": "go,html",
+		"prefix": "{{func}}",
+		"body": [
+		"//控制器\n // 时间戳转换成日期\n func UnixToTime(template int) string {\n t := time.Unix(int64(template), 0)\n return t.Format(\"2006-01-02T15:04:05\")\n }\n //main\n r := gin.Default()\n \n r.SetFuncMap(template.FuncMap{\n \"UnixToTime\": UnixToTime,\n })\n \n r.LoadHTMLGlob(\"templates/**/*\")\n \n //html\n <p>\n {{UnixToTime .date }}\n </p>\n"
+		],
+	},
+	"字符串拼接": {
+		"scope": "go,html",
+		"prefix": "{{func}}",
+		"body": [
+		"//控制器\n //字符串拼接\n func Println(str1 string, str2 string) string {\n fmt.Println(\"fdf\")\n return str1 + \"------\" + str2\n }   \n \n //mian\n r := gin.Default()\n r.SetFuncMap(template.FuncMap{\n \"Println\":    Println,\n })\n r.LoadHTMLGlob(\"templates/**/*\")\n \n //html\n  {{Println .title .msg}}\n"
+		],
+	},
+}

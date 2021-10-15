@@ -1,0 +1,270 @@
+{
+	//-------------------------------调试-------------------------------------
+	"修改运行端口": {
+		"scope": "go",
+		"prefix": "!g_run",
+		"body": [
+		"r := gin.Default()\n r.GET(\"/\", func(c *gin.Context) {\n c.String(200, \"值:%v\", \"你好gin\")\n })\n r.Run(\":8000\")\n"
+		],
+	},
+	"输出字符串": {
+		"scope": "go",
+		"prefix": "!g_ln",
+		"body": [
+		"c.String(200, \"%v\", \"test\")"
+		],
+	},
+	//-------------------------------返回-------------------------------------
+	"第一个gin程序^": {
+		"scope": "go",
+		"prefix": "-g_test",
+		"body": [
+		"package main\n \n import (\n \"fmt\"\n \"html/template\"\n \"net/http\"\n )\n \n func sayHello(w http.ResponseWriter, r *http.Request) {\n \n //2.解析模板\n t, err := template.ParseFiles(\"./index.tmpl\")\n //index.tmpl内容     <p>hello {{ . }}</p>\n if err != nil {\n fmt.Println(err)\n return\n }\n //3.渲染模板\n name := \"小王子\"\n err = t.Execute(w, name)\n if err != nil {\n fmt.Println(\"red\")\n return\n }\n \n }\n \n func main() {\n //访问http://localhost:9090/hello\n http.HandleFunc(\"/hello\", sayHello)\n err := http.ListenAndServe(\":9090\", nil)\n if err != nil {\n fmt.Printf(\"http serve faild,err:%v\", err)\n return\n }\n }\n"
+		],
+	},
+	"返回map空接口json": {
+		"scope": "go",
+		"prefix": "-g_json",
+		"body": [
+		"func main() {\n r := gin.Default()\n r.GET(\"/json\", func(c *gin.Context) {\n //方法1：使用map\n data := map[string]interface{}{\n \"name\":    \"小王子\",\n \"message\": \"hello world!\",\n \"age\":     18,\n }\n c.JSON(http.StatusOK, data)\n })\n \n r.Run(\":9090\")\n }\n"
+		],
+	},
+	// "简写map[string]interface{}{}": {
+	// 	"scope": "go",
+	// 	"prefix": "-g_map",
+	// 	"body": [
+	// 	"data := gin.H{\"name\": \"小王子\", \"message\": \"hello world!\", \"age\": 18}"
+	// 	],
+	// },
+	"返回结构体json": {
+		"scope": "go",
+		"prefix": "-g_struct",
+		"body": [
+		"\n //main\n type msg struct {\n Name    string\n Message string\n Age     int\n }\n r.GET(\"/another_json\", func(c *gin.Context) {\n data := msg{\n Name:    \"小王子\",\n Message: \"hello world!\",\n Age:     18,\n }\n c.JSON(http.StatusOK, data)\n })\n"
+		],
+	},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//-------------------------------路由-------------------------------------
+	"get请求": {
+		"scope": "go",
+		"prefix": "g~router",
+		"body": [
+		"r := gin.Default() //返回默认的路由引擎\n \n r.GET(\"/get\", func(c *gin.Context) {\n c.JSON(200, gin.H{\n \"message\": \"get\",\n })\n })\n//启动服务\n r.Run()\n"
+		],
+	},
+	"post请求": {
+		"scope": "go",
+		"prefix": "g~router",
+		"body": [
+		"r := gin.Default() //返回默认的路由引擎\n r.POST(\"/post\", func(c *gin.Context) {\n c.JSON(200, gin.H{\n \"message\": \"post\",\n })\n })\n //启动服务\n r.Run()\n"
+		],
+	},
+	"接收get参数": {
+		"scope": "go",
+		"prefix": "g~router",
+		"body": [
+		"func main() {\n r := gin.Default()\n r.GET(\"/web\", func(c *gin.Context) {\n //获取url参数\n name := c.Query(\"query\")\n c.JSON(http.StatusOK, gin.H{\n \"name\": name,\n })\n })\n r.Run(\":9090\")\n }\n"
+		],
+	},
+	"接收get参数没有则给默认值": {
+		"scope": "go",
+		"prefix": "g~router",
+		"body": [
+		"func main() {\n r := gin.Default()\n r.GET(\"/web\", func(c *gin.Context) {\n //获取url参数\n name := c.DefaultQuery(\"query\", \"没有query=则默认\")\n c.JSON(http.StatusOK, gin.H{\n \"name\": name,\n })\n })\n r.Run(\":9090\")\n }\n"
+		],
+	},
+	"接收post参数": {
+		"scope": "go",
+		"prefix": "g~router",
+		"body": [
+		"r.POST(\"/doAddUser\", func(c *gin.Context) {\n username := c.PostForm(\"username\")\n password := c.PostForm(\"password\")\n //没有则给默认值\n age := c.DefaultPostForm(\"age\", \"20\")\n c.JSON(http.StatusOK, gin.H{\n \"username\": username,\n \"password\": password,\n \"age\":      age,\n })\n })\n"
+		],
+	},
+	"接收get参数并写入结构体": {
+		"scope": "go",
+		"prefix": "g~router",
+		"body": [
+		"//结构体 注意放在函数外\n type UserInfo struct {\n Username string `json:\"username\" form:\"username\"`\n Password string `json:\"password\" form:\"password\"`\n }\n \n \n //url地址http://localhost:8080/getUser?username=111&password=123\n r.GET(\"/getUser\", func(c *gin.Context) {\n user := &UserInfo{}\n if err := c.ShouldBind(&user); err == nil {\n c.JSON(http.StatusOK, user)\n } else {\n c.JSON(http.StatusOK, gin.H{\n \"err\": err.Error(),\n })\n }\n })\n"
+		],
+	},
+	"接收post参数并写入结构体": {
+		"scope": "go",
+		"prefix": "g~router",
+		"body": [
+		"//结构体\n type UserInfo struct {\n Username string `json:\"username\" form:\"username\"`\n Password string `json:\"password\" form:\"password\"`\n }\n \n \n r.POST(\"/doAddUser2\", func(c *gin.Context) {\n user := &UserInfo{}\n if err := c.ShouldBind(&user); err == nil {\n c.JSON(http.StatusOK, user)\n } else {\n c.JSON(http.StatusOK, gin.H{\n \"err\": err.Error(),\n })\n }\n })\n"
+		],
+	},
+	"动态路由": {
+		"scope": "go",
+		"prefix": "g~router",
+		"body": [
+		"//访问http://localhost:8080/list/111\n //打印 111\n //动态路由\n r.GET(\"/list/:cid\", func(c *gin.Context) {\n cid := c.Param(\"cid\")\n c.String(200, \"%v\", cid)\n })\n"
+		],
+	},
+	"路由抽离分组": {
+		"scope": "go",
+		"prefix": "g~router",
+		"body": [
+		"//***********main.go***************\n r := gin.Default()\n r.LoadHTMLGlob(\"templates/**/*\")\n r.Static(\"/static\", \"./static\")\n //路由分组抽离\n routers.ApiRoutersInit(r)\n \n routers.AdminRoutersInit(r)\n \n routers.DefaultRoutersInit(r)\n \n r.Run(\":8080\")\n \n //***********routers/ApiRouters.go***************\n package routers\n \n import \"github.com/gin-gonic/gin\"\n //举例一个\n func AdminRoutersInit(r *gin.Engine) {\n adminRouter := r.Group(\"/admin\")\n {\n adminRouter.GET(\"/add\", func(c *gin.Context) {\n c.String(200, \"%v\", \"admin/add\")\n })\n }\n }\n"
+		],
+	},
+	"路由抽离控制器(推荐)+": {
+		"scope": "go",
+		"prefix": "g~router",
+		"body": [
+		"//访问http://localhost:8080/admin/user/add\n//基于路由抽离分组\n //***************routers/adminRouter*******************************\n package routers\n \n import (\n \"src/controllers/admin\"\n \n \"github.com/gin-gonic/gin\"\n )\n \n func AdminRoutersInit(r *gin.Engine) {\n adminRouter := r.Group(\"/admin\")\n {\n adminRouter.GET(\"/user\", admin.UserController{}.Index)\n adminRouter.GET(\"/user/add\", admin.UserController{}.Add)\n }\n }\n \n //***************controllers/admin/UserController.go*******************************\n package admin\n \n import \"github.com/gin-gonic/gin\"\n \n type UserController struct {\n }\n \n func (con UserController) Index(c *gin.Context) {\n c.String(200, \"%v\", \"UserIndex\")\n }\n func (con UserController) Add(c *gin.Context) {\n c.String(200, \"%v\", \"UserAdd\")\n }\n"
+		],
+	},
+	"路由抽离控制器不支持继承": {
+		"scope": "go",
+		"prefix": "g~router",
+		"body": [
+		"//缺点没法继承，推荐使用     路由抽离控制器(推荐)+\n//基于路由抽离分组\n //***************routers/adminRouter.go****************************\n package routers\n \n import (\n \"src/controllers/admin\"\n \n \"github.com/gin-gonic/gin\"\n )\n \n func AdminRoutersInit(r *gin.Engine) {\n adminRouter := r.Group(\"/admin\")\n {\n adminRouter.GET(\"/user\", admin.UserIndex)\n adminRouter.GET(\"/user/add\", admin.UserAdd)\n }\n }\n \n \n \n //********controllers/admin/UserController.go*******\n package admin\n \n import \"github.com/gin-gonic/gin\"\n \n type UserController struct {\n }\n \n func UserIndex(c *gin.Context) {\n c.String(200, \"%v\", \"UserIndex\")\n }\n func UserAdd(c *gin.Context) {\n c.String(200, \"%v\", \"UserAdd\")\n }\n"
+		],
+	},
+	"获取路由地址": {
+		"scope": "go",
+		"prefix": "g~router",
+		"body": [
+		"func (con UserController) Index(c *gin.Context) {\n \n fmt.Println(c.Request.URL)\n //打印结果  /admin/user\n }\n"
+		],
+	},
+	//-------------------------------控制器-------------------------------------
+	"继承+": {
+		"scope": "go",
+		"prefix": "g~controller",
+		"body": [
+		"//继承\n //都是package admin文件继承\n //**********controllers/adin/userController.go************\n package admin\n \n import \"github.com/gin-gonic/gin\"\n \n type UserController struct {\n BaseController\n }\n \n func (con UserController) Index(c *gin.Context) {\n con.success(c)\n }\n func (con UserController) Add(c *gin.Context) {\n con.error(c)\n }\n \n //**********controllers/adin/baseController.go***********\n package admin\n \n import \"github.com/gin-gonic/gin\"\n \n type BaseController struct {\n }\n \n func (con BaseController) success(c *gin.Context) {\n c.String(200, \"%v\", \"成功\")\n }\n \n func (con BaseController) error(c *gin.Context) {\n c.String(200, \"%v\", \"失败\")\n }\n"
+		],
+	},
+	"中间件": {
+		"scope": "go",
+		"prefix": "g~controller",
+		"body": [
+		"//中间件是在执行方法之前，调用的方法\n func initMiddlename(c *gin.Context) {\n c.String(200, \"%v\", \"中间件\")\n }\n \n //main.go\n r.GET(\"/\", initMiddlename, func(c *gin.Context) {\n c.String(200, \"%v\", \"test\")\n })\n"
+		],
+	},
+	"全局中间件": {
+		"scope": "go",
+		"prefix": "g~controller",
+		"body": [
+		"func initMiddlename(c *gin.Context) {\n c.String(200, \"%v\", \"全局中间件\")\n }\n \n //main\n //访问http://localhost:8080/\n //全局中间件\n r.Use(initMiddlename)\n //可以多个\n //r.Use(initMiddlename,initMiddlename)\n \n r.GET(\"/\", func(c *gin.Context) {\n c.String(200, \"%v\", \"test\")\n })\n"
+		],
+	},
+	"路由中间件+": {
+		"scope": "go",
+		"prefix": "g~controller",
+		"body": [
+		"//路由中间件\n //***********main.go*******************\n routers.AdminRoutersInit(r)\n \n //***********/routers/adminRouter*******************\n package routers\n \n import (\n \"src/controllers/admin\"\n \"src/middlewares\"\n \n \"github.com/gin-gonic/gin\"\n )\n \n func AdminRoutersInit(r *gin.Engine) {\n //middlewares.InitMiddlewares路由中间件\n adminRouter := r.Group(\"/admin\", middlewares.InitMiddlewares)\n {\n adminRouter.GET(\"/user\", admin.UserController{}.Index)\n adminRouter.GET(\"/user/add\", admin.UserController{}.Add)\n }\n }\n //***********/middlewares/init.go*******************\n package middlewares\n \n import \"github.com/gin-gonic/gin\"\n \n func InitMiddlewares(c *gin.Context) {\n c.String(200, \"%v\", \"路由中间件\")\n }\n"
+		],
+	},
+	"中间件传递数据到控制器": {
+		"scope": "go",
+		"prefix": "g~controller",
+		"body": [
+		"//中间件方法中\n//设置传递数据\n c.Set(\"username\", \"张三\")\n //控制器中\n func (con UserController) Index(c *gin.Context) {\n \n username, _ := c.Get(\"username\")\n \n //类型断言\n v, ok := username.(string)\n if ok == true {\n c.String(200, \"用户列表--\"+v)\n } else {\n c.String(200, \"用户列表--获取用户失败\")\n }\n }\n"
+		],
+	},
+	"中间件使用goroutine": {
+		"scope": "go",
+		"prefix": "g~controller",
+		"body": [
+		"func InitMiddlewares(c *gin.Context) {\n \n //获取url地址\n fmt.Println(c.Request.URL)\n \n //goroutine不能在中间件使用c *gin.Context 需要拷贝\n cCp := c.Copy()\n go func() {\n time.Sleep(2 * time.Second)\n fmt.Println(\"Done! in path\" + cCp.Request.URL.Path)\n }()\n }\n"
+		],
+	},
+	"上传多图片^": {
+		"scope": "go",
+		"prefix": "g~controller",
+		"body": [
+		"//路由\n adminRouter.GET(\"/user/edit\", admin.UserController{}.Edit)\n adminRouter.POST(\"/user/allUpload\", admin.UserController{}.AllUpload)\n \n //html\n <h2>多文件上传</h2>\n <form action=\"/admin/user/allUpload\" method=\"post\" enctype=\"multipart/form-data\">\n \n 用户名：<input type=\"text\" name=\"username\" />\n <br>\n <br> 头像1：\n <input type=\"file\" name=\"face[]\" />\n <br>\n <br> 头像2：\n <input type=\"file\" name=\"face[]\" />\n <br>\n <br> 头像3：\n <input type=\"file\" name=\"face[]\" />\n <input type=\"submit\" value=\"提交\">\n </form>\n \n //控制器\n func (con UserController) AllUpload(c *gin.Context) {\n \n username := c.PostForm(\"username\")\n \n form, _ := c.MultipartForm()\n files := form.File[\"face[]\"]\n \n for _, file := range files {\n //路径可以保存到数据库\n dst := path.Join(\"./static/upload\", file.Filename)\n //上传文件到指点目录\n c.SaveUploadedFile(file, dst)\n }\n c.JSON(http.StatusOK, gin.H{\n \"success\":  true,\n \"username\": username,\n // \"dst\":      dst,\n })\n \n }\n"
+		],
+	},
+	"上传图片+": {
+		"scope": "go",
+		"prefix": "g~controller",
+		"body": [
+		"//html\n <h2>文件上传</h2>\n <form action=\"/admin/user/doUpload\" method=\"post\" enctype=\"multipart/form-data\">\n \n 用户名：<input type=\"text\" name=\"username\" />\n <br>\n <br> 头像：\n <input type=\"file\" name=\"face\" />\n \n <input type=\"submit\" value=\"提交\">\n </form>\n \n //路由\n adminRouter.GET(\"/user/add\", admin.UserController{}.Add)\n adminRouter.POST(\"/user/doUpload\", admin.UserController{}.DoUpload)\n \n \n //控制器\n /*\n 1、获取上传的文件\n 2、获取后缀名 判断类型是否正确  .jpg .png .gif .jpeg\n 3、创建图片保存目录  static/upload/20200623\n 4、生成文件名称和文件保存的目录\n 5、执行上传\n */\n func (con UserController) DoUpload(c *gin.Context) {\n username := c.PostForm(\"username\")\n // 1、获取上传的文件\n file, err := c.FormFile(\"face\")\n \n if err == nil {\n // 2、获取后缀名 判断类型是否正确  .jpg .png .gif .jpeg\n extName := path.Ext(file.Filename)\n \n allowExtMap := map[string]bool{\n \".jpg\":  true,\n \".png\":  true,\n \".gif\":  true,\n \".jpeg\": true,\n }\n \n if _, ok := allowExtMap[extName]; !ok {\n c.String(200, \"上传的文件类型不合法\")\n return\n }\n \n // 3、创建图片保存目录  static/upload/20210624\n \n day := models.GetDay()\n dir := \"./static/upload/\" + day\n \n err := os.MkdirAll(dir, 0666)\n if err != nil {\n fmt.Println(err)\n c.String(200, \"MkdirAll失败\")\n return\n }\n \n // 4、生成文件名称和文件保存的目录   111111111111.jpeg\n fileName := strconv.FormatInt(models.GetUnix(), 10) + extName\n \n // 5、执行上传\n dst := path.Join(dir, fileName)\n c.SaveUploadedFile(file, dst)\n }\n c.JSON(http.StatusOK, gin.H{\n \"success\":  true,\n \"username\": username,\n })\n }\n"
+		],
+	},
+	//-------------------------------函数-------------------------------------
+	"cookie设置获取+": {
+		"scope": "go",
+		"prefix": "g*_cookie",
+		"body": [
+		"//路由\n adminRouter.GET(\"/user/index\", admin.UserController{}.Index)\n adminRouter.GET(\"/user/news\", admin.UserController{}.News)\n \n //控制器\n func (con UserController) Index(c *gin.Context) {\n //设置cookie\n //参数一：key\n //参数二：value\n //参数三：过期时间\n //参数四：生效路径\n //参数五：作用域\n //参数六：是否只有https才能访问\n //参数七：true表示在\n c.SetCookie(\"username\", \"张三\", 3600, \"/\", \"localhost\", false, true)\n }\n func (con UserController) News(c *gin.Context) {\n //获取cookie\n username, _ := c.Cookie(\"username\")\n c.String(200, \"%v\", username)\n }\n"
+		],
+	},
+	"删除cookie": {
+		"scope": "go",
+		"prefix": "g*_cookie",
+		"body": [
+		"//删除cookie\n c.SetCookie(\"username\", \"\", -1, \"/\", \"localhost\", false, true)\n"
+		],
+	},
+	"二级域名共享cookie": {
+		"scope": "go",
+		"prefix": "g*_cookie",
+		"body": [
+		"c.SetCookie(\"username\", \"张三\", 3600, \"/\", \".xin.com\", false, true)"
+		],
+	},
+	"session设置获取+": {
+		"scope": "go",
+		"prefix": "g*_session",
+		"body": [
+		"\n //main.go\n 下载session包\n go get github.com/gin-contrib/sessions\n \n //main.go\n 引入\n \"github.com/gin-contrib/sessions\"\n \"github.com/gin-contrib/sessions/cookie\"\n \n //main.go\n //配置中间件\n //创建基于 cookie 的存储引擎，secret111 参数是用于加密的密钥\n store := cookie.NewStore([]byte(\"secret111\"))\n r.Use(sessions.Sessions(\"mysession\", store))\n \n \n \n \n //使用\n func (con UserController) Index(c *gin.Context) {\n //设置session\n session := sessions.Default(c)\n session.Set(\"username\", \"张三\")\n session.Save() //设置session的时候必须调用\n }\n func (con UserController) News(c *gin.Context) {\n //获取sessions\n session := sessions.Default(c)\n username := session.Get(\"username\")\n c.String(200, \"%v\", username)\n \n }\n"
+		],
+	},
+	"session存入redis中+": {
+		"scope": "go",
+		"prefix": "g*_session",
+		"body": [
+		"\n //默认保存30天\n //**********************main.go**********************************\n //导入\n \"github.com/gin-contrib/sessions\"\n \"github.com/gin-contrib/sessions/redis\"\n \n \n //func main\n //参数四：是密码\n //参数五：加密的密钥\n store, _ := redis.NewStore(10, \"tcp\", \"localhost:6379\", \"\", []byte(\"secret111\"))\n r.Use(sessions.Sessions(\"mysession\", store))\n \n \n \n //**********************userController.go**********************************\n //导入\n github.com/gin-contrib/sessions\n \n \n func (con UserController) Index(c *gin.Context) {\n //设置session\n session := sessions.Default(c)\n session.Set(\"username\", \"张三\")\n session.Save() //设置session的时候必须调用\n }\n func (con UserController) News(c *gin.Context) {\n //获取sessions\n session := sessions.Default(c)\n username := session.Get(\"username\")\n c.String(200, \"%v\", username)\n \n }\n //将数据写入redis\n //redis\n //前面的省略了\n //登入\n redis-cli\n //查看所有数据\n keys *\n //存入成功示例\n session_O3KJWBCPAEIUCNFK6MMADHHJNXBUHBXGCPMHJY6LZFRN7SZXO2FA\n"
+		],
+	},
+	"设置session的过期时间": {
+		"scope": "go",
+		"prefix": "g*_session",
+		"body": [
+		"//设置session\n func (con UserController) Index(c *gin.Context) {\n //设置session\n session := sessions.Default(c)\n //设置session的过期时间\n session.Options(sessions.Options{MaxAge: 3600 * 6}) //有效期6个小时\n \n session.Set(\"username\", \"张三\")\n session.Save() //设置session的时候必须调用\n }\n"
+		],
+	},
+	//-------------------------------块函数-------------------------------------
+	"http状态码200": {
+		"scope": "go",
+		"prefix": "~http",
+		"body": [
+		""
+		],
+	},
+	//-------------------------------GO-----------------------------------------
+	"读取txt或html文件内容": {
+		"scope": "go",
+		"prefix": "*_ReadFile",
+		"body": [
+		"package main\n \n import (\n \"fmt\"\n \"io/ioutil\"\n \"net/http\"\n )\n \n func sayHello(w http.ResponseWriter, r *http.Request) {\n //./index.txt内容-><h1>fdfdffsdfsDFDFDFdfsd</h1>\n b, _ := ioutil.ReadFile(\"./index.txt\")\n _, _ = fmt.Fprintln(w, string(b))\n }\n \n //注意运行生成go build 运行./src.exe\n //不能go run 运行\n func main() {\n http.HandleFunc(\"/hello\", sayHello)\n http.ListenAndServe(\":9090\", nil)\n }\n"
+		],
+	},
+	"http访问": {
+		"scope": "go",
+		"prefix": "*_http",
+		"body": [
+		"package main\n \n import (\n \"fmt\"\n \"net/http\"\n )\n \n func sayHello(w http.ResponseWriter, r *http.Request) {\n _, _ = fmt.Fprintf(w, \"<h1>Hello</h1>\")\n }\n \n func main() {\n //访问http://localhost:9090/hello\n http.HandleFunc(\"/hello\", sayHello)\n err := http.ListenAndServe(\":9090\", nil)\n if err != nil {\n fmt.Printf(\"http serve faild,err:%v\\n\", err)\n return\n }\n }\n"
+		],
+	},
+
+
+}
